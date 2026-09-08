@@ -265,6 +265,8 @@ h3{font-size:16.5px;font-weight:700;margin-bottom:6px}
 .exhead h2{font-family:var(--display);font-size:28px;font-weight:800;text-transform:uppercase;line-height:1}
 .exhead .rx{font-family:var(--mono);font-size:14px;margin-top:4px;color:var(--ink)}
 .exhead .cue{font-size:13.5px;color:var(--ink-2);margin-top:4px}
+.howto{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;margin:0 0 12px}
+.howto p{font-size:14px;color:var(--ink-2);margin-top:3px}
 .beat{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 12px}
 .beat>div{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:9px 12px;min-width:0}
 .beat .k{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
@@ -358,6 +360,10 @@ h3{font-size:16.5px;font-weight:700;margin-bottom:6px}
   <div class="ovh"><div class="t"><b id="ov-title"></b><span id="ov-sub"></span></div><button class="ic" id="ov-close" aria-label="Close session">×</button></div>
   <div class="ovb"><div class="wrap" id="ov-body"></div></div>
   <div class="ovfoot" id="ov-foot"></div>
+</div>
+<div class="ov" id="pick" role="dialog" aria-modal="true" aria-label="Choose a workout">
+  <div class="ovh"><div class="t"><b>Choose a workout</b><span id="pick-sub">Start anything, any day</span></div><button class="ic" id="pick-close" aria-label="Close">×</button></div>
+  <div class="ovb"><div class="wrap" id="pick-body"></div></div>
 </div>
 <div class="timer" id="timer"><div class="tt" id="timer-t">0:00</div><div class="tl"><b id="timer-l">Rest</b><span id="timer-n"></span></div><button id="timer-add">+30 s</button><button id="timer-skip">Skip</button></div>
 <div class="toast" id="toast"></div>
@@ -552,10 +558,78 @@ const TEST_WEEK = {
   sat: [{ id: 'tw-sat', kind: 'test', name: 'Test 2 · Best of', short: 'Test day 2', dur: '50 min', desc: 'Same format as Wednesday. Your Phase 1 result is the better of the two days. Then retest jump, throw, trap bar 3RM and log the 7-day bodyweight.' }],
   sun: [{ id: 'tw-sun', kind: 'rest', name: 'Rest · Phase 2 planning', short: 'Rest', dur: '', desc: 'Off. Phase 2 (Jan–Mar) is strength-speed plus technique work with a coach; we build it from what this week says.' }],
 };
+
+// How to perform each exercise — shown on the exercise screen during a session.
+const HOWTO = {
+  'Box jump or countermovement jump': 'Stand tall, dip fast into a quarter squat with the arms swinging back, then drive through the floor and jump onto the box. Land soft in a half squat and step down. Full rest between reps — it\'s about height, not fatigue.',
+  'Hang power clean': 'Bar at mid-thigh, shoulders over the bar, back flat. Push the floor away, shrug hard and pull the elbows high, then whip them through to catch the bar on the shoulders in a quarter squat. Stand up, lower to the thighs, reset.',
+  'Back squat': 'Bar on the upper back, feet shoulder-width and slightly turned out. Big breath, brace the trunk, sit down between the hips to at least parallel, then drive the whole foot into the floor to stand. Same depth every rep.',
+  'Romanian deadlift': 'From standing with soft knees, push the hips straight back and slide the bar down the thighs until the hamstrings pull hard — mid-shin at most. Flat back the whole way; squeeze the glutes to return.',
+  'Rear-foot-elevated split squat': 'Back foot on a bench, front foot far enough forward that the shin stays near vertical. Lower the back knee toward the floor, drive up through the front heel. Dumbbells at the sides, torso upright.',
+  'Lateral lunge or Cossack squat': 'Step wide to one side and sit into that hip with the other leg straight, then push off the outside foot to return. Chest up, knee tracking over the toes. Cossack: same, but stay low and shift side to side.',
+  'Pallof press': 'Cable at chest height, stand side-on with both hands holding the handle at the sternum. Press straight out and hold 2 s without letting the cable turn you, then bring it back. Ribs down, hips square.',
+  'Suitcase carry': 'One heavy dumbbell or kettlebell in one hand. Walk tall with the ribs down and no side lean — the trunk fights the weight. Switch hands and repeat.',
+  'Med ball rotational scoop throw (wall)': 'Golf posture, side-on to a wall, ball held at the trail hip. Load into the trail side, then drive the hips through and sling the ball into the wall at hip height. Catch or collect, reset, repeat. Both sides every set.',
+  'Med ball chest pass / shot put': 'Chest pass: ball at the chest, step in and throw it as hard as you can into the wall. Shot put: ball at the shoulder, rotate the hips and punch it out. Explosive, never a grind.',
+  'Bench press': 'Shoulder blades pinched together and down, feet planted, slight arch. Lower the bar to the lower chest under control, press up and slightly back toward the face. Elbows about 45° from the body.',
+  'Weighted pull-up': 'Dead hang, pull the elbows down to the ribs until the chin clears the bar, then lower all the way to a full hang. Add weight on a belt once 6 clean reps are easy.',
+  'Half-kneeling landmine press': 'Kneel on the knee on the same side as the pressing arm, bar end at the shoulder. Press up and forward along the bar\'s arc. Keep the glute of the down leg tight so the hips don\'t drift.',
+  'Chest-supported row': 'Chest on an incline bench, dumbbells hanging straight down. Row the elbows back and up, pause with the shoulder blades squeezed, lower slowly.',
+  'Cable chop and lift': 'Split stance beside the cable. Chop: cable set high, pull it down and across the body. Lift: cable set low, drive it up and across. Arms stay long — the turn comes from the hips and trunk, not the shoulders.',
+  'Face pull': 'Rope at face height. Pull toward the forehead with elbows high and wide, finishing with the hands beside the ears and a 1 s squeeze between the shoulder blades. Light weight.',
+  'Wrist roller or plate pinch': 'Wrist roller: arms out in front, roll the weight all the way up and back down without dropping the arms. Plate pinch: pinch two plates smooth-side out with the fingertips and hold until they slip.',
+  'Broad jump': 'Quarter squat with the arms back, jump forward as far as you can and stick the landing in a half squat. Walk back, reset fully, repeat.',
+  'Lateral bound (stick the landing)': 'Jump sideways off one leg, land on the other and hold it for 2 s, dead still. That posted lead leg is your impact position — the landing matters more than the distance.',
+  'Trap bar deadlift': 'Stand in the middle of the bar, hips back, chest up, grip the handles. Brace, push the floor away and stand tall, then lower under control with the bar close. High handles are fine.',
+  'Front squat (or hack squat)': 'Bar racked on the front of the shoulders with the elbows high, feet shoulder-width. Sit straight down keeping the torso upright, drive up. Hack squat: same depth, same tempo.',
+  'Barbell hip thrust': 'Upper back on a bench, bar padded across the hips, feet flat and shins vertical at the top. Drive the hips up until the body is a straight line, chin tucked, pause 1 s, lower.',
+  'Nordic curl or lying leg curl': 'Nordic: kneel with the ankles anchored, lower the body forward as slowly as you can, push back up with the hands if needed. Leg curl: full range, 3 s on the way down.',
+  'Copenhagen plank': 'Side plank with the top leg resting on a bench (knee for easier, ankle for harder) and the bottom leg under it. Lift the hips into a straight line and hold, squeezing the top leg down into the bench.',
+  'Standing calf raise': 'Balls of the feet on a step. Rise as high as you can, pause at the top, then lower below the step for a full stretch. Slow both ways.',
+  'Farmer carry': 'The heaviest dumbbells or handles you can hold, walk tall for the distance with short quick steps. No shrugging, no leaning.',
+  'Push press (or strict overhead press)': 'Bar on the front of the shoulders, quick dip of the knees and drive up with the legs, then finish the press overhead with the biceps by the ears. Strict version: no leg drive at all.',
+  'Lat pulldown or pull-up': 'Grip a little wider than the shoulders. Pull the bar to the collarbones by driving the elbows down and back, then let the arms go fully long at the top.',
+  'Incline dumbbell press': 'Bench at about 30°. Dumbbells at the outer chest, press up and slightly inward so they meet at the top, lower with control to a stretch.',
+  'Seated cable row': 'Chest up, pull the handle to the belly and squeeze the shoulder blades together, then let the arms go completely long on the return.',
+  'Lateral raise': 'Slight bend in the elbows, raise the dumbbells out to shoulder height with the pinkies a touch higher than the thumbs, lower slowly. No swinging from the hips.',
+  'Rear delt fly': 'Bent over at the hips or chest on an incline bench, dumbbells hanging. Raise them out to the sides with soft elbows until level with the shoulders, lower slowly.',
+  'Hammer curl': 'Neutral grip with the palms facing each other. Curl without swinging, squeeze at the top, lower slowly.',
+  'Triceps pushdown': 'Elbows pinned to the sides. Push the rope or bar down until the arms are straight, control the return to a stretch at the top.',
+  'Reverse curl + wrist curl': 'Reverse curl: overhand grip, curl the bar with the wrists straight, lower slowly. Wrist curl: forearms resting on the thighs, curl the wrists up and down through full range.',
+};
+// Variant names that appear inside a block's prescription
+Object.assign(HOWTO, {
+  'Trap bar jump': 'Light trap bar (20–30% of bodyweight). Dip and jump as high as you can with the arms straight, land soft and quiet, reset fully before the next rep.',
+  'Skater bound': 'Push off one leg sideways, fly, and land on the other leg with a stuck, quiet landing. Hold for a beat, then bound back the other way.',
+  'Plyo push-up': 'Push-up position. Drop fast and explode up so the hands leave the floor, land soft with bent elbows, absorb, repeat.',
+  'Landmine rotational press': 'Face the landmine with the bar at one shoulder. Pivot the trail foot and rotate the hips as you press the bar across and up — it\'s a throw driven by the hips, not a shoulder press.',
+});
+
+// Extra sessions available from the picker (not on the weekly schedule)
+const EXTRAS = {
+  mobility: { id: 'mobility', kind: 'speed', name: 'Daily mobility · 10 min', short: 'Mobility', dur: '10 min',
+    desc: 'The ten minutes that keep 13 lb of new mass turning. Every day, ideally after training or before bed.',
+    steps: [[
+      '<b>90/90 hip switches</b> ×10 each way — sit with both knees at 90°, rotate the knees side to side keeping the feet planted. Tall spine.',
+      '<b>Thoracic open-books</b> ×8 each side — lie on one side, knees stacked, arms straight out; open the top arm over to the other side, following it with the eyes.',
+      '<b>Deep squat hold</b> 60 s — heels down, elbows pressing the knees out, breathe.',
+      '<b>Wall slides</b> ×10 — back and arms against a wall, slide the arms up overhead without the ribs flaring.',
+      '<b>Half-kneeling hip flexor stretch</b> 45 s each — squeeze the glute of the down leg, tuck the pelvis, reach the same arm overhead.',
+      '<b>Ankle rocks</b> ×10 each — half-kneeling, drive the front knee over the toes with the heel down.',
+    ], null, null],
+    deload: 'Same every day. Never skip it on deload weeks.' },
+};
+EXTRAS.mobility.steps[1] = EXTRAS.mobility.steps[0]; EXTRAS.mobility.steps[2] = EXTRAS.mobility.steps[0];
+const PICKABLE = [
+  { group: 'Gym', items: ['gym1','gym2','gym3','gym4'].map(k => GYM[k]) },
+  { group: 'Speed', items: ['speedA','speedB','speedC','speedD'].map(k => SPEED[k]) },
+  { group: 'Extras', items: [EXTRAS.mobility] },
+];
+function sessionById(id) { return GYM[id] || SPEED[id] || EXTRAS[id] || null; }
 </script>
 <script>
 /* ================= App core ================= */
-const APP_VERSION = '1.0.0';
+const APP_VERSION = '1.1.0';
 const LS_KEY = 'project225-app-v1';
 const DEFAULT_SETTINGS = {
   times: { speedA: '11:30', gym1: '12:00', gym2: '11:30', speedB: '11:30', gym3: '11:30', speedD: '11:30', speedC: '11:00', gym4: '17:00', test: '11:30', weigh: '06:30', review: '18:00' },
@@ -777,6 +851,9 @@ function renderToday() {
     const rest = list.every(s => s.kind === 'rest');
     h += '<div class="sessions' + (rest ? ' rest' : '') + '">' + list.map(s => sessionCardHTML(s, checkKey(wk, day, s.id), wk, block)).join('') + '</div>';
   }
+  const extras = freeSessionsToday();
+  h += '<div class="row" style="margin-top:14px"><button class="btn wide" id="pick-open">Choose a workout</button></div>';
+  if (extras.length) h += '<div class="tomorrow" style="margin-top:14px"><div class="eyebrow" style="margin-bottom:8px">Extra sessions today</div><div class="sessions">' + extras.map(r => { const s = sessionById(r.id); return s ? sessionCardHTML(s, r.key, r.wk, r.block || 1) : ''; }).join('') + '</div></div>';
   const hasWeighToday = state.weight.some(e => e.d === today);
   h += '<form class="quick" id="q-weight"><label>Morning weight (lb)' + (hasWeighToday ? ' · logged' : '') + '<input type="number" step="0.1" min="150" max="300" inputmode="decimal" name="lbs" placeholder="' + (latestBw() || 200) + '"></label><button class="btn sm" type="submit">Log</button></form>';
   // tomorrow
@@ -788,6 +865,7 @@ function renderToday() {
   if (day === 'sun' && wk >= 1 && wk <= PLAN.testWeek) h += reviewCard(wk);
   root.innerHTML = h;
   bindSessionButtons(root);
+  $('#pick-open').onclick = openPicker;
   $('#q-weight').onsubmit = ev => { ev.preventDefault(); const v = Number(ev.target.lbs.value); if (!v) return; state.weight = state.weight.filter(e => e.d !== today); state.weight.push({ id: 'w' + Date.now(), d: today, lbs: v }); save('Weight logged'); renderAll(); };
 }
 function bindSessionButtons(root) {
@@ -856,6 +934,8 @@ function renderWeek() {
 let active = null;       // { key, wk, day, sess, block, exIdx }
 let wakeLock = null;
 function findSession(key) {
+  const rec = state.sessions[key];
+  if (rec && rec.free) { const sess = sessionById(rec.id); return sess ? { wk: rec.wk, day: rec.day, sess, block: rec.block || 1, free: true } : null; }
   const m = key.match(/^w(\d+)-(\w+)-(.+)$/);
   if (!m) return null;
   const wk = +m[1], day = m[2], id = m[3];
@@ -870,7 +950,7 @@ function openSession(key) {
   if (!f) return;
   let rec = state.sessions[key];
   if (!rec) {
-    rec = { key, id: f.sess.id, wk: f.wk, day: f.day, date: iso(addDays(weekStart(f.wk), DAYS.indexOf(f.day))), startedAt: Date.now(), finishedAt: null, sets: {}, exNames: {}, exDone: {}, steps: {}, speedSets: [], finisher: {} };
+    rec = { key, id: f.sess.id, wk: f.wk, day: f.day, date: f.wk >= 1 ? iso(addDays(weekStart(f.wk), DAYS.indexOf(f.day))) : iso(new Date()), startedAt: Date.now(), finishedAt: null, sets: {}, exNames: {}, exDone: {}, steps: {}, speedSets: [], finisher: {} };
     if (f.sess.ex) f.sess.ex.forEach((r, i) => { rec.exNames[i] = r[1]; });
     state.sessions[key] = rec;
   }
@@ -881,11 +961,48 @@ function openSession(key) {
   $('#ov').classList.add('on');
   document.body.style.overflow = 'hidden';
   requestWake();
+  clearInterval(ovInt); ovInt = setInterval(tickElapsed, 1000);
   renderSession();
 }
+function startFreeSession(id, block) {
+  const now = new Date(), wk = currentWeek(), day = dayKeyOf(now);
+  // If this workout is on today's schedule, open the scheduled one so the week's progress counts it.
+  if (wk >= 1 && sessionsOn(wk, day).some(s => s.id === id)) { closePicker(); openSession(checkKey(wk, day, id)); return; }
+  const key = 'f-' + iso(now) + '-' + id;
+  if (!state.sessions[key]) {
+    const sess = sessionById(id); if (!sess) return;
+    const rec = { key, id, wk, day, block, free: true, date: iso(now), startedAt: Date.now(), finishedAt: null, sets: {}, exNames: {}, exDone: {}, steps: {}, speedSets: [], finisher: {} };
+    if (sess.ex) sess.ex.forEach((r, i) => { rec.exNames[i] = r[1]; });
+    state.sessions[key] = rec;
+  } else state.sessions[key].block = block;
+  closePicker(); openSession(key);
+}
+function freeSessionsToday() { const d = iso(new Date()); return Object.values(state.sessions).filter(r => r.free && r.date === d); }
+let pickBlock = 0;
+function openPicker() { pickBlock = pickBlock || blockOf(currentWeek()) || 1; $('#pick').classList.add('on'); document.body.style.overflow = 'hidden'; renderPicker(); }
+function closePicker() { $('#pick').classList.remove('on'); document.body.style.overflow = ''; }
+function renderPicker() {
+  const body = $('#pick-body'), wk = currentWeek(), day = dayKeyOf(new Date());
+  const todayIds = wk >= 1 ? sessionsOn(wk, day).map(s => s.id) : [];
+  let h = '<p class="lede" style="margin-bottom:10px">Any workout, any day. If it\'s on today\'s plan it counts toward the week; otherwise it\'s logged as an extra session. Loads follow the block you pick.</p>';
+  h += '<div class="subtabs" style="margin-bottom:14px">' + [1,2,3].map(b => '<button data-pb="' + b + '" aria-selected="' + (pickBlock === b) + '">Block ' + b + ' · ' + BLOCKS[b-1].name + '</button>').join('') + '</div>';
+  PICKABLE.forEach(g => {
+    h += '<p class="eyebrow" style="margin:14px 0 6px">' + g.group + '</p><div class="sessions">' + g.items.map(s => {
+      const onPlan = todayIds.includes(s.id);
+      const started = state.sessions['f-' + iso(new Date()) + '-' + s.id] || (onPlan ? state.sessions[checkKey(wk, day, s.id)] : null);
+      const n = s.ex ? s.ex.length + ' exercises' : (s.steps ? (s.steps[pickBlock - 1] || []).length + ' steps' : '');
+      return '<div class="sess' + (started && started.finishedAt ? ' done' : '') + '"><div class="top-r" style="padding-left:14px"><div class="t"><div class="name">' + esc(s.name) + '</div><div class="desc">' + esc(s.desc) + '</div><div class="tags"><span class="pill ' + (s.kind === 'gym' ? 'gym' : 'speed') + '">' + (s.kind === 'gym' ? 'Gym' : s.id === 'mobility' ? 'Mobility' : 'Speed') + '</span>' + (s.dur ? '<span class="pill">' + esc(s.dur) + '</span>' : '') + (n ? '<span class="time">' + n + '</span>' : '') + (onPlan ? '<span class="pill test">On today\'s plan</span>' : '') + '</div></div><button class="btn sm" data-pick="' + s.id + '" style="align-self:center">' + (started ? (started.finishedAt ? 'Review' : 'Resume') : 'Start') + '</button></div></div>';
+    }).join('') + '</div>';
+  });
+  body.innerHTML = h;
+  $$('[data-pb]', body).forEach(b => b.addEventListener('click', () => { pickBlock = +b.dataset.pb; renderPicker(); }));
+  $$('[data-pick]', body).forEach(b => b.addEventListener('click', () => startFreeSession(b.dataset.pick, pickBlock)));
+}
 function firstOpenExercise(sess, rec) { if (!sess.ex) return 0; for (let i = 0; i < sess.ex.length; i++) if (!rec.exDone[i]) return i; return 0; }
+let ovInt = null;
+function tickElapsed() { const rec = active && state.sessions[active.key]; const el = $('#ov-elapsed'); if (!rec || !el) return; const s = Math.floor((Date.now() - (rec.startedAt || Date.now())) / 1000); el.textContent = (s >= 3600 ? Math.floor(s / 3600) + ':' + String(Math.floor(s % 3600 / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0') : mmss(s)); }
 function closeSession() {
-  $('#ov').classList.remove('on'); document.body.style.overflow = '';
+  $('#ov').classList.remove('on'); document.body.style.overflow = ''; clearInterval(ovInt); ovInt = null;
   active = null; state.activeKey = null; save(); releaseWake(); stopTimer(); renderAll();
 }
 $('#ov-close').addEventListener('click', closeSession);
@@ -910,7 +1027,9 @@ function renderSession() {
   if (!active) return;
   const { sess, wk, block } = active, rec = state.sessions[active.key];
   $('#ov-title').textContent = sess.name;
-  $('#ov-sub').textContent = weekLabel(wk) + ' · ' + DAYS_LONG[active.day] + (isDeload(wk) ? ' · deload' : isTaper(wk) ? ' · taper' : '');
+  const counter = (sess.kind === 'gym' && sess.ex) ? 'Exercise ' + (active.exIdx + 1) + ' of ' + sess.ex.length + ' · ' : '';
+  $('#ov-sub').innerHTML = esc(counter) + (active.free ? 'Extra session · Block ' + block : esc(weekLabel(wk)) + (isDeload(wk) ? ' · deload' : isTaper(wk) ? ' · taper' : '')) + ' · <span id="ov-elapsed" style="font-family:var(--mono)">0:00</span>';
+  tickElapsed();
   const body = $('#ov-body'), foot = $('#ov-foot');
   if (sess.kind === 'gym' && sess.ex) renderGymSession(body, foot, sess, rec, block);
   else renderSpeedSession(body, foot, sess, rec, block);
@@ -921,7 +1040,9 @@ function renderGymSession(body, foot, sess, rec, block) {
   const name = r[1], bests = bestsFor(name);
   let h = '<div class="exnav">' + sess.ex.map((x, j) => '<button data-ex="' + j + '" aria-selected="' + (j === i) + '"' + (rec.exDone[j] ? ' class="done"' : '') + '>' + x[0] + '</button>').join('') + '</div>';
   if (i === 0) h += '<div class="note" style="margin-bottom:12px"><strong>Warm-up.</strong> ' + esc(sess.warm) + '</div>';
+  const howto = HOWTO[rx.variant] || HOWTO[name] || '';
   h += '<div class="exhead"><div class="code">' + r[0] + ' · ' + (exCategory(r[0]) === 'main' ? 'main lift' : exCategory(r[0]) === 'power' ? 'power' : 'accessory') + ' · rest ' + mmss(restFor(r[0])) + '</div><h2>' + esc(rx.variant || name) + '</h2><div class="rx">' + esc(r[2 + bi]) + '</div>' + (r[5] ? '<div class="cue">' + esc(r[5]) + '</div>' : '') + '</div>';
+  if (howto) h += '<div class="howto"><span class="eyebrow">How to</span><p>' + esc(howto) + '</p></div>';
   if (isDeload(active.wk)) h += '<div class="callout warn" style="margin-bottom:10px;font-size:13.5px"><p>' + esc(sess.deload) + '</p></div>';
   if (isTaper(active.wk)) h += '<div class="callout warn" style="margin-bottom:10px;font-size:13.5px"><p>Taper: cut about 40% of the sets below. Same loads.</p></div>';
   if (rx.empty) {
@@ -946,7 +1067,7 @@ function renderGymSession(body, foot, sess, rec, block) {
     }
     const rows = rec.sets[i];
     h += '<div class="sets">' + rows.map((st, k) => '<div class="setrow' + (st.done ? ' done' : '') + '" data-set="' + k + '"><div class="i">' + (k + 1) + (st.lbl ? '<br><span style="font-size:10px">' + esc(st.lbl) + '</span>' : '') + '</div><label>' + (g0.pctOf === 'bw' ? 'Load' : 'Weight') + '<input type="number" step="2.5" min="0" inputmode="decimal" value="' + esc(st.w) + '" data-f="w"></label><label>' + (g0.unit === 's' ? 'Seconds' : g0.unit === 'm' ? 'Metres' : 'Reps') + (g0.perSide ? ' / side' : '') + '<input type="number" step="1" min="0" inputmode="numeric" value="' + esc(st.r) + '" data-f="r"></label><button class="lg" aria-label="Log set ' + (k + 1) + '" data-log="' + k + '"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button></div>').join('') + '</div>';
-    h += '<div class="exfoot"><button class="btn ghost sm" id="ex-addset">+ Add set</button>' + (last ? '<span style="font-size:12.5px;color:var(--muted);align-self:center">Last time (' + esc(last.date) + '): ' + last.sets.map(s => s.w + '×' + s.r).join(', ') + '</span>' : '') + '</div>';
+    h += '<div class="exfoot"><button class="btn ghost sm" id="ex-addset">+ Add set</button><button class="btn ghost sm" id="ex-rest">Rest timer ' + mmss(restFor(r[0])) + '</button>' + (g0.unit === 's' && g0.reps ? '<button class="btn ghost sm" id="ex-hold">Hold timer ' + g0.reps + ' s</button>' : '') + (last ? '<span style="font-size:12.5px;color:var(--muted);align-self:center">Last time (' + esc(last.date) + '): ' + last.sets.map(s => s.w + '×' + s.r).join(', ') + '</span>' : '') + '</div>';
     body.innerHTML = h;
     $$('.setrow input', body).forEach(inp => inp.addEventListener('change', () => { const row = inp.closest('.setrow'), k = +row.dataset.set; rec.sets[i][k][inp.dataset.f] = inp.value === '' ? '' : Number(inp.value); save(); }));
     $$('[data-log]', body).forEach(b => b.addEventListener('click', () => {
@@ -965,12 +1086,15 @@ function renderGymSession(body, foot, sess, rec, block) {
       renderSession();
     }));
     $('#ex-addset').onclick = () => { const l = rows[rows.length - 1]; rows.push({ w: l ? l.w : '', r: l ? l.r : '', done: false, at: 0, lbl: '' }); save(); renderSession(); };
+    $('#ex-rest').onclick = () => startTimer(restFor(r[0]), 'Rest', rx.variant || name);
+    const hb = $('#ex-hold'); if (hb) hb.onclick = () => startTimer(g0.reps, 'Hold — go!', rx.variant || name);
     const mf = $('[data-max]', body); if (mf) mf.onsubmit = ev => { ev.preventDefault(); const v = Number(mf.querySelector('input').value); if (v > 0) { state.maxes[name] = v; save('Max saved'); renderSession(); } };
   }
   $$('[data-ex]', body).forEach(b => b.addEventListener('click', () => { active.exIdx = +b.dataset.ex; renderSession(); $('.ovb').scrollTo({ top: 0 }); }));
   const isLast = i === sess.ex.length - 1;
   const doneCount = Object.keys(rec.exDone).filter(k => rec.exDone[k]).length;
-  foot.innerHTML = '<button class="btn ghost" id="ex-skip">' + (rec.exDone[i] ? 'Done ✓' : 'Mark done') + '</button>' + (isLast ? '<button class="btn good" id="ex-finish">Finish session (' + doneCount + '/' + sess.ex.length + ')</button>' : '<button class="btn" id="ex-next">Next exercise ›</button>');
+  foot.innerHTML = '<button class="btn ghost" id="ex-prev" style="flex:0 0 auto"' + (i === 0 ? ' disabled' : '') + '>‹ Prev</button><button class="btn ghost" id="ex-skip">' + (rec.exDone[i] ? 'Done ✓' : 'Mark done') + '</button>' + (isLast ? '<button class="btn good" id="ex-finish">Finish (' + doneCount + '/' + sess.ex.length + ')</button>' : '<button class="btn" id="ex-next">Next ›</button>');
+  $('#ex-prev').onclick = () => { active.exIdx = Math.max(0, i - 1); renderSession(); $('.ovb').scrollTo({ top: 0 }); };
   $('#ex-skip').onclick = () => { rec.exDone[i] = !rec.exDone[i]; save(); renderSession(); };
   const nx = $('#ex-next'); if (nx) nx.onclick = () => { active.exIdx = Math.min(sess.ex.length - 1, i + 1); renderSession(); $('.ovb').scrollTo({ top: 0 }); };
   const fn = $('#ex-finish'); if (fn) fn.onclick = finishSession;
@@ -1370,6 +1494,7 @@ function showView(name) {
   try { localStorage.setItem(LS_KEY + '-tab', name); } catch (e) {}
 }
 $$('.nav button').forEach(t => t.addEventListener('click', () => { showView(t.dataset.view); window.scrollTo({ top: 0 }); }));
+$('#pick-close').addEventListener('click', closePicker);
 let rzT; window.addEventListener('resize', () => { clearTimeout(rzT); rzT = setTimeout(drawCharts, 200); });
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { if (active) requestWake(); if (timerInt) tickTimer(); if (clockInt) tickClock(); renderCtx(); } });
 loadLocal();
