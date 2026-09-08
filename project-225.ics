@@ -1,0 +1,2472 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Project 225//Training//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Project 225
+X-WR-TIMEZONE:America/Chicago
+BEGIN:VTIMEZONE
+TZID:America/Chicago
+BEGIN:DAYLIGHT
+TZOFFSETFROM:-0600
+TZOFFSETTO:-0500
+TZNAME:CDT
+DTSTART:19700308T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0600
+TZNAME:CST
+DTSTART:19701101T020000
+RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:w0-gear@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260909T090000
+DTEND;TZID=America/Chicago:20260909T093000
+SUMMARY:P225 · Order radar + overspeed trainer
+DESCRIPTION:Stack System + Stack Radar bundle\, or PRGR Black + a stick 
+ set. Run the DIY overspeed protocol until it lands.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Order radar + overspeed trainer
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Order radar + overspeed trainer
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w0-speed@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260912T110000
+DTEND;TZID=America/Chicago:20260912T120000
+SUMMARY:P225 · Baseline speed test
+DESCRIPTION:10 max-effort driver swings for peak club speed\, then 4 × 
+ 6-ball sets for peak ball speed. Log it in the app.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Baseline speed test
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Baseline speed test
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w0-strength@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260913T110000
+DTEND;TZID=America/Chicago:20260913T114500
+SUMMARY:P225 · Baseline strength tests
+DESCRIPTION:Countermovement jump\, seated 10 lb med ball side throws\, t
+ rap bar deadlift 3RM. Enter on Plan → Setup.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Baseline strength tests
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Baseline strength tests
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w1-mon-speedA@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260914T113000
+DTEND;TZID=America/Chicago:20260914T120000
+SUMMARY:P225 · Speed A · Overspeed\, no ball
+DESCRIPTION:Do this before Gym 1\, while the nervous system is fresh. Ev
+ ery swing is max intent.\n\nWarm-up 8 min: 90/90s\, open-books\, leg sw
+ ings\, then 10 progressive swings from 60% to 90%.\nOverspeed round = l
+ ight 5/5/5\, medium 5/5/5\, heavy 5/5/5 (dominant side / non-dominant s
+ ide / step-through). Rest 60–90 s between sets.\nBlock 1: 2 rounds (9
+ 0 swings). Note the peak speed at each weight.\nFinisher: 10 max-effort
+  driver swings on the radar. Record the peak club speed.\nWith the Stac
+ k: follow the app's prescribed session instead of the fixed rounds — 
+ it periodizes the weights for you.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w1-mon-gym1@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260914T120000
+DTEND;TZID=America/Chicago:20260914T131000
+SUMMARY:P225 · Gym 1 · Lower strength + vertical power
+DESCRIPTION:Squat pattern\, hinge\, single-leg\, lateral push-off. Verti
+ cal force is the biggest single lever on club speed.\n\nA1 Box jump or 
+ countermovement jump — 4×3\nA2 Hang power clean — Technique 3×3\,
+  light (optional)\nB Back squat — 4×6 @ 72–77%\nC Romanian deadlif
+ t — 3×8\nD1 Rear-foot-elevated split squat — 3×8 / leg\nD2 Latera
+ l lunge or Cossack squat — 3×8 / side\nE1 Pallof press — 3×10 / s
+ ide\nE2 Suitcase carry — 3×30 m / side
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w1-tue-gym2@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260915T113000
+DTEND;TZID=America/Chicago:20260915T123500
+SUMMARY:P225 · Gym 2 · Upper strength + rotational power
+DESCRIPTION:Throws first while you're fresh\, then press and pull heavy\
+ , then the rotational cable work that builds the release.\n\nA1 Med bal
+ l rotational scoop throw (wall) — 4×4 / side · 8–10 lb\nA2 Med ba
+ ll chest pass / shot put — 4×4 · 8–10 lb\nB Bench press — 4×6 
+ @ 72–77%\nC Weighted pull-up — 4×6\nD1 Half-kneeling landmine pres
+ s — 3×8 / side\nD2 Chest-supported row — 3×10\nE1 Cable chop and 
+ lift — 3×10 / side\nE2 Face pull — 3×15\nE3 Wrist roller or plate
+  pinch — 3 sets
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w1-wed-speedB@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260916T113000
+DTEND;TZID=America/Chicago:20260916T121000
+SUMMARY:P225 · Speed B · Overspeed + hitting
+DESCRIPTION:Range or net with the radar. Half technique\, half intent. T
+ his is where club speed becomes ball speed.\n\nWarm-up 10 min: mobility
+ \, 10 wedge swings\, 10 7-iron swings\, 6 driver at 80%.\nOverspeed: 1 
+ round\, light and medium only.\n12 drivers at 85–90%: foot spray or i
+ mpact tape on the face\, find centre contact. Smash factor is your feed
+ back (target 1.48–1.50).\n3 × 6-ball sets at max intent\, 3 min betw
+ een sets. Record peak ball speed\, peak club speed\, and smash.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w1-thu-gym3@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260917T113000
+DTEND;TZID=America/Chicago:20260917T124000
+SUMMARY:P225 · Gym 3 · Lower hypertrophy + posterior chain
+DESCRIPTION:Deadlift day. Horizontal and lateral jumps up front\, then t
+ he volume that builds glutes and hamstrings.\n\nA1 Broad jump — 4×3\
+ nA2 Lateral bound (stick the landing) — 4×3 / side\nB Trap bar deadl
+ ift — 4×6 @ 72–77%\nC Front squat (or hack squat) — 3×8–10\nD
+ 1 Barbell hip thrust — 3×10\nD2 Nordic curl or lying leg curl — 3
+ ×8\nE1 Copenhagen plank — 3×30 s / side\nE2 Standing calf raise —
+  3×12\nE3 Farmer carry — 3×40 m
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w1-sat-speedC@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260919T110000
+DTEND;TZID=America/Chicago:20260919T115000
+SUMMARY:P225 · Speed C · Max hit day
+DESCRIPTION:The session that produces the number. Friday is a rest day s
+ o you arrive fresh. Every ball on the radar.\n\nWarm-up 15 min: mobilit
+ y\, 20 progressive swings wedge → 7-iron → driver\, 6 drivers at 80
+ –90%.\n4 × 6-ball sets on a 2:45 clock\, 5 min rest between sets. Lo
+ g every ball speed\; the session number is your peak\, and note the top
+ -3 average.\nStop rule: if a set's average drops more than 3% below you
+ r best set\, the session is over. Speed under fatigue is where obliques
+  and backs get hurt.\nCap: 30 max-effort hits. Then Gym 4 at least 3 ho
+ urs later.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w1-sat-gym4@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260919T170000
+DTEND;TZID=America/Chicago:20260919T175500
+SUMMARY:P225 · Gym 4 · Upper hypertrophy + arms/grip
+DESCRIPTION:After the max hit day (3+ hours later\, or that evening). Pu
+ re mass work — shoulders\, back\, arms\, forearms. Nothing here shoul
+ d feel heroic.\n\nB Push press (or strict overhead press) — 4×8\nC L
+ at pulldown or pull-up — 4×8–10\nD1 Incline dumbbell press — 3×
+ 10\nD2 Seated cable row — 3×10–12\nE1 Lateral raise — 3×15\nE2 
+ Rear delt fly — 3×15\nF1 Hammer curl — 3×12\nF2 Triceps pushdown 
+ — 3×12\nF3 Reverse curl + wrist curl — 3×12 each
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w2-mon-speedA@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260921T113000
+DTEND;TZID=America/Chicago:20260921T120000
+SUMMARY:P225 · Speed A · Overspeed\, no ball
+DESCRIPTION:Do this before Gym 1\, while the nervous system is fresh. Ev
+ ery swing is max intent.\n\nWarm-up 8 min: 90/90s\, open-books\, leg sw
+ ings\, then 10 progressive swings from 60% to 90%.\nOverspeed round = l
+ ight 5/5/5\, medium 5/5/5\, heavy 5/5/5 (dominant side / non-dominant s
+ ide / step-through). Rest 60–90 s between sets.\nBlock 1: 2 rounds (9
+ 0 swings). Note the peak speed at each weight.\nFinisher: 10 max-effort
+  driver swings on the radar. Record the peak club speed.\nWith the Stac
+ k: follow the app's prescribed session instead of the fixed rounds — 
+ it periodizes the weights for you.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w2-mon-gym1@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260921T120000
+DTEND;TZID=America/Chicago:20260921T131000
+SUMMARY:P225 · Gym 1 · Lower strength + vertical power
+DESCRIPTION:Squat pattern\, hinge\, single-leg\, lateral push-off. Verti
+ cal force is the biggest single lever on club speed.\n\nA1 Box jump or 
+ countermovement jump — 4×3\nA2 Hang power clean — Technique 3×3\,
+  light (optional)\nB Back squat — 4×6 @ 72–77%\nC Romanian deadlif
+ t — 3×8\nD1 Rear-foot-elevated split squat — 3×8 / leg\nD2 Latera
+ l lunge or Cossack squat — 3×8 / side\nE1 Pallof press — 3×10 / s
+ ide\nE2 Suitcase carry — 3×30 m / side
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w2-tue-gym2@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260922T113000
+DTEND;TZID=America/Chicago:20260922T123500
+SUMMARY:P225 · Gym 2 · Upper strength + rotational power
+DESCRIPTION:Throws first while you're fresh\, then press and pull heavy\
+ , then the rotational cable work that builds the release.\n\nA1 Med bal
+ l rotational scoop throw (wall) — 4×4 / side · 8–10 lb\nA2 Med ba
+ ll chest pass / shot put — 4×4 · 8–10 lb\nB Bench press — 4×6 
+ @ 72–77%\nC Weighted pull-up — 4×6\nD1 Half-kneeling landmine pres
+ s — 3×8 / side\nD2 Chest-supported row — 3×10\nE1 Cable chop and 
+ lift — 3×10 / side\nE2 Face pull — 3×15\nE3 Wrist roller or plate
+  pinch — 3 sets
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w2-wed-speedB@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260923T113000
+DTEND;TZID=America/Chicago:20260923T121000
+SUMMARY:P225 · Speed B · Overspeed + hitting
+DESCRIPTION:Range or net with the radar. Half technique\, half intent. T
+ his is where club speed becomes ball speed.\n\nWarm-up 10 min: mobility
+ \, 10 wedge swings\, 10 7-iron swings\, 6 driver at 80%.\nOverspeed: 1 
+ round\, light and medium only.\n12 drivers at 85–90%: foot spray or i
+ mpact tape on the face\, find centre contact. Smash factor is your feed
+ back (target 1.48–1.50).\n3 × 6-ball sets at max intent\, 3 min betw
+ een sets. Record peak ball speed\, peak club speed\, and smash.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w2-thu-gym3@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260924T113000
+DTEND;TZID=America/Chicago:20260924T124000
+SUMMARY:P225 · Gym 3 · Lower hypertrophy + posterior chain
+DESCRIPTION:Deadlift day. Horizontal and lateral jumps up front\, then t
+ he volume that builds glutes and hamstrings.\n\nA1 Broad jump — 4×3\
+ nA2 Lateral bound (stick the landing) — 4×3 / side\nB Trap bar deadl
+ ift — 4×6 @ 72–77%\nC Front squat (or hack squat) — 3×8–10\nD
+ 1 Barbell hip thrust — 3×10\nD2 Nordic curl or lying leg curl — 3
+ ×8\nE1 Copenhagen plank — 3×30 s / side\nE2 Standing calf raise —
+  3×12\nE3 Farmer carry — 3×40 m
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w2-sat-speedC@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260926T110000
+DTEND;TZID=America/Chicago:20260926T115000
+SUMMARY:P225 · Speed C · Max hit day
+DESCRIPTION:The session that produces the number. Friday is a rest day s
+ o you arrive fresh. Every ball on the radar.\n\nWarm-up 15 min: mobilit
+ y\, 20 progressive swings wedge → 7-iron → driver\, 6 drivers at 80
+ –90%.\n4 × 6-ball sets on a 2:45 clock\, 5 min rest between sets. Lo
+ g every ball speed\; the session number is your peak\, and note the top
+ -3 average.\nStop rule: if a set's average drops more than 3% below you
+ r best set\, the session is over. Speed under fatigue is where obliques
+  and backs get hurt.\nCap: 30 max-effort hits. Then Gym 4 at least 3 ho
+ urs later.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w2-sat-gym4@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260926T170000
+DTEND;TZID=America/Chicago:20260926T175500
+SUMMARY:P225 · Gym 4 · Upper hypertrophy + arms/grip
+DESCRIPTION:After the max hit day (3+ hours later\, or that evening). Pu
+ re mass work — shoulders\, back\, arms\, forearms. Nothing here shoul
+ d feel heroic.\n\nB Push press (or strict overhead press) — 4×8\nC L
+ at pulldown or pull-up — 4×8–10\nD1 Incline dumbbell press — 3×
+ 10\nD2 Seated cable row — 3×10–12\nE1 Lateral raise — 3×15\nE2 
+ Rear delt fly — 3×15\nF1 Hammer curl — 3×12\nF2 Triceps pushdown 
+ — 3×12\nF3 Reverse curl + wrist curl — 3×12 each
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w3-mon-speedA@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260928T113000
+DTEND;TZID=America/Chicago:20260928T120000
+SUMMARY:P225 · Speed A · Overspeed\, no ball
+DESCRIPTION:Do this before Gym 1\, while the nervous system is fresh. Ev
+ ery swing is max intent.\n\nWarm-up 8 min: 90/90s\, open-books\, leg sw
+ ings\, then 10 progressive swings from 60% to 90%.\nOverspeed round = l
+ ight 5/5/5\, medium 5/5/5\, heavy 5/5/5 (dominant side / non-dominant s
+ ide / step-through). Rest 60–90 s between sets.\nBlock 1: 2 rounds (9
+ 0 swings). Note the peak speed at each weight.\nFinisher: 10 max-effort
+  driver swings on the radar. Record the peak club speed.\nWith the Stac
+ k: follow the app's prescribed session instead of the fixed rounds — 
+ it periodizes the weights for you.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w3-mon-gym1@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260928T120000
+DTEND;TZID=America/Chicago:20260928T131000
+SUMMARY:P225 · Gym 1 · Lower strength + vertical power
+DESCRIPTION:Squat pattern\, hinge\, single-leg\, lateral push-off. Verti
+ cal force is the biggest single lever on club speed.\n\nA1 Box jump or 
+ countermovement jump — 4×3\nA2 Hang power clean — Technique 3×3\,
+  light (optional)\nB Back squat — 4×6 @ 72–77%\nC Romanian deadlif
+ t — 3×8\nD1 Rear-foot-elevated split squat — 3×8 / leg\nD2 Latera
+ l lunge or Cossack squat — 3×8 / side\nE1 Pallof press — 3×10 / s
+ ide\nE2 Suitcase carry — 3×30 m / side
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w3-tue-gym2@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260929T113000
+DTEND;TZID=America/Chicago:20260929T123500
+SUMMARY:P225 · Gym 2 · Upper strength + rotational power
+DESCRIPTION:Throws first while you're fresh\, then press and pull heavy\
+ , then the rotational cable work that builds the release.\n\nA1 Med bal
+ l rotational scoop throw (wall) — 4×4 / side · 8–10 lb\nA2 Med ba
+ ll chest pass / shot put — 4×4 · 8–10 lb\nB Bench press — 4×6 
+ @ 72–77%\nC Weighted pull-up — 4×6\nD1 Half-kneeling landmine pres
+ s — 3×8 / side\nD2 Chest-supported row — 3×10\nE1 Cable chop and 
+ lift — 3×10 / side\nE2 Face pull — 3×15\nE3 Wrist roller or plate
+  pinch — 3 sets
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w3-wed-speedB@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260930T113000
+DTEND;TZID=America/Chicago:20260930T121000
+SUMMARY:P225 · Speed B · Overspeed + hitting
+DESCRIPTION:Range or net with the radar. Half technique\, half intent. T
+ his is where club speed becomes ball speed.\n\nWarm-up 10 min: mobility
+ \, 10 wedge swings\, 10 7-iron swings\, 6 driver at 80%.\nOverspeed: 1 
+ round\, light and medium only.\n12 drivers at 85–90%: foot spray or i
+ mpact tape on the face\, find centre contact. Smash factor is your feed
+ back (target 1.48–1.50).\n3 × 6-ball sets at max intent\, 3 min betw
+ een sets. Record peak ball speed\, peak club speed\, and smash.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w3-thu-gym3@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261001T113000
+DTEND;TZID=America/Chicago:20261001T124000
+SUMMARY:P225 · Gym 3 · Lower hypertrophy + posterior chain
+DESCRIPTION:Deadlift day. Horizontal and lateral jumps up front\, then t
+ he volume that builds glutes and hamstrings.\n\nA1 Broad jump — 4×3\
+ nA2 Lateral bound (stick the landing) — 4×3 / side\nB Trap bar deadl
+ ift — 4×6 @ 72–77%\nC Front squat (or hack squat) — 3×8–10\nD
+ 1 Barbell hip thrust — 3×10\nD2 Nordic curl or lying leg curl — 3
+ ×8\nE1 Copenhagen plank — 3×30 s / side\nE2 Standing calf raise —
+  3×12\nE3 Farmer carry — 3×40 m
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w3-sat-speedC@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261003T110000
+DTEND;TZID=America/Chicago:20261003T115000
+SUMMARY:P225 · Speed C · Max hit day
+DESCRIPTION:The session that produces the number. Friday is a rest day s
+ o you arrive fresh. Every ball on the radar.\n\nWarm-up 15 min: mobilit
+ y\, 20 progressive swings wedge → 7-iron → driver\, 6 drivers at 80
+ –90%.\n4 × 6-ball sets on a 2:45 clock\, 5 min rest between sets. Lo
+ g every ball speed\; the session number is your peak\, and note the top
+ -3 average.\nStop rule: if a set's average drops more than 3% below you
+ r best set\, the session is over. Speed under fatigue is where obliques
+  and backs get hurt.\nCap: 30 max-effort hits. Then Gym 4 at least 3 ho
+ urs later.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w3-sat-gym4@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261003T170000
+DTEND;TZID=America/Chicago:20261003T175500
+SUMMARY:P225 · Gym 4 · Upper hypertrophy + arms/grip
+DESCRIPTION:After the max hit day (3+ hours later\, or that evening). Pu
+ re mass work — shoulders\, back\, arms\, forearms. Nothing here shoul
+ d feel heroic.\n\nB Push press (or strict overhead press) — 4×8\nC L
+ at pulldown or pull-up — 4×8–10\nD1 Incline dumbbell press — 3×
+ 10\nD2 Seated cable row — 3×10–12\nE1 Lateral raise — 3×15\nE2 
+ Rear delt fly — 3×15\nF1 Hammer curl — 3×12\nF2 Triceps pushdown 
+ — 3×12\nF3 Reverse curl + wrist curl — 3×12 each
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w4-mon-speedA@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261005T113000
+DTEND;TZID=America/Chicago:20261005T120000
+SUMMARY:P225 · Speed A · Overspeed\, no ball (deload)
+DESCRIPTION:Do this before Gym 1\, while the nervous system is fresh. Ev
+ ery swing is max intent.\n\nDeload: 1 round\, no step-through swings\, 
+ 6 max-effort driver swings.\n\nWarm-up 8 min: 90/90s\, open-books\, leg
+  swings\, then 10 progressive swings from 60% to 90%.\nOverspeed round 
+ = light 5/5/5\, medium 5/5/5\, heavy 5/5/5 (dominant side / non-dominan
+ t side / step-through). Rest 60–90 s between sets.\nBlock 1: 2 rounds
+  (90 swings). Note the peak speed at each weight.\nFinisher: 10 max-eff
+ ort driver swings on the radar. Record the peak club speed.\nWith the S
+ tack: follow the app's prescribed session instead of the fixed rounds 
+ — it periodizes the weights for you.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball (deload)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball (deload)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w4-mon-gym1@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261005T120000
+DTEND;TZID=America/Chicago:20261005T131000
+SUMMARY:P225 · Gym 1 · Lower strength + vertical power (deload)
+DESCRIPTION:Squat pattern\, hinge\, single-leg\, lateral push-off. Verti
+ cal force is the biggest single lever on club speed.\n\nDeload: A-serie
+ s 2 sets. Squat 3×5 @ 65–70%. Accessories 2 sets each.\n\nA1 Box jum
+ p or countermovement jump — 4×3\nA2 Hang power clean — Technique 3
+ ×3\, light (optional)\nB Back squat — 4×6 @ 72–77%\nC Romanian de
+ adlift — 3×8\nD1 Rear-foot-elevated split squat — 3×8 / leg\nD2 L
+ ateral lunge or Cossack squat — 3×8 / side\nE1 Pallof press — 3×1
+ 0 / side\nE2 Suitcase carry — 3×30 m / side
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power (deload)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power (deload)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w4-tue-gym2@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261006T113000
+DTEND;TZID=America/Chicago:20261006T123500
+SUMMARY:P225 · Gym 2 · Upper strength + rotational power (deload)
+DESCRIPTION:Throws first while you're fresh\, then press and pull heavy\
+ , then the rotational cable work that builds the release.\n\nDeload: th
+ rows 2 sets. Bench 3×5 @ 65–70%. Pull-ups 3×5 bodyweight. Accessori
+ es 2 sets.\n\nA1 Med ball rotational scoop throw (wall) — 4×4 / side
+  · 8–10 lb\nA2 Med ball chest pass / shot put — 4×4 · 8–10 lb\
+ nB Bench press — 4×6 @ 72–77%\nC Weighted pull-up — 4×6\nD1 Hal
+ f-kneeling landmine press — 3×8 / side\nD2 Chest-supported row — 3
+ ×10\nE1 Cable chop and lift — 3×10 / side\nE2 Face pull — 3×15\n
+ E3 Wrist roller or plate pinch — 3 sets
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power (deload)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power (deload)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w4-wed-speedB@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261007T113000
+DTEND;TZID=America/Chicago:20261007T121000
+SUMMARY:P225 · Speed B · Overspeed + hitting (deload)
+DESCRIPTION:Range or net with the radar. Half technique\, half intent. T
+ his is where club speed becomes ball speed.\n\nDeload: no overspeed. 20
+  balls at 80–85% working on centre contact. No max effort.\n\nWarm-up
+  10 min: mobility\, 10 wedge swings\, 10 7-iron swings\, 6 driver at 80
+ %.\nOverspeed: 1 round\, light and medium only.\n12 drivers at 85–90%
+ : foot spray or impact tape on the face\, find centre contact. Smash fa
+ ctor is your feedback (target 1.48–1.50).\n3 × 6-ball sets at max in
+ tent\, 3 min between sets. Record peak ball speed\, peak club speed\, a
+ nd smash.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting (deload)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting (deload)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w4-thu-gym3@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261008T113000
+DTEND;TZID=America/Chicago:20261008T124000
+SUMMARY:P225 · Gym 3 · Lower hypertrophy + posterior chain (deload)
+DESCRIPTION:Deadlift day. Horizontal and lateral jumps up front\, then t
+ he volume that builds glutes and hamstrings.\n\nDeload: jumps 2 sets. T
+ rap bar 3×5 @ 65–70%. Accessories 2 sets. Skip carries.\n\nA1 Broad 
+ jump — 4×3\nA2 Lateral bound (stick the landing) — 4×3 / side\nB 
+ Trap bar deadlift — 4×6 @ 72–77%\nC Front squat (or hack squat) 
+ — 3×8–10\nD1 Barbell hip thrust — 3×10\nD2 Nordic curl or lying
+  leg curl — 3×8\nE1 Copenhagen plank — 3×30 s / side\nE2 Standing
+  calf raise — 3×12\nE3 Farmer carry — 3×40 m
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain (deload
+ )
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain (deload
+ )
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w4-sat-speedC@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261010T110000
+DTEND;TZID=America/Chicago:20261010T115000
+SUMMARY:P225 · Speed C · Max hit day (deload)
+DESCRIPTION:The session that produces the number. Friday is a rest day s
+ o you arrive fresh. Every ball on the radar.\n\nDeload (weeks 4 and 8):
+  retest day instead — see the Setup tab tests. 2 × 6-ball sets\, the
+ n done.\n\nWarm-up 15 min: mobility\, 20 progressive swings wedge → 7
+ -iron → driver\, 6 drivers at 80–90%.\n4 × 6-ball sets on a 2:45 c
+ lock\, 5 min rest between sets. Log every ball speed\; the session numb
+ er is your peak\, and note the top-3 average.\nStop rule: if a set's av
+ erage drops more than 3% below your best set\, the session is over. Spe
+ ed under fatigue is where obliques and backs get hurt.\nCap: 30 max-eff
+ ort hits. Then Gym 4 at least 3 hours later.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day (deload)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day (deload)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w4-sat-gym4@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261010T170000
+DTEND;TZID=America/Chicago:20261010T175500
+SUMMARY:P225 · Gym 4 · Upper hypertrophy + arms/grip (deload)
+DESCRIPTION:After the max hit day (3+ hours later\, or that evening). Pu
+ re mass work — shoulders\, back\, arms\, forearms. Nothing here shoul
+ d feel heroic.\n\nDeload: 2 sets of everything\, stop 3 reps short of f
+ ailure.\n\nB Push press (or strict overhead press) — 4×8\nC Lat pull
+ down or pull-up — 4×8–10\nD1 Incline dumbbell press — 3×10\nD2 
+ Seated cable row — 3×10–12\nE1 Lateral raise — 3×15\nE2 Rear de
+ lt fly — 3×15\nF1 Hammer curl — 3×12\nF2 Triceps pushdown — 3×
+ 12\nF3 Reverse curl + wrist curl — 3×12 each
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip (deload)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip (deload)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w5-mon-speedA@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261012T113000
+DTEND;TZID=America/Chicago:20261012T120000
+SUMMARY:P225 · Speed A · Overspeed\, no ball
+DESCRIPTION:Do this before Gym 1\, while the nervous system is fresh. Ev
+ ery swing is max intent.\n\nWarm-up 8 min as in Block 1.\nOverspeed: 3 
+ rounds of light/medium/heavy 5/5/5 (135 swings). Rest 60–90 s.\nAdd 5
+  "hold the finish" swings with the heavy weight to train the decelerati
+ on side.\nFinisher: 10 max-effort driver swings on the radar. Record pe
+ ak club speed.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w5-mon-gym1@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261012T120000
+DTEND;TZID=America/Chicago:20261012T131000
+SUMMARY:P225 · Gym 1 · Lower strength + vertical power
+DESCRIPTION:Squat pattern\, hinge\, single-leg\, lateral push-off. Verti
+ cal force is the biggest single lever on club speed.\n\nA1 Box jump or 
+ countermovement jump — 4×3\nA2 Hang power clean — 5×3 @ 70–75%\
+ nB Back squat — 5×4 @ 80–85% → box jump ×3 after each set\nC Ro
+ manian deadlift — 4×6\nD1 Rear-foot-elevated split squat — 3×8 / 
+ leg\nD2 Lateral lunge or Cossack squat — 3×8 / side\nE1 Pallof press
+  — 3×10 / side\nE2 Suitcase carry — 3×30 m / side
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w5-tue-gym2@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261013T113000
+DTEND;TZID=America/Chicago:20261013T123500
+SUMMARY:P225 · Gym 2 · Upper strength + rotational power
+DESCRIPTION:Throws first while you're fresh\, then press and pull heavy\
+ , then the rotational cable work that builds the release.\n\nA1 Med bal
+ l rotational scoop throw (wall) — 5×3 / side · 10–12 lb\nA2 Med b
+ all chest pass / shot put — 5×3 · 10–12 lb\nB Bench press — 5×
+ 4 @ 80–85%\nC Weighted pull-up — 5×5\nD1 Half-kneeling landmine pr
+ ess — 3×8 / side\nD2 Chest-supported row — 4×8\nE1 Cable chop and
+  lift — 4×8 / side\nE2 Face pull — 3×15\nE3 Wrist roller or plate
+  pinch — 3 sets
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w5-wed-speedB@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261014T113000
+DTEND;TZID=America/Chicago:20261014T121000
+SUMMARY:P225 · Speed B · Overspeed + hitting
+DESCRIPTION:Range or net with the radar. Half technique\, half intent. T
+ his is where club speed becomes ball speed.\n\nWarm-up 10 min as in Blo
+ ck 1.\nOverspeed: 2 rounds\, light and medium only.\n10 drivers at 85
+ –90% on the tape. Then 3 × 6-ball sets at max intent\, 3 min rest.\n
+ Tee height and ball position audit every session: you want +5° to +8°
+  attack angle — if the radar's distance number lags ball speed\, you'
+ re hitting down.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w5-thu-gym3@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261015T113000
+DTEND;TZID=America/Chicago:20261015T124000
+SUMMARY:P225 · Gym 3 · Lower hypertrophy + posterior chain
+DESCRIPTION:Deadlift day. Horizontal and lateral jumps up front\, then t
+ he volume that builds glutes and hamstrings.\n\nA1 Broad jump — 4×3\
+ nA2 Lateral bound (stick the landing) — 4×3 / side\nB Trap bar deadl
+ ift — 5×4 @ 80–85% → trap bar jump ×3 after each set\nC Front s
+ quat (or hack squat) — 4×6\nD1 Barbell hip thrust — 4×8\nD2 Nordi
+ c curl or lying leg curl — 3×8\nE1 Copenhagen plank — 3×40 s / si
+ de\nE2 Standing calf raise — 3×12\nE3 Farmer carry — 3×40 m\, hea
+ vier
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w5-fri-speedD@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261016T113000
+DTEND;TZID=America/Chicago:20261016T114500
+SUMMARY:P225 · Speed D · Light technique (optional)
+DESCRIPTION:Blocks 2–3 only\, and only if you feel fresh. Skip it with
+ out guilt — Saturday matters more.\n\n1 round\, light weight only\, a
+ t 90% intent. Rhythm and sequence\, not numbers. No radar.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed D · Light technique (optional)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed D · Light technique (optional)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w5-sat-speedC@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261017T110000
+DTEND;TZID=America/Chicago:20261017T115000
+SUMMARY:P225 · Speed C · Max hit day
+DESCRIPTION:The session that produces the number. Friday is a rest day s
+ o you arrive fresh. Every ball on the radar.\n\nWarm-up 15 min.\n5 × 6
+ -ball sets on a 2:45 clock\, 5 min rest. Same logging.\nIn-grid counts 
+ too: mark how many of 6 land in a 60-yard-wide grid. Two of six is the 
+ competition floor.\nStop rule and 30-hit cap unchanged.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w5-sat-gym4@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261017T170000
+DTEND;TZID=America/Chicago:20261017T175500
+SUMMARY:P225 · Gym 4 · Upper hypertrophy + arms/grip
+DESCRIPTION:After the max hit day (3+ hours later\, or that evening). Pu
+ re mass work — shoulders\, back\, arms\, forearms. Nothing here shoul
+ d feel heroic.\n\nB Push press (or strict overhead press) — 5×5\nC L
+ at pulldown or pull-up — 4×8\nD1 Incline dumbbell press — 3×10\nD
+ 2 Seated cable row — 3×10\nE1 Lateral raise — 3×15\nE2 Rear delt 
+ fly — 3×15\nF1 Hammer curl — 3×12\nF2 Triceps pushdown — 3×12\
+ nF3 Reverse curl + wrist curl — 3×12 each
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w6-mon-speedA@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261019T113000
+DTEND;TZID=America/Chicago:20261019T120000
+SUMMARY:P225 · Speed A · Overspeed\, no ball
+DESCRIPTION:Do this before Gym 1\, while the nervous system is fresh. Ev
+ ery swing is max intent.\n\nWarm-up 8 min as in Block 1.\nOverspeed: 3 
+ rounds of light/medium/heavy 5/5/5 (135 swings). Rest 60–90 s.\nAdd 5
+  "hold the finish" swings with the heavy weight to train the decelerati
+ on side.\nFinisher: 10 max-effort driver swings on the radar. Record pe
+ ak club speed.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w6-mon-gym1@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261019T120000
+DTEND;TZID=America/Chicago:20261019T131000
+SUMMARY:P225 · Gym 1 · Lower strength + vertical power
+DESCRIPTION:Squat pattern\, hinge\, single-leg\, lateral push-off. Verti
+ cal force is the biggest single lever on club speed.\n\nA1 Box jump or 
+ countermovement jump — 4×3\nA2 Hang power clean — 5×3 @ 70–75%\
+ nB Back squat — 5×4 @ 80–85% → box jump ×3 after each set\nC Ro
+ manian deadlift — 4×6\nD1 Rear-foot-elevated split squat — 3×8 / 
+ leg\nD2 Lateral lunge or Cossack squat — 3×8 / side\nE1 Pallof press
+  — 3×10 / side\nE2 Suitcase carry — 3×30 m / side
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w6-tue-gym2@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261020T113000
+DTEND;TZID=America/Chicago:20261020T123500
+SUMMARY:P225 · Gym 2 · Upper strength + rotational power
+DESCRIPTION:Throws first while you're fresh\, then press and pull heavy\
+ , then the rotational cable work that builds the release.\n\nA1 Med bal
+ l rotational scoop throw (wall) — 5×3 / side · 10–12 lb\nA2 Med b
+ all chest pass / shot put — 5×3 · 10–12 lb\nB Bench press — 5×
+ 4 @ 80–85%\nC Weighted pull-up — 5×5\nD1 Half-kneeling landmine pr
+ ess — 3×8 / side\nD2 Chest-supported row — 4×8\nE1 Cable chop and
+  lift — 4×8 / side\nE2 Face pull — 3×15\nE3 Wrist roller or plate
+  pinch — 3 sets
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w6-wed-speedB@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261021T113000
+DTEND;TZID=America/Chicago:20261021T121000
+SUMMARY:P225 · Speed B · Overspeed + hitting
+DESCRIPTION:Range or net with the radar. Half technique\, half intent. T
+ his is where club speed becomes ball speed.\n\nWarm-up 10 min as in Blo
+ ck 1.\nOverspeed: 2 rounds\, light and medium only.\n10 drivers at 85
+ –90% on the tape. Then 3 × 6-ball sets at max intent\, 3 min rest.\n
+ Tee height and ball position audit every session: you want +5° to +8°
+  attack angle — if the radar's distance number lags ball speed\, you'
+ re hitting down.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w6-thu-gym3@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261022T113000
+DTEND;TZID=America/Chicago:20261022T124000
+SUMMARY:P225 · Gym 3 · Lower hypertrophy + posterior chain
+DESCRIPTION:Deadlift day. Horizontal and lateral jumps up front\, then t
+ he volume that builds glutes and hamstrings.\n\nA1 Broad jump — 4×3\
+ nA2 Lateral bound (stick the landing) — 4×3 / side\nB Trap bar deadl
+ ift — 5×4 @ 80–85% → trap bar jump ×3 after each set\nC Front s
+ quat (or hack squat) — 4×6\nD1 Barbell hip thrust — 4×8\nD2 Nordi
+ c curl or lying leg curl — 3×8\nE1 Copenhagen plank — 3×40 s / si
+ de\nE2 Standing calf raise — 3×12\nE3 Farmer carry — 3×40 m\, hea
+ vier
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w6-fri-speedD@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261023T113000
+DTEND;TZID=America/Chicago:20261023T114500
+SUMMARY:P225 · Speed D · Light technique (optional)
+DESCRIPTION:Blocks 2–3 only\, and only if you feel fresh. Skip it with
+ out guilt — Saturday matters more.\n\n1 round\, light weight only\, a
+ t 90% intent. Rhythm and sequence\, not numbers. No radar.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed D · Light technique (optional)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed D · Light technique (optional)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w6-sat-speedC@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261024T110000
+DTEND;TZID=America/Chicago:20261024T115000
+SUMMARY:P225 · Speed C · Max hit day
+DESCRIPTION:The session that produces the number. Friday is a rest day s
+ o you arrive fresh. Every ball on the radar.\n\nWarm-up 15 min.\n5 × 6
+ -ball sets on a 2:45 clock\, 5 min rest. Same logging.\nIn-grid counts 
+ too: mark how many of 6 land in a 60-yard-wide grid. Two of six is the 
+ competition floor.\nStop rule and 30-hit cap unchanged.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w6-sat-gym4@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261024T170000
+DTEND;TZID=America/Chicago:20261024T175500
+SUMMARY:P225 · Gym 4 · Upper hypertrophy + arms/grip
+DESCRIPTION:After the max hit day (3+ hours later\, or that evening). Pu
+ re mass work — shoulders\, back\, arms\, forearms. Nothing here shoul
+ d feel heroic.\n\nB Push press (or strict overhead press) — 5×5\nC L
+ at pulldown or pull-up — 4×8\nD1 Incline dumbbell press — 3×10\nD
+ 2 Seated cable row — 3×10\nE1 Lateral raise — 3×15\nE2 Rear delt 
+ fly — 3×15\nF1 Hammer curl — 3×12\nF2 Triceps pushdown — 3×12\
+ nF3 Reverse curl + wrist curl — 3×12 each
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w7-mon-speedA@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261026T113000
+DTEND;TZID=America/Chicago:20261026T120000
+SUMMARY:P225 · Speed A · Overspeed\, no ball
+DESCRIPTION:Do this before Gym 1\, while the nervous system is fresh. Ev
+ ery swing is max intent.\n\nWarm-up 8 min as in Block 1.\nOverspeed: 3 
+ rounds of light/medium/heavy 5/5/5 (135 swings). Rest 60–90 s.\nAdd 5
+  "hold the finish" swings with the heavy weight to train the decelerati
+ on side.\nFinisher: 10 max-effort driver swings on the radar. Record pe
+ ak club speed.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w7-mon-gym1@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261026T120000
+DTEND;TZID=America/Chicago:20261026T131000
+SUMMARY:P225 · Gym 1 · Lower strength + vertical power
+DESCRIPTION:Squat pattern\, hinge\, single-leg\, lateral push-off. Verti
+ cal force is the biggest single lever on club speed.\n\nA1 Box jump or 
+ countermovement jump — 4×3\nA2 Hang power clean — 5×3 @ 70–75%\
+ nB Back squat — 5×4 @ 80–85% → box jump ×3 after each set\nC Ro
+ manian deadlift — 4×6\nD1 Rear-foot-elevated split squat — 3×8 / 
+ leg\nD2 Lateral lunge or Cossack squat — 3×8 / side\nE1 Pallof press
+  — 3×10 / side\nE2 Suitcase carry — 3×30 m / side
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w7-tue-gym2@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261027T113000
+DTEND;TZID=America/Chicago:20261027T123500
+SUMMARY:P225 · Gym 2 · Upper strength + rotational power
+DESCRIPTION:Throws first while you're fresh\, then press and pull heavy\
+ , then the rotational cable work that builds the release.\n\nA1 Med bal
+ l rotational scoop throw (wall) — 5×3 / side · 10–12 lb\nA2 Med b
+ all chest pass / shot put — 5×3 · 10–12 lb\nB Bench press — 5×
+ 4 @ 80–85%\nC Weighted pull-up — 5×5\nD1 Half-kneeling landmine pr
+ ess — 3×8 / side\nD2 Chest-supported row — 4×8\nE1 Cable chop and
+  lift — 4×8 / side\nE2 Face pull — 3×15\nE3 Wrist roller or plate
+  pinch — 3 sets
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w7-wed-speedB@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261028T113000
+DTEND;TZID=America/Chicago:20261028T121000
+SUMMARY:P225 · Speed B · Overspeed + hitting
+DESCRIPTION:Range or net with the radar. Half technique\, half intent. T
+ his is where club speed becomes ball speed.\n\nWarm-up 10 min as in Blo
+ ck 1.\nOverspeed: 2 rounds\, light and medium only.\n10 drivers at 85
+ –90% on the tape. Then 3 × 6-ball sets at max intent\, 3 min rest.\n
+ Tee height and ball position audit every session: you want +5° to +8°
+  attack angle — if the radar's distance number lags ball speed\, you'
+ re hitting down.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w7-thu-gym3@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261029T113000
+DTEND;TZID=America/Chicago:20261029T124000
+SUMMARY:P225 · Gym 3 · Lower hypertrophy + posterior chain
+DESCRIPTION:Deadlift day. Horizontal and lateral jumps up front\, then t
+ he volume that builds glutes and hamstrings.\n\nA1 Broad jump — 4×3\
+ nA2 Lateral bound (stick the landing) — 4×3 / side\nB Trap bar deadl
+ ift — 5×4 @ 80–85% → trap bar jump ×3 after each set\nC Front s
+ quat (or hack squat) — 4×6\nD1 Barbell hip thrust — 4×8\nD2 Nordi
+ c curl or lying leg curl — 3×8\nE1 Copenhagen plank — 3×40 s / si
+ de\nE2 Standing calf raise — 3×12\nE3 Farmer carry — 3×40 m\, hea
+ vier
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w7-fri-speedD@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261030T113000
+DTEND;TZID=America/Chicago:20261030T114500
+SUMMARY:P225 · Speed D · Light technique (optional)
+DESCRIPTION:Blocks 2–3 only\, and only if you feel fresh. Skip it with
+ out guilt — Saturday matters more.\n\n1 round\, light weight only\, a
+ t 90% intent. Rhythm and sequence\, not numbers. No radar.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed D · Light technique (optional)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed D · Light technique (optional)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w7-sat-speedC@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261031T110000
+DTEND;TZID=America/Chicago:20261031T115000
+SUMMARY:P225 · Speed C · Max hit day
+DESCRIPTION:The session that produces the number. Friday is a rest day s
+ o you arrive fresh. Every ball on the radar.\n\nWarm-up 15 min.\n5 × 6
+ -ball sets on a 2:45 clock\, 5 min rest. Same logging.\nIn-grid counts 
+ too: mark how many of 6 land in a 60-yard-wide grid. Two of six is the 
+ competition floor.\nStop rule and 30-hit cap unchanged.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w7-sat-gym4@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261031T170000
+DTEND;TZID=America/Chicago:20261031T175500
+SUMMARY:P225 · Gym 4 · Upper hypertrophy + arms/grip
+DESCRIPTION:After the max hit day (3+ hours later\, or that evening). Pu
+ re mass work — shoulders\, back\, arms\, forearms. Nothing here shoul
+ d feel heroic.\n\nB Push press (or strict overhead press) — 5×5\nC L
+ at pulldown or pull-up — 4×8\nD1 Incline dumbbell press — 3×10\nD
+ 2 Seated cable row — 3×10\nE1 Lateral raise — 3×15\nE2 Rear delt 
+ fly — 3×15\nF1 Hammer curl — 3×12\nF2 Triceps pushdown — 3×12\
+ nF3 Reverse curl + wrist curl — 3×12 each
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w8-mon-speedA@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261102T113000
+DTEND;TZID=America/Chicago:20261102T120000
+SUMMARY:P225 · Speed A · Overspeed\, no ball (deload)
+DESCRIPTION:Do this before Gym 1\, while the nervous system is fresh. Ev
+ ery swing is max intent.\n\nDeload: 1 round\, no step-through swings\, 
+ 6 max-effort driver swings.\n\nWarm-up 8 min as in Block 1.\nOverspeed:
+  3 rounds of light/medium/heavy 5/5/5 (135 swings). Rest 60–90 s.\nAd
+ d 5 "hold the finish" swings with the heavy weight to train the deceler
+ ation side.\nFinisher: 10 max-effort driver swings on the radar. Record
+  peak club speed.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball (deload)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball (deload)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w8-mon-gym1@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261102T120000
+DTEND;TZID=America/Chicago:20261102T131000
+SUMMARY:P225 · Gym 1 · Lower strength + vertical power (deload)
+DESCRIPTION:Squat pattern\, hinge\, single-leg\, lateral push-off. Verti
+ cal force is the biggest single lever on club speed.\n\nDeload: A-serie
+ s 2 sets. Squat 3×5 @ 65–70%. Accessories 2 sets each.\n\nA1 Box jum
+ p or countermovement jump — 4×3\nA2 Hang power clean — 5×3 @ 70
+ –75%\nB Back squat — 5×4 @ 80–85% → box jump ×3 after each se
+ t\nC Romanian deadlift — 4×6\nD1 Rear-foot-elevated split squat — 
+ 3×8 / leg\nD2 Lateral lunge or Cossack squat — 3×8 / side\nE1 Pallo
+ f press — 3×10 / side\nE2 Suitcase carry — 3×30 m / side
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power (deload)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power (deload)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w8-tue-gym2@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261103T113000
+DTEND;TZID=America/Chicago:20261103T123500
+SUMMARY:P225 · Gym 2 · Upper strength + rotational power (deload)
+DESCRIPTION:Throws first while you're fresh\, then press and pull heavy\
+ , then the rotational cable work that builds the release.\n\nDeload: th
+ rows 2 sets. Bench 3×5 @ 65–70%. Pull-ups 3×5 bodyweight. Accessori
+ es 2 sets.\n\nA1 Med ball rotational scoop throw (wall) — 5×3 / side
+  · 10–12 lb\nA2 Med ball chest pass / shot put — 5×3 · 10–12 l
+ b\nB Bench press — 5×4 @ 80–85%\nC Weighted pull-up — 5×5\nD1 H
+ alf-kneeling landmine press — 3×8 / side\nD2 Chest-supported row —
+  4×8\nE1 Cable chop and lift — 4×8 / side\nE2 Face pull — 3×15\n
+ E3 Wrist roller or plate pinch — 3 sets
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power (deload)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power (deload)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w8-wed-speedB@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261104T113000
+DTEND;TZID=America/Chicago:20261104T121000
+SUMMARY:P225 · Speed B · Overspeed + hitting (deload)
+DESCRIPTION:Range or net with the radar. Half technique\, half intent. T
+ his is where club speed becomes ball speed.\n\nDeload: no overspeed. 20
+  balls at 80–85% working on centre contact. No max effort.\n\nWarm-up
+  10 min as in Block 1.\nOverspeed: 2 rounds\, light and medium only.\n1
+ 0 drivers at 85–90% on the tape. Then 3 × 6-ball sets at max intent\
+ , 3 min rest.\nTee height and ball position audit every session: you wa
+ nt +5° to +8° attack angle — if the radar's distance number lags ba
+ ll speed\, you're hitting down.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting (deload)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting (deload)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w8-thu-gym3@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261105T113000
+DTEND;TZID=America/Chicago:20261105T124000
+SUMMARY:P225 · Gym 3 · Lower hypertrophy + posterior chain (deload)
+DESCRIPTION:Deadlift day. Horizontal and lateral jumps up front\, then t
+ he volume that builds glutes and hamstrings.\n\nDeload: jumps 2 sets. T
+ rap bar 3×5 @ 65–70%. Accessories 2 sets. Skip carries.\n\nA1 Broad 
+ jump — 4×3\nA2 Lateral bound (stick the landing) — 4×3 / side\nB 
+ Trap bar deadlift — 5×4 @ 80–85% → trap bar jump ×3 after each 
+ set\nC Front squat (or hack squat) — 4×6\nD1 Barbell hip thrust — 
+ 4×8\nD2 Nordic curl or lying leg curl — 3×8\nE1 Copenhagen plank 
+ — 3×40 s / side\nE2 Standing calf raise — 3×12\nE3 Farmer carry 
+ — 3×40 m\, heavier
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain (deload
+ )
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain (deload
+ )
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w8-fri-speedD@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261106T113000
+DTEND;TZID=America/Chicago:20261106T114500
+SUMMARY:P225 · Speed D · Light technique (optional) (deload)
+DESCRIPTION:Blocks 2–3 only\, and only if you feel fresh. Skip it with
+ out guilt — Saturday matters more.\n\nSkip on deload weeks.\n\n1 roun
+ d\, light weight only\, at 90% intent. Rhythm and sequence\, not number
+ s. No radar.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed D · Light technique (optional) (deload)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed D · Light technique (optional) (deload)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w8-sat-speedC@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261107T110000
+DTEND;TZID=America/Chicago:20261107T115000
+SUMMARY:P225 · Speed C · Max hit day (deload)
+DESCRIPTION:The session that produces the number. Friday is a rest day s
+ o you arrive fresh. Every ball on the radar.\n\nDeload (weeks 4 and 8):
+  retest day instead — see the Setup tab tests. 2 × 6-ball sets\, the
+ n done.\n\nWarm-up 15 min.\n5 × 6-ball sets on a 2:45 clock\, 5 min re
+ st. Same logging.\nIn-grid counts too: mark how many of 6 land in a 60-
+ yard-wide grid. Two of six is the competition floor.\nStop rule and 30-
+ hit cap unchanged.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day (deload)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day (deload)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w8-sat-gym4@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261107T170000
+DTEND;TZID=America/Chicago:20261107T175500
+SUMMARY:P225 · Gym 4 · Upper hypertrophy + arms/grip (deload)
+DESCRIPTION:After the max hit day (3+ hours later\, or that evening). Pu
+ re mass work — shoulders\, back\, arms\, forearms. Nothing here shoul
+ d feel heroic.\n\nDeload: 2 sets of everything\, stop 3 reps short of f
+ ailure.\n\nB Push press (or strict overhead press) — 5×5\nC Lat pull
+ down or pull-up — 4×8\nD1 Incline dumbbell press — 3×10\nD2 Seate
+ d cable row — 3×10\nE1 Lateral raise — 3×15\nE2 Rear delt fly —
+  3×15\nF1 Hammer curl — 3×12\nF2 Triceps pushdown — 3×12\nF3 Rev
+ erse curl + wrist curl — 3×12 each
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip (deload)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip (deload)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w9-mon-speedA@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261109T113000
+DTEND;TZID=America/Chicago:20261109T120000
+SUMMARY:P225 · Speed A · Overspeed\, no ball
+DESCRIPTION:Do this before Gym 1\, while the nervous system is fresh. Ev
+ ery swing is max intent.\n\nWarm-up 8 min.\nOverspeed: 3 rounds weeks 9
+ –11\; 1 round week 12 (taper).\nLight and medium only in the third ro
+ und — chase the number\, not fatigue.\nFinisher: 8 max-effort driver 
+ swings. Stop early if speed drops 3% below your best of the day.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w9-mon-gym1@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261109T120000
+DTEND;TZID=America/Chicago:20261109T131000
+SUMMARY:P225 · Gym 1 · Lower strength + vertical power
+DESCRIPTION:Squat pattern\, hinge\, single-leg\, lateral push-off. Verti
+ cal force is the biggest single lever on club speed.\n\nA1 Box jump or 
+ countermovement jump — Trap bar jump 5×3 @ 20–30% BW\nA2 Hang powe
+ r clean — 6×2 @ 78–85%\nB Back squat — 3×3 @ 85%\, then 3×3 @ 
+ 60% as fast as possible\nC Romanian deadlift — 3×5\nD1 Rear-foot-ele
+ vated split squat — 3×6 / leg\nD2 Lateral lunge or Cossack squat —
+  Skater bound 4×4 / side\nE1 Pallof press — 3×8 / side\, fast\nE2 S
+ uitcase carry — 3×30 m / side
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w9-tue-gym2@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261110T113000
+DTEND;TZID=America/Chicago:20261110T123500
+SUMMARY:P225 · Gym 2 · Upper strength + rotational power
+DESCRIPTION:Throws first while you're fresh\, then press and pull heavy\
+ , then the rotational cable work that builds the release.\n\nA1 Med bal
+ l rotational scoop throw (wall) — 6×3 / side · 6–8 lb\, max speed
+ \nA2 Med ball chest pass / shot put — Plyo push-up 5×3\nB Bench pres
+ s — 3×3 @ 85%\, then 3×3 @ 60% fast\nC Weighted pull-up — 4×4\nD
+ 1 Half-kneeling landmine press — Landmine rotational press 3×6 / sid
+ e\nD2 Chest-supported row — 3×8\nE1 Cable chop and lift — 3×8 / s
+ ide\, fast\nE2 Face pull — 2×15\nE3 Wrist roller or plate pinch — 
+ 2 sets
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w9-wed-speedB@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261111T113000
+DTEND;TZID=America/Chicago:20261111T121000
+SUMMARY:P225 · Speed B · Overspeed + hitting
+DESCRIPTION:Range or net with the radar. Half technique\, half intent. T
+ his is where club speed becomes ball speed.\n\nWarm-up 10 min.\nOverspe
+ ed: 1 round\, light only.\n8 drivers at 90%\, then 4 × 6-ball sets on 
+ a 2:45 clock (competition rhythm).\nWeek 12: 2 sets only.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w9-thu-gym3@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261112T113000
+DTEND;TZID=America/Chicago:20261112T124000
+SUMMARY:P225 · Gym 3 · Lower hypertrophy + posterior chain
+DESCRIPTION:Deadlift day. Horizontal and lateral jumps up front\, then t
+ he volume that builds glutes and hamstrings.\n\nA1 Broad jump — 4×3\
+ nA2 Lateral bound (stick the landing) — 4×3 / side\, continuous\nB T
+ rap bar deadlift — 3×3 @ 85%\, then trap bar jump 3×3\nC Front squa
+ t (or hack squat) — 3×5\nD1 Barbell hip thrust — 3×8\nD2 Nordic c
+ url or lying leg curl — 3×6\nE1 Copenhagen plank — 3×30 s / side\
+ nE2 Standing calf raise — 3×10\nE3 Farmer carry — 2×40 m
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w9-fri-speedD@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261113T113000
+DTEND;TZID=America/Chicago:20261113T114500
+SUMMARY:P225 · Speed D · Light technique (optional)
+DESCRIPTION:Blocks 2–3 only\, and only if you feel fresh. Skip it with
+ out guilt — Saturday matters more.\n\n1 round\, light only\, 90% inte
+ nt. Week 12: skip.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed D · Light technique (optional)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed D · Light technique (optional)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w9-sat-speedC@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261114T110000
+DTEND;TZID=America/Chicago:20261114T115000
+SUMMARY:P225 · Speed C · Max hit day
+DESCRIPTION:The session that produces the number. Friday is a rest day s
+ o you arrive fresh. Every ball on the radar.\n\nWarm-up 15 min.\n5 × 6
+ -ball sets weeks 9–11. 2 sets in week 12.\nWeeks 9–11: try one set 
+ with a "swing at 110%" cue — measure whether reckless beats controlle
+ d for you. Most players find their peak at about 95% control.\nLog peak
+ \, top-3 average\, grid count.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w9-sat-gym4@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261114T170000
+DTEND;TZID=America/Chicago:20261114T175500
+SUMMARY:P225 · Gym 4 · Upper hypertrophy + arms/grip
+DESCRIPTION:After the max hit day (3+ hours later\, or that evening). Pu
+ re mass work — shoulders\, back\, arms\, forearms. Nothing here shoul
+ d feel heroic.\n\nB Push press (or strict overhead press) — 4×3\nC L
+ at pulldown or pull-up — 3×8\nD1 Incline dumbbell press — 3×8\nD2
+  Seated cable row — 3×8\nE1 Lateral raise — 2×15\nE2 Rear delt fl
+ y — 2×15\nF1 Hammer curl — 2×12\nF2 Triceps pushdown — 2×12\nF
+ 3 Reverse curl + wrist curl — 2×12 each
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w10-mon-speedA@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261116T113000
+DTEND;TZID=America/Chicago:20261116T120000
+SUMMARY:P225 · Speed A · Overspeed\, no ball
+DESCRIPTION:Do this before Gym 1\, while the nervous system is fresh. Ev
+ ery swing is max intent.\n\nWarm-up 8 min.\nOverspeed: 3 rounds weeks 9
+ –11\; 1 round week 12 (taper).\nLight and medium only in the third ro
+ und — chase the number\, not fatigue.\nFinisher: 8 max-effort driver 
+ swings. Stop early if speed drops 3% below your best of the day.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w10-mon-gym1@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261116T120000
+DTEND;TZID=America/Chicago:20261116T131000
+SUMMARY:P225 · Gym 1 · Lower strength + vertical power
+DESCRIPTION:Squat pattern\, hinge\, single-leg\, lateral push-off. Verti
+ cal force is the biggest single lever on club speed.\n\nA1 Box jump or 
+ countermovement jump — Trap bar jump 5×3 @ 20–30% BW\nA2 Hang powe
+ r clean — 6×2 @ 78–85%\nB Back squat — 3×3 @ 85%\, then 3×3 @ 
+ 60% as fast as possible\nC Romanian deadlift — 3×5\nD1 Rear-foot-ele
+ vated split squat — 3×6 / leg\nD2 Lateral lunge or Cossack squat —
+  Skater bound 4×4 / side\nE1 Pallof press — 3×8 / side\, fast\nE2 S
+ uitcase carry — 3×30 m / side
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w10-tue-gym2@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261117T113000
+DTEND;TZID=America/Chicago:20261117T123500
+SUMMARY:P225 · Gym 2 · Upper strength + rotational power
+DESCRIPTION:Throws first while you're fresh\, then press and pull heavy\
+ , then the rotational cable work that builds the release.\n\nA1 Med bal
+ l rotational scoop throw (wall) — 6×3 / side · 6–8 lb\, max speed
+ \nA2 Med ball chest pass / shot put — Plyo push-up 5×3\nB Bench pres
+ s — 3×3 @ 85%\, then 3×3 @ 60% fast\nC Weighted pull-up — 4×4\nD
+ 1 Half-kneeling landmine press — Landmine rotational press 3×6 / sid
+ e\nD2 Chest-supported row — 3×8\nE1 Cable chop and lift — 3×8 / s
+ ide\, fast\nE2 Face pull — 2×15\nE3 Wrist roller or plate pinch — 
+ 2 sets
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w10-wed-speedB@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261118T113000
+DTEND;TZID=America/Chicago:20261118T121000
+SUMMARY:P225 · Speed B · Overspeed + hitting
+DESCRIPTION:Range or net with the radar. Half technique\, half intent. T
+ his is where club speed becomes ball speed.\n\nWarm-up 10 min.\nOverspe
+ ed: 1 round\, light only.\n8 drivers at 90%\, then 4 × 6-ball sets on 
+ a 2:45 clock (competition rhythm).\nWeek 12: 2 sets only.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w10-thu-gym3@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261119T113000
+DTEND;TZID=America/Chicago:20261119T124000
+SUMMARY:P225 · Gym 3 · Lower hypertrophy + posterior chain
+DESCRIPTION:Deadlift day. Horizontal and lateral jumps up front\, then t
+ he volume that builds glutes and hamstrings.\n\nA1 Broad jump — 4×3\
+ nA2 Lateral bound (stick the landing) — 4×3 / side\, continuous\nB T
+ rap bar deadlift — 3×3 @ 85%\, then trap bar jump 3×3\nC Front squa
+ t (or hack squat) — 3×5\nD1 Barbell hip thrust — 3×8\nD2 Nordic c
+ url or lying leg curl — 3×6\nE1 Copenhagen plank — 3×30 s / side\
+ nE2 Standing calf raise — 3×10\nE3 Farmer carry — 2×40 m
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w10-fri-speedD@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261120T113000
+DTEND;TZID=America/Chicago:20261120T114500
+SUMMARY:P225 · Speed D · Light technique (optional)
+DESCRIPTION:Blocks 2–3 only\, and only if you feel fresh. Skip it with
+ out guilt — Saturday matters more.\n\n1 round\, light only\, 90% inte
+ nt. Week 12: skip.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed D · Light technique (optional)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed D · Light technique (optional)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w10-sat-speedC@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261121T110000
+DTEND;TZID=America/Chicago:20261121T115000
+SUMMARY:P225 · Speed C · Max hit day
+DESCRIPTION:The session that produces the number. Friday is a rest day s
+ o you arrive fresh. Every ball on the radar.\n\nWarm-up 15 min.\n5 × 6
+ -ball sets weeks 9–11. 2 sets in week 12.\nWeeks 9–11: try one set 
+ with a "swing at 110%" cue — measure whether reckless beats controlle
+ d for you. Most players find their peak at about 95% control.\nLog peak
+ \, top-3 average\, grid count.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w10-sat-gym4@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261121T170000
+DTEND;TZID=America/Chicago:20261121T175500
+SUMMARY:P225 · Gym 4 · Upper hypertrophy + arms/grip
+DESCRIPTION:After the max hit day (3+ hours later\, or that evening). Pu
+ re mass work — shoulders\, back\, arms\, forearms. Nothing here shoul
+ d feel heroic.\n\nB Push press (or strict overhead press) — 4×3\nC L
+ at pulldown or pull-up — 3×8\nD1 Incline dumbbell press — 3×8\nD2
+  Seated cable row — 3×8\nE1 Lateral raise — 2×15\nE2 Rear delt fl
+ y — 2×15\nF1 Hammer curl — 2×12\nF2 Triceps pushdown — 2×12\nF
+ 3 Reverse curl + wrist curl — 2×12 each
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w11-mon-speedA@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261123T113000
+DTEND;TZID=America/Chicago:20261123T120000
+SUMMARY:P225 · Speed A · Overspeed\, no ball
+DESCRIPTION:Do this before Gym 1\, while the nervous system is fresh. Ev
+ ery swing is max intent.\n\nWarm-up 8 min.\nOverspeed: 3 rounds weeks 9
+ –11\; 1 round week 12 (taper).\nLight and medium only in the third ro
+ und — chase the number\, not fatigue.\nFinisher: 8 max-effort driver 
+ swings. Stop early if speed drops 3% below your best of the day.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w11-mon-gym1@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261123T120000
+DTEND;TZID=America/Chicago:20261123T131000
+SUMMARY:P225 · Gym 1 · Lower strength + vertical power
+DESCRIPTION:Squat pattern\, hinge\, single-leg\, lateral push-off. Verti
+ cal force is the biggest single lever on club speed.\n\nA1 Box jump or 
+ countermovement jump — Trap bar jump 5×3 @ 20–30% BW\nA2 Hang powe
+ r clean — 6×2 @ 78–85%\nB Back squat — 3×3 @ 85%\, then 3×3 @ 
+ 60% as fast as possible\nC Romanian deadlift — 3×5\nD1 Rear-foot-ele
+ vated split squat — 3×6 / leg\nD2 Lateral lunge or Cossack squat —
+  Skater bound 4×4 / side\nE1 Pallof press — 3×8 / side\, fast\nE2 S
+ uitcase carry — 3×30 m / side
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w11-tue-gym2@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261124T113000
+DTEND;TZID=America/Chicago:20261124T123500
+SUMMARY:P225 · Gym 2 · Upper strength + rotational power
+DESCRIPTION:Throws first while you're fresh\, then press and pull heavy\
+ , then the rotational cable work that builds the release.\n\nA1 Med bal
+ l rotational scoop throw (wall) — 6×3 / side · 6–8 lb\, max speed
+ \nA2 Med ball chest pass / shot put — Plyo push-up 5×3\nB Bench pres
+ s — 3×3 @ 85%\, then 3×3 @ 60% fast\nC Weighted pull-up — 4×4\nD
+ 1 Half-kneeling landmine press — Landmine rotational press 3×6 / sid
+ e\nD2 Chest-supported row — 3×8\nE1 Cable chop and lift — 3×8 / s
+ ide\, fast\nE2 Face pull — 2×15\nE3 Wrist roller or plate pinch — 
+ 2 sets
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w11-wed-speedB@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261125T113000
+DTEND;TZID=America/Chicago:20261125T121000
+SUMMARY:P225 · Speed B · Overspeed + hitting
+DESCRIPTION:Range or net with the radar. Half technique\, half intent. T
+ his is where club speed becomes ball speed.\n\nWarm-up 10 min.\nOverspe
+ ed: 1 round\, light only.\n8 drivers at 90%\, then 4 × 6-ball sets on 
+ a 2:45 clock (competition rhythm).\nWeek 12: 2 sets only.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w11-thu-gym3@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261126T113000
+DTEND;TZID=America/Chicago:20261126T124000
+SUMMARY:P225 · Gym 3 · Lower hypertrophy + posterior chain
+DESCRIPTION:Deadlift day. Horizontal and lateral jumps up front\, then t
+ he volume that builds glutes and hamstrings.\n\nA1 Broad jump — 4×3\
+ nA2 Lateral bound (stick the landing) — 4×3 / side\, continuous\nB T
+ rap bar deadlift — 3×3 @ 85%\, then trap bar jump 3×3\nC Front squa
+ t (or hack squat) — 3×5\nD1 Barbell hip thrust — 3×8\nD2 Nordic c
+ url or lying leg curl — 3×6\nE1 Copenhagen plank — 3×30 s / side\
+ nE2 Standing calf raise — 3×10\nE3 Farmer carry — 2×40 m
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w11-fri-speedD@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261127T113000
+DTEND;TZID=America/Chicago:20261127T114500
+SUMMARY:P225 · Speed D · Light technique (optional)
+DESCRIPTION:Blocks 2–3 only\, and only if you feel fresh. Skip it with
+ out guilt — Saturday matters more.\n\n1 round\, light only\, 90% inte
+ nt. Week 12: skip.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed D · Light technique (optional)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed D · Light technique (optional)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w11-sat-speedC@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261128T110000
+DTEND;TZID=America/Chicago:20261128T115000
+SUMMARY:P225 · Speed C · Max hit day
+DESCRIPTION:The session that produces the number. Friday is a rest day s
+ o you arrive fresh. Every ball on the radar.\n\nWarm-up 15 min.\n5 × 6
+ -ball sets weeks 9–11. 2 sets in week 12.\nWeeks 9–11: try one set 
+ with a "swing at 110%" cue — measure whether reckless beats controlle
+ d for you. Most players find their peak at about 95% control.\nLog peak
+ \, top-3 average\, grid count.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w11-sat-gym4@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261128T170000
+DTEND;TZID=America/Chicago:20261128T175500
+SUMMARY:P225 · Gym 4 · Upper hypertrophy + arms/grip
+DESCRIPTION:After the max hit day (3+ hours later\, or that evening). Pu
+ re mass work — shoulders\, back\, arms\, forearms. Nothing here shoul
+ d feel heroic.\n\nB Push press (or strict overhead press) — 4×3\nC L
+ at pulldown or pull-up — 3×8\nD1 Incline dumbbell press — 3×8\nD2
+  Seated cable row — 3×8\nE1 Lateral raise — 2×15\nE2 Rear delt fl
+ y — 2×15\nF1 Hammer curl — 2×12\nF2 Triceps pushdown — 2×12\nF
+ 3 Reverse curl + wrist curl — 2×12 each
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w12-mon-speedA@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261130T113000
+DTEND;TZID=America/Chicago:20261130T120000
+SUMMARY:P225 · Speed A · Overspeed\, no ball (taper)
+DESCRIPTION:Do this before Gym 1\, while the nervous system is fresh. Ev
+ ery swing is max intent.\n\nTaper week: ~40% fewer sets\, same loads.\n
+ \nWarm-up 8 min.\nOverspeed: 3 rounds weeks 9–11\; 1 round week 12 (t
+ aper).\nLight and medium only in the third round — chase the number\,
+  not fatigue.\nFinisher: 8 max-effort driver swings. Stop early if spee
+ d drops 3% below your best of the day.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball (taper)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · Overspeed\, no ball (taper)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w12-mon-gym1@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261130T120000
+DTEND;TZID=America/Chicago:20261130T131000
+SUMMARY:P225 · Gym 1 · Lower strength + vertical power (taper)
+DESCRIPTION:Squat pattern\, hinge\, single-leg\, lateral push-off. Verti
+ cal force is the biggest single lever on club speed.\n\nTaper week: ~40
+ % fewer sets\, same loads.\n\nA1 Box jump or countermovement jump — T
+ rap bar jump 5×3 @ 20–30% BW\nA2 Hang power clean — 6×2 @ 78–85
+ %\nB Back squat — 3×3 @ 85%\, then 3×3 @ 60% as fast as possible\nC
+  Romanian deadlift — 3×5\nD1 Rear-foot-elevated split squat — 3×6
+  / leg\nD2 Lateral lunge or Cossack squat — Skater bound 4×4 / side\
+ nE1 Pallof press — 3×8 / side\, fast\nE2 Suitcase carry — 3×30 m 
+ / side
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power (taper)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 1 · Lower strength + vertical power (taper)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w12-tue-gym2@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261201T113000
+DTEND;TZID=America/Chicago:20261201T123500
+SUMMARY:P225 · Gym 2 · Upper strength + rotational power (taper)
+DESCRIPTION:Throws first while you're fresh\, then press and pull heavy\
+ , then the rotational cable work that builds the release.\n\nTaper week
+ : ~40% fewer sets\, same loads.\n\nA1 Med ball rotational scoop throw (
+ wall) — 6×3 / side · 6–8 lb\, max speed\nA2 Med ball chest pass /
+  shot put — Plyo push-up 5×3\nB Bench press — 3×3 @ 85%\, then 3
+ ×3 @ 60% fast\nC Weighted pull-up — 4×4\nD1 Half-kneeling landmine 
+ press — Landmine rotational press 3×6 / side\nD2 Chest-supported row
+  — 3×8\nE1 Cable chop and lift — 3×8 / side\, fast\nE2 Face pull 
+ — 2×15\nE3 Wrist roller or plate pinch — 2 sets
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power (taper)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 2 · Upper strength + rotational power (taper)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w12-wed-speedB@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261202T113000
+DTEND;TZID=America/Chicago:20261202T121000
+SUMMARY:P225 · Speed B · Overspeed + hitting (taper)
+DESCRIPTION:Range or net with the radar. Half technique\, half intent. T
+ his is where club speed becomes ball speed.\n\nTaper week: ~40% fewer s
+ ets\, same loads.\n\nWarm-up 10 min.\nOverspeed: 1 round\, light only.\
+ n8 drivers at 90%\, then 4 × 6-ball sets on a 2:45 clock (competition 
+ rhythm).\nWeek 12: 2 sets only.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting (taper)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed B · Overspeed + hitting (taper)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w12-thu-gym3@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261203T113000
+DTEND;TZID=America/Chicago:20261203T124000
+SUMMARY:P225 · Gym 3 · Lower hypertrophy + posterior chain (taper)
+DESCRIPTION:Deadlift day. Horizontal and lateral jumps up front\, then t
+ he volume that builds glutes and hamstrings.\n\nTaper week: ~40% fewer 
+ sets\, same loads.\n\nA1 Broad jump — 4×3\nA2 Lateral bound (stick t
+ he landing) — 4×3 / side\, continuous\nB Trap bar deadlift — 3×3 
+ @ 85%\, then trap bar jump 3×3\nC Front squat (or hack squat) — 3×5
+ \nD1 Barbell hip thrust — 3×8\nD2 Nordic curl or lying leg curl — 
+ 3×6\nE1 Copenhagen plank — 3×30 s / side\nE2 Standing calf raise 
+ — 3×10\nE3 Farmer carry — 2×40 m
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain (taper)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 3 · Lower hypertrophy + posterior chain (taper)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w12-fri-speedD@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261204T113000
+DTEND;TZID=America/Chicago:20261204T114500
+SUMMARY:P225 · Speed D · Light technique (optional) (taper)
+DESCRIPTION:Blocks 2–3 only\, and only if you feel fresh. Skip it with
+ out guilt — Saturday matters more.\n\nTaper week: ~40% fewer sets\, s
+ ame loads.\n\n1 round\, light only\, 90% intent. Week 12: skip.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed D · Light technique (optional) (taper)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed D · Light technique (optional) (taper)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w12-sat-speedC@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261205T110000
+DTEND;TZID=America/Chicago:20261205T115000
+SUMMARY:P225 · Speed C · Max hit day (taper)
+DESCRIPTION:The session that produces the number. Friday is a rest day s
+ o you arrive fresh. Every ball on the radar.\n\nTaper week: ~40% fewer 
+ sets\, same loads.\n\nWarm-up 15 min.\n5 × 6-ball sets weeks 9–11. 2
+  sets in week 12.\nWeeks 9–11: try one set with a "swing at 110%" cue
+  — measure whether reckless beats controlled for you. Most players fi
+ nd their peak at about 95% control.\nLog peak\, top-3 average\, grid co
+ unt.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day (taper)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed C · Max hit day (taper)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w12-sat-gym4@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261205T170000
+DTEND;TZID=America/Chicago:20261205T175500
+SUMMARY:P225 · Gym 4 · Upper hypertrophy + arms/grip (taper)
+DESCRIPTION:After the max hit day (3+ hours later\, or that evening). Pu
+ re mass work — shoulders\, back\, arms\, forearms. Nothing here shoul
+ d feel heroic.\n\nTaper week: ~40% fewer sets\, same loads.\n\nB Push p
+ ress (or strict overhead press) — 4×3\nC Lat pulldown or pull-up —
+  3×8\nD1 Incline dumbbell press — 3×8\nD2 Seated cable row — 3×8
+ \nE1 Lateral raise — 2×15\nE2 Rear delt fly — 2×15\nF1 Hammer cur
+ l — 2×12\nF2 Triceps pushdown — 2×12\nF3 Reverse curl + wrist cur
+ l — 2×12 each
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip (taper)
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym 4 · Upper hypertrophy + arms/grip (taper)
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w13-mon-tw-mon@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261207T113000
+DTEND;TZID=America/Chicago:20261207T115000
+SUMMARY:P225 · Speed A · 1 round + 6 swings
+DESCRIPTION:One overspeed round\, light and medium only. 6 max-effort dr
+ iver swings. Keep the engine warm\, nothing more.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · 1 round + 6 swings
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Speed A · 1 round + 6 swings
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w13-tue-tw-tue@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261208T113000
+DTEND;TZID=America/Chicago:20261208T121000
+SUMMARY:P225 · Gym · Full-body power\, 40 min
+DESCRIPTION:Hang power clean 4×2 @ 75%\, trap bar jump 3×3\, bench 3×
+ 3 @ 75% fast\, pull-ups 3×5\, med ball throws 3×3/side. Leave the gym
+  feeling springy.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym · Full-body power\, 40 min
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Gym · Full-body power\, 40 min
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w13-wed-tw-wed@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261209T113000
+DTEND;TZID=America/Chicago:20261209T122000
+SUMMARY:P225 · Test 1 · Competition format
+DESCRIPTION:Full warm-up\, then 4 × 6-ball sets on the 2:45 clock\, 5 m
+ in rest. Log peak ball speed and top-3 average. This is the December nu
+ mber.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Test 1 · Competition format
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Test 1 · Competition format
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w13-fri-tw-fri@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261211T113000
+DTEND;TZID=America/Chicago:20261211T114500
+SUMMARY:P225 · Light overspeed
+DESCRIPTION:One round\, light only\, 90% intent. No radar.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Light overspeed
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Light overspeed
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:w13-sat-tw-sat@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261212T113000
+DTEND;TZID=America/Chicago:20261212T122000
+SUMMARY:P225 · Test 2 · Best of
+DESCRIPTION:Same format as Wednesday. Your Phase 1 result is the better 
+ of the two days. Then retest jump\, throw\, trap bar 3RM and log the 7-
+ day bodyweight.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Test 2 · Best of
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Test 2 · Best of
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:weigh@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260909T063000
+DTEND;TZID=America/Chicago:20260909T064000
+SUMMARY:P225 · Weigh in
+DESCRIPTION:Morning\, after the bathroom\, before food. Log it on Today.
+RRULE:FREQ=DAILY;UNTIL=20261213T235959Z
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Weigh in
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:review@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20260913T180000
+DTEND;TZID=America/Chicago:20260913T181500
+SUMMARY:P225 · Weekly review
+DESCRIPTION:7-day weight\, best ball speed\, sessions done. Read the rev
+ iew card in the app\; adjust calories every second Sunday.
+RRULE:FREQ=WEEKLY;BYDAY=SU;UNTIL=20261213T235959Z
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Weekly review
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:deload-2026-10-04@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261004T181500
+DTEND;TZID=America/Chicago:20261004T182500
+SUMMARY:P225 · Week 4 deload starts tomorrow
+DESCRIPTION:Main lifts 3×5 at 65–70%\, accessories 2 sets\, overspeed
+  1 round\, Saturday is a retest. Do not skip it.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Week 4 deload starts tomorrow
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Week 4 deload starts tomorrow
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:deload-2026-11-01@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261101T181500
+DTEND;TZID=America/Chicago:20261101T182500
+SUMMARY:P225 · Week 8 deload starts tomorrow
+DESCRIPTION:Main lifts 3×5 at 65–70%\, accessories 2 sets\, overspeed
+  1 round\, Saturday is a retest. Do not skip it.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Week 8 deload starts tomorrow
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Week 8 deload starts tomorrow
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:deload-2026-11-29@project225
+DTSTAMP:20260908T154719Z
+DTSTART;TZID=America/Chicago:20261129T181500
+DTEND;TZID=America/Chicago:20261129T182500
+SUMMARY:P225 · Week 12 (taper) deload starts tomorrow
+DESCRIPTION:Main lifts 3×5 at 65–70%\, accessories 2 sets\, overspeed
+  1 round\, Saturday is a retest. Do not skip it.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Week 12 (taper) deload starts tomorrow
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:P225 · Week 12 (taper) deload starts tomorrow
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+END:VCALENDAR

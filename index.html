@@ -1,0 +1,1391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Project 225</title>
+<meta name="description" content="Long drive Phase 1 — 12-week mass and speed program, daily sessions, set logging, speed logs.">
+<meta name="theme-color" content="#F1F3EE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1411" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#F1F3EE; --surface:#FFFFFF; --surface-2:#E8ECE5; --ink:#161C18; --ink-2:#4E5A52; --muted:#7A867E;
+  --line:#D5DBD3; --line-strong:#B9C2B8;
+  --accent:#1F4FD8; --accent-ink:#FFFFFF; --accent-soft:#E3E9FB;
+  --good:#1E7B4F; --good-soft:#DFF0E6; --warn:#A8690F; --warn-soft:#F8ECD4; --crit:#B23A2E; --crit-soft:#F7E0DC;
+  --series:#1F4FD8; --series-wash:rgba(31,79,216,.10); --target:#7A867E;
+  --shadow:0 1px 2px rgba(22,28,24,.06), 0 6px 18px rgba(22,28,24,.06);
+  --display:"Big Shoulders Display","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --body:"Source Sans 3","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:10px; --nav-h:58px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0F1411; --surface:#171D19; --surface-2:#1F2722; --ink:#ECF0EA; --ink-2:#B7C0B9; --muted:#8B968E;
+    --line:#2A332D; --line-strong:#3B463F;
+    --accent:#7B97FF; --accent-ink:#0F1411; --accent-soft:#1F2A4A;
+    --good:#5CC48C; --good-soft:#173627; --warn:#E0A64A; --warn-soft:#3A2B10; --crit:#F08A7E; --crit-soft:#3E1B17;
+    --series:#7B97FF; --series-wash:rgba(123,151,255,.14); --target:#8B968E;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 12px);min-height:100%;overscroll-behavior-y:none}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
+p{margin:0}
+a{color:var(--accent)}
+button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+input,select{font:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+
+/* Top bar */
+.top{background:var(--surface);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:10px;padding-bottom:10px}
+.top h1{font-family:var(--display);font-weight:800;font-size:24px;letter-spacing:.01em;line-height:1;text-transform:uppercase;white-space:nowrap}
+.top .ctx{font-size:12.5px;color:var(--ink-2);text-align:right;line-height:1.3}
+.top .ctx b{color:var(--ink);font-weight:700;display:block}
+
+/* Bottom nav */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.nav .wrap{display:grid;grid-template-columns:repeat(5,1fr);gap:0;padding:0 4px}
+.nav button{background:transparent;border:0;height:var(--nav-h);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;border-radius:8px}
+.nav button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.nav button[aria-selected="true"]{color:var(--accent)}
+.view{display:none}
+.view.on{display:block}
+main .wrap{padding-top:16px;padding-bottom:24px}
+section+section{margin-top:26px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.sec-h h2{font-family:var(--display);font-weight:800;font-size:24px;text-transform:uppercase;letter-spacing:.01em;line-height:1}
+.sec-h .meta{font-size:13px;color:var(--muted)}
+h3{font-size:16.5px;font-weight:700;margin-bottom:6px}
+.lede{color:var(--ink-2);max-width:62ch}
+.prose{max-width:66ch}
+.prose p+p{margin-top:10px}
+.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.pill{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--surface-2);color:var(--ink-2);white-space:nowrap}
+.pill.gym{background:var(--accent-soft);color:var(--accent)}
+.pill.speed{background:var(--good-soft);color:var(--good)}
+.pill.rest{background:var(--surface-2);color:var(--muted)}
+.pill.test{background:var(--warn-soft);color:var(--warn)}
+.note{background:var(--surface-2);border-radius:var(--r);padding:12px 14px;font-size:14px;color:var(--ink-2)}
+.note strong{color:var(--ink)}
+.callout{border-left:3px solid var(--accent);padding:10px 14px;background:var(--surface);border-radius:0 var(--r) var(--r) 0;font-size:15px}
+.callout.warn{border-left-color:var(--warn)}
+.callout.crit{border-left-color:var(--crit)}
+.callout.good{border-left-color:var(--good)}
+.callout p+p{margin-top:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:640px){.grid2{grid-template-columns:1fr}}
+.btn{border:0;background:var(--accent);color:var(--accent-ink);font-weight:700;border-radius:10px;padding:12px 18px;cursor:pointer;font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.ghost{background:transparent;border:1px solid var(--line-strong);color:var(--ink-2);font-weight:600}
+.btn.sm{padding:7px 12px;font-size:13px;border-radius:8px}
+.btn.wide{width:100%}
+.btn.good{background:var(--good);color:#fff}
+.btn.danger{background:var(--crit-soft);color:var(--crit)}
+.btn:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+/* Today */
+.today-h{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:12px}
+.today-h .d{font-family:var(--display);font-size:36px;font-weight:800;line-height:.95;text-transform:uppercase;white-space:nowrap}
+.today-h .d small{display:block;font-family:var(--body);font-size:13px;color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0;margin-bottom:4px}
+.today-h .wk{text-align:right;font-size:12.5px;color:var(--ink-2);flex:1;max-width:62%}
+.today-h .wk b{display:block;font-size:15px;color:var(--ink)}
+.strip{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface);margin-bottom:14px}
+.strip>div{padding:9px 12px;border-left:1px solid var(--line);min-width:0}
+.strip>div:first-child{border-left:0}
+.strip .k{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;white-space:nowrap}
+.strip .v{font-family:var(--display);font-weight:800;font-size:26px;line-height:1.05;margin-top:1px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.strip .v small{font-family:var(--body);font-weight:600;font-size:11px;color:var(--muted);margin-left:2px}
+.strip .n{font-size:11.5px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sessions{display:flex;flex-direction:column;gap:10px}
+.sess{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.sess.done{border-color:var(--good)}
+.sess .top-r{display:flex;align-items:flex-start;gap:12px;padding:12px 12px 12px 14px}
+.sess .t{flex:1;min-width:0}
+.sess .name{font-weight:700;font-size:16px;line-height:1.25}
+.sess .desc{font-size:13px;color:var(--ink-2);margin-top:3px}
+.sess .tags{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;align-items:center}
+.sess .time{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.sess .act{display:flex;gap:8px;padding:0 14px 12px;flex-wrap:wrap}
+.chk{flex:0 0 auto;width:30px;height:30px;border-radius:8px;border:2px solid var(--line-strong);background:var(--surface);cursor:pointer;display:grid;place-items:center;padding:0;margin-top:2px}
+.chk svg{width:16px;height:16px;stroke:var(--accent-ink);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.chk[aria-checked="true"]{background:var(--good);border-color:var(--good)}
+.chk[aria-checked="true"] svg{opacity:1}
+.sess details>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--accent);list-style:none;padding:8px 14px;border-top:1px solid var(--line);user-select:none}
+.sess details>summary::-webkit-details-marker{display:none}
+.sess details>summary::after{content:"Show";float:right;color:var(--muted);font-weight:400}
+.sess details[open]>summary::after{content:"Hide"}
+.sess .more{padding:8px 14px 12px}
+.rest .sess{background:transparent;border-style:dashed}
+.quick{display:grid;grid-template-columns:1fr auto;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;align-items:center;margin-top:14px}
+.quick label{font-size:12px;font-weight:700;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+.quick input{font-family:var(--mono);font-size:16px;padding:8px 10px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--ink);width:100%}
+.tomorrow{margin-top:18px}
+.tomorrow .eyebrow{margin-bottom:6px}
+.tomorrow ul{list-style:none;margin:0;padding:0;font-size:14px;color:var(--ink-2)}
+.tomorrow li{padding:4px 0;display:flex;gap:10px}
+.tomorrow li .tm{font-family:var(--mono);font-size:12px;color:var(--muted);min-width:44px;padding-top:2px}
+
+/* Week */
+.weeknav{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.weeknav button{border:1px solid var(--line-strong);background:var(--surface);border-radius:8px;width:38px;height:38px;cursor:pointer;font-size:18px;line-height:1}
+.weeknav .wk{flex:1;display:flex;flex-direction:column;min-width:0}
+.weeknav .wk b{font-family:var(--display);font-size:21px;font-weight:800;text-transform:uppercase;line-height:1.1}
+.weeknav .wk span{font-size:12.5px;color:var(--muted)}
+.weeknav .today{border:1px solid var(--line-strong);background:var(--surface);border-radius:8px;padding:0 12px;height:38px;font-size:13px;font-weight:600;cursor:pointer}
+.progress{height:6px;background:var(--surface-2);border-radius:999px;overflow:hidden;margin-bottom:14px}
+.progress i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .3s ease}
+.day{display:grid;grid-template-columns:56px 1fr;gap:10px;padding:12px 0;border-top:1px solid var(--line)}
+.day:last-child{border-bottom:1px solid var(--line)}
+.day.today .dlabel b{color:var(--accent)}
+.dlabel{display:flex;flex-direction:column}
+.dlabel b{font-family:var(--display);font-size:20px;font-weight:800;text-transform:uppercase;line-height:1}
+.dlabel span{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* Tables */
+.xt{width:100%;border-collapse:collapse;font-size:14px}
+.xt th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:6px 8px 6px 0;border-bottom:1px solid var(--line)}
+.xt td{padding:7px 8px 7px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.xt tr:last-child td{border-bottom:0}
+.xt td.code{font-family:var(--mono);font-size:12px;color:var(--muted);width:30px;white-space:nowrap}
+.xt td.rx{font-family:var(--mono);font-size:12.5px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.xt td.rx.now{color:var(--ink);font-weight:600}
+.xt td.rx.dim{color:var(--muted)}
+.xt .sub{display:block;font-size:12px;color:var(--muted);margin-top:1px}
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.steps{margin:0;padding-left:20px;font-size:14.5px}
+.steps li{margin:5px 0}
+.blocks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (max-width:640px){.blocks{grid-template-columns:1fr}}
+.block{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.block.now{border-color:var(--accent);box-shadow:var(--shadow)}
+.block .bn{font-family:var(--display);font-size:21px;font-weight:800;text-transform:uppercase;line-height:1}
+.block .bw{font-size:12px;color:var(--muted);margin-top:2px}
+.block .bg{font-weight:700;font-size:14px;margin-top:8px}
+.block ul{margin:6px 0 0;padding-left:18px;font-size:13.5px;color:var(--ink-2)}
+.milestones{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.milestones th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:6px 8px 6px 0;border-bottom:1px solid var(--line)}
+.milestones td{padding:8px 8px 8px 0;border-bottom:1px solid var(--line)}
+.milestones td.num{font-family:var(--mono);font-size:13px}
+.milestones tr.hit td{color:var(--good)}
+.daycard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.daycard h3{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.daycard .when{font-size:13px;color:var(--muted);margin-bottom:8px}
+.daycards{display:flex;flex-direction:column;gap:12px}
+.subtabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px;padding-bottom:2px}
+.subtabs::-webkit-scrollbar{display:none}
+.subtabs button{flex:0 0 auto;border:1px solid var(--line-strong);background:var(--surface);border-radius:999px;padding:6px 13px;font-size:13px;font-weight:600;color:var(--ink-2);cursor:pointer}
+.subtabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* Log */
+.logform{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:10px;align-items:end}
+.logform label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:600;color:var(--muted);min-width:0}
+.logform input,.logform select{font-size:15px;padding:8px 10px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--ink);min-width:0;width:100%}
+.logform input[type=number]{font-family:var(--mono);font-size:14px}
+.logform .full{grid-column:1/-1}
+.chart{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 8px 6px;position:relative;margin-top:12px}
+.chart svg{display:block;width:100%;height:auto}
+.chart .tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12px;padding:6px 8px;border-radius:6px;white-space:nowrap;transform:translate(-50%,-110%);display:none;font-variant-numeric:tabular-nums}
+.chart .cl{display:flex;gap:16px;font-size:12px;color:var(--muted);padding:6px 8px 2px;flex-wrap:wrap}
+.chart .cl i{display:inline-block;width:14px;height:0;border-top:2px solid var(--series);vertical-align:middle;margin-right:6px}
+.chart .cl i.t{border-top:2px dashed var(--target)}
+.chart .cl i.s{border-top:1px solid var(--line-strong)}
+.loglist{list-style:none;margin:10px 0 0;padding:0;font-size:14px}
+.loglist li{display:grid;grid-template-columns:88px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.loglist li:first-child{border-top:0}
+.loglist li.empty{display:block;color:var(--muted);padding:10px 0}
+.loglist .d{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.loglist .val{font-family:var(--mono);font-variant-numeric:tabular-nums;min-width:0}
+.loglist .val b{font-weight:600;color:var(--ink)}
+.loglist .val span{color:var(--muted);font-size:12px;margin-left:8px}
+.loglist .val .nt{display:block;font-family:var(--body);font-size:13px;color:var(--ink-2);margin-top:2px;margin-left:0}
+.loglist .x{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:16px;padding:4px 6px;border-radius:6px}
+.loglist .x:hover{background:var(--crit-soft);color:var(--crit)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;min-width:0}
+.stat .k{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.stat .v{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2;margin-top:2px;white-space:nowrap}
+.stat .v small{font-size:11px;color:var(--muted);font-weight:600;margin-left:2px}
+.stat .v.up{color:var(--good)}
+.stat .v.dn{color:var(--crit)}
+.maxes{width:100%;border-collapse:collapse;font-size:14px}
+.maxes th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:6px 8px 6px 0;border-bottom:1px solid var(--line)}
+.maxes td{padding:8px 8px 8px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.maxes td.n{font-family:var(--mono);font-size:13px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.maxes td.n b{font-weight:600}
+.maxes .up{color:var(--good)}
+
+/* Settings / more */
+.set{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:4px 14px}
+.set .item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.set .item:first-child{border-top:0}
+.set .item .l{font-size:14.5px}
+.set .item .l small{display:block;color:var(--muted);font-size:12px}
+.set input[type=time],.set input[type=number],.set select{font-family:var(--mono);font-size:14px;padding:7px 8px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--ink);width:112px}
+.set input[type=number]{width:84px}
+.tests{width:100%;border-collapse:collapse;font-size:13.5px}
+.tests th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:6px 6px 6px 0;border-bottom:1px solid var(--line)}
+.tests td{padding:6px 6px 6px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.tin{width:60px;font-family:var(--mono);font-size:13px;padding:5px 6px;border:1px solid var(--line-strong);border-radius:6px;background:var(--bg);color:var(--ink)}
+.gear{width:100%;border-collapse:collapse;font-size:14px}
+.gear th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:6px 8px 6px 0;border-bottom:1px solid var(--line)}
+.gear td{padding:8px 8px 8px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.gear td.p{font-family:var(--mono);font-size:13px;white-space:nowrap}
+
+/* Session overlay (in-session mode) */
+.ov{position:fixed;inset:0;z-index:40;background:var(--bg);display:none;flex-direction:column;overflow:hidden}
+.ov.on{display:flex}
+.ov .ovh{background:var(--surface);border-bottom:1px solid var(--line);padding:calc(env(safe-area-inset-top) + 8px) 14px 8px;display:flex;align-items:center;gap:10px}
+.ov .ovh .t{flex:1;min-width:0}
+.ov .ovh .t b{display:block;font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ov .ovh .t span{font-size:12px;color:var(--muted)}
+.ov .ovh button.ic{border:1px solid var(--line-strong);background:var(--surface);border-radius:8px;width:36px;height:36px;font-size:18px;cursor:pointer;display:grid;place-items:center}
+.ov .ovb{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px calc(120px + env(safe-area-inset-bottom))}
+.ov .ovb .wrap{padding:0;max-width:720px;margin:0 auto}
+.exnav{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:12px}
+.exnav::-webkit-scrollbar{display:none}
+.exnav button{flex:0 0 auto;border:1px solid var(--line-strong);background:var(--surface);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:700;font-family:var(--mono);color:var(--ink-2);cursor:pointer}
+.exnav button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.exnav button.done{border-color:var(--good);color:var(--good)}
+.exhead{margin-bottom:10px}
+.exhead .code{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.exhead h2{font-family:var(--display);font-size:28px;font-weight:800;text-transform:uppercase;line-height:1}
+.exhead .rx{font-family:var(--mono);font-size:14px;margin-top:4px;color:var(--ink)}
+.exhead .cue{font-size:13.5px;color:var(--ink-2);margin-top:4px}
+.beat{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 12px}
+.beat>div{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:9px 12px;min-width:0}
+.beat .k{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.beat .v{font-family:var(--mono);font-size:16px;font-weight:600;margin-top:2px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.beat .v small{font-size:11px;color:var(--muted);font-weight:400}
+.beat>div.hi{border-color:var(--accent)}
+.sets{display:flex;flex-direction:column;gap:6px}
+.setrow{display:grid;grid-template-columns:34px 1fr 1fr auto;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:8px 10px}
+.setrow.done{border-color:var(--good);background:var(--good-soft)}
+.setrow .i{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:center}
+.setrow label{display:flex;flex-direction:column;gap:2px;font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;min-width:0}
+.setrow input{font-family:var(--mono);font-size:17px;padding:7px 8px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--ink);width:100%;min-width:0;font-variant-numeric:tabular-nums}
+.setrow .lg{width:44px;height:44px;border-radius:10px;border:2px solid var(--line-strong);background:var(--surface);cursor:pointer;display:grid;place-items:center;padding:0}
+.setrow .lg svg{width:20px;height:20px;stroke:var(--accent-ink);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.setrow.done .lg{background:var(--good);border-color:var(--good)}
+.setrow.done .lg svg{opacity:1}
+.exfoot{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.maxin{display:flex;gap:8px;align-items:end;margin:8px 0 12px;background:var(--surface-2);border-radius:var(--r);padding:10px 12px}
+.maxin label{flex:1;display:flex;flex-direction:column;gap:3px;font-size:12px;font-weight:700;color:var(--muted)}
+.maxin input{font-family:var(--mono);font-size:15px;padding:7px 9px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--ink);width:100%}
+/* rest timer bar */
+.timer{position:fixed;left:0;right:0;bottom:0;z-index:45;background:var(--ink);color:var(--bg);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:none;align-items:center;gap:14px;box-shadow:0 -4px 20px rgba(0,0,0,.25)}
+.timer.on{display:flex}
+.timer .tt{font-family:var(--display);font-size:40px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;min-width:96px}
+.timer .tl{flex:1;font-size:13px;opacity:.8}
+.timer .tl b{display:block;font-size:14px;opacity:1}
+.timer button{border:1px solid rgba(255,255,255,.3);background:transparent;color:inherit;border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer;font-size:13px}
+.timer.over{background:var(--good);color:#fff}
+/* speed session */
+.clock{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;text-align:center;margin-bottom:12px}
+.clock .big{font-family:var(--display);font-size:72px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.clock .big.warn{color:var(--warn)}
+.clock .big.over{color:var(--crit)}
+.clock .lbl{font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-weight:700;margin-bottom:4px}
+.clock .row{justify-content:center;margin-top:10px}
+.balls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.ball{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:8px 10px}
+.ball .k{font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.ball input{width:100%;font-family:var(--mono);font-size:18px;padding:6px 6px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--ink);margin-top:3px;font-variant-numeric:tabular-nums}
+.ball .g{margin-top:6px;display:flex;gap:4px}
+.ball .g button{flex:1;border:1px solid var(--line-strong);background:var(--surface);border-radius:6px;font-size:11px;font-weight:700;padding:4px 0;cursor:pointer;color:var(--muted)}
+.ball .g button[aria-pressed="true"]{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.setsum{list-style:none;margin:0 0 12px;padding:0;font-size:14px}
+.setsum li{display:grid;grid-template-columns:52px 1fr auto;gap:10px;padding:7px 0;border-top:1px solid var(--line);align-items:center}
+.setsum li:first-child{border-top:0}
+.setsum .n{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.setsum .v{font-family:var(--mono);font-size:13px}
+.setsum .v b{font-weight:600}
+.chkl{list-style:none;margin:0 0 14px;padding:0}
+.chkl li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--line);font-size:14.5px}
+.chkl li:first-child{border-top:0}
+.chkl li.done{color:var(--muted);text-decoration:line-through}
+.chkl .chk{margin-top:0;width:26px;height:26px;border-radius:7px}
+.ovfoot{position:fixed;left:0;right:0;bottom:0;z-index:42;background:var(--surface);border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px}
+.ovfoot .btn{flex:1}
+.toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 18px);transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:999px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:60;white-space:nowrap}
+.toast.on{opacity:1}
+.upd{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top) + 10px);z-index:55;background:var(--accent);color:var(--accent-ink);border-radius:10px;padding:10px 14px;display:none;align-items:center;gap:12px;font-size:14px;box-shadow:var(--shadow)}
+.upd.on{display:flex}
+.upd button{margin-left:auto;border:0;background:rgba(255,255,255,.2);color:inherit;border-radius:8px;padding:6px 10px;font-weight:700;cursor:pointer}
+.review{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-top:14px}
+.review h3{display:flex;justify-content:space-between;align-items:baseline}
+.review h3 span{font-size:12px;color:var(--muted);font-weight:600}
+.review .kv{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font-size:14px;margin:8px 0}
+.review .kv div b{font-family:var(--mono);font-weight:600}
+.review .kv div small{display:block;color:var(--muted);font-size:11.5px}
+.review p{font-size:13.5px;color:var(--ink-2)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="upd" id="upd"><span>A new version is ready.</span><button id="upd-btn">Reload</button></div>
+<header class="top"><div class="wrap"><h1>Project 225</h1><div class="ctx" id="ctx"></div></div></header>
+<main>
+  <div class="wrap">
+    <div class="view on" id="v-today"></div>
+    <div class="view" id="v-week"></div>
+    <div class="view" id="v-log"></div>
+    <div class="view" id="v-plan"></div>
+    <div class="view" id="v-more"></div>
+  </div>
+</main>
+<nav class="nav" role="tablist" aria-label="Sections"><div class="wrap">
+  <button role="tab" data-view="today" aria-selected="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Today</button>
+  <button role="tab" data-view="week" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="4" cy="6" r="0"/></svg>Week</button>
+  <button role="tab" data-view="log" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M3 20h18M5 16l4-5 4 3 6-8"/></svg>Log</button>
+  <button role="tab" data-view="plan" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5z"/><path d="M9 12h6M9 16h6M9 8h3"/></svg>Plan</button>
+  <button role="tab" data-view="more" aria-selected="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>More</button>
+</div></nav>
+<div class="ov" id="ov" role="dialog" aria-modal="true" aria-label="Session">
+  <div class="ovh"><div class="t"><b id="ov-title"></b><span id="ov-sub"></span></div><button class="ic" id="ov-close" aria-label="Close session">×</button></div>
+  <div class="ovb"><div class="wrap" id="ov-body"></div></div>
+  <div class="ovfoot" id="ov-foot"></div>
+</div>
+<div class="timer" id="timer"><div class="tt" id="timer-t">0:00</div><div class="tl"><b id="timer-l">Rest</b><span id="timer-n"></span></div><button id="timer-add">+30 s</button><button id="timer-skip">Skip</button></div>
+<div class="toast" id="toast"></div>
+<script>
+/* ---------- Program data ---------- */
+const PLAN = {
+  start: new Date(2026, 8, 14),          // Monday, Week 1
+  weeks: 12,
+  testWeek: 13,                          // Dec 7–13
+  bwStart: 200, bwTarget: 213,
+  milestones: [                          // ball speed (mph) checkpoints
+    { wk: 0,  label: 'Baseline (Sep 8–13)', lo: 190, hi: 195, mid: 192.5 },
+    { wk: 4,  label: 'End of Block 1 (Oct 11)', lo: 197, hi: 201, mid: 199 },
+    { wk: 8,  label: 'End of Block 2 (Nov 8)',  lo: 203, hi: 208, mid: 205.5 },
+    { wk: 12, label: 'End of Block 3 (Dec 6)',  lo: 208, hi: 215, mid: 211.5 },
+    { wk: 13, label: 'Test week (Dec 7–13)',    lo: 210, hi: 225, mid: 214 },
+  ],
+};
+
+const BLOCKS = [
+  { n: 1, name: 'Accumulate', weeks: '1–4', goal: 'Add tissue and work capacity. Groove the overspeed protocol. Moderate loads, more sets.',
+    bullets: ['Main lifts 4×6 @ 72–77% (RPE 7–8)', 'Accessories 3×8–12, double progression', 'Overspeed: 2 rounds, 3×/week', 'Driver-speed swings ≈ 50/week', 'Week 4 = deload + retest'] },
+  { n: 2, name: 'Strength-speed', weeks: '5–8', goal: 'Get strong under the new mass. Contrast pairs (heavy lift → jump/throw). Olympic pulls come in.',
+    bullets: ['Main lifts 5×4 @ 80–85%', 'Hang power clean 5×3', 'Overspeed: 3 rounds, 3×/week', 'Driver-speed swings ≈ 60/week', 'Week 8 = deload + retest'] },
+  { n: 3, name: 'Speed-strength', weeks: '9–12', goal: 'Convert it. Heavy triples to hold strength, then the same lift moved as fast as possible. Light med balls, max plyos.',
+    bullets: ['Main lifts 3×3 @ 85% then 3×3 @ 60% fast', 'Cleans 6×2, jumps loaded 20–30% BW', 'Overspeed peaks wk 9–11, halves wk 12', 'Driver-speed swings ≈ 60/week → 20 in wk 12', 'Week 12 = taper into test week'] },
+];
+
+const RX_LEGEND = 'Prescriptions read sets × reps. Percentages are of your current 1RM. Add 2.5–5 lb (upper) or 5–10 lb (lower) each week inside a block; if the last set passes RPE 9, hold the weight. Accessories: hit the top of the rep range on every set, then add weight.';
+
+// Gym sessions. rx: [block1, block2, block3]
+const GYM = {
+  gym1: { id: 'gym1', kind: 'gym', name: 'Gym 1 · Lower strength + vertical power', short: 'Lower strength + power', dur: '70 min',
+    desc: 'Squat pattern, hinge, single-leg, lateral push-off. Vertical force is the biggest single lever on club speed.',
+    warm: '90/90 hip switches, world\'s greatest stretch, leg swings, glute bridges, pogo hops 2×20, 5 progressive vertical jumps.',
+    deload: 'Deload: A-series 2 sets. Squat 3×5 @ 65–70%. Accessories 2 sets each.',
+    ex: [
+      ['A1','Box jump or countermovement jump', '4×3', '4×3', 'Trap bar jump 5×3 @ 20–30% BW', 'Full rest. Max height, quiet landing.'],
+      ['A2','Hang power clean', 'Technique 3×3, light (optional)', '5×3 @ 70–75%', '6×2 @ 78–85%', 'Bar speed first. Cut a set if it slows.'],
+      ['B','Back squat', '4×6 @ 72–77%', '5×4 @ 80–85% → box jump ×3 after each set', '3×3 @ 85%, then 3×3 @ 60% as fast as possible', 'High bar or safety bar. Depth you can own.'],
+      ['C','Romanian deadlift', '3×8', '4×6', '3×5', 'Hamstrings loaded long; no lumbar rounding.'],
+      ['D1','Rear-foot-elevated split squat', '3×8 / leg', '3×8 / leg', '3×6 / leg', 'Lead leg (left for a right-hander) gets the extra set if uneven.'],
+      ['D2','Lateral lunge or Cossack squat', '3×8 / side', '3×8 / side', 'Skater bound 4×4 / side', 'This is the trail-leg push into the downswing.'],
+      ['E1','Pallof press', '3×10 / side', '3×10 / side', '3×8 / side, fast', 'Anti-rotation. Ribs down.'],
+      ['E2','Suitcase carry', '3×30 m / side', '3×30 m / side', '3×30 m / side', 'Grip + lateral trunk. Heavy.'],
+    ] },
+  gym2: { id: 'gym2', kind: 'gym', name: 'Gym 2 · Upper strength + rotational power', short: 'Upper strength + rotation', dur: '65 min',
+    desc: 'Throws first while you\'re fresh, then press and pull heavy, then the rotational cable work that builds the release.',
+    warm: 'Band pull-aparts, thoracic open-books, wall slides, 10 light med-ball rotations each side, 5 push-ups.',
+    deload: 'Deload: throws 2 sets. Bench 3×5 @ 65–70%. Pull-ups 3×5 bodyweight. Accessories 2 sets.',
+    ex: [
+      ['A1','Med ball rotational scoop throw (wall)', '4×4 / side · 8–10 lb', '5×3 / side · 10–12 lb', '6×3 / side · 6–8 lb, max speed', 'Golf posture, full turn, hips lead. Both sides every set.'],
+      ['A2','Med ball chest pass / shot put', '4×4 · 8–10 lb', '5×3 · 10–12 lb', 'Plyo push-up 5×3', 'Arm speed. Explosive, not grinding.'],
+      ['B','Bench press', '4×6 @ 72–77%', '5×4 @ 80–85%', '3×3 @ 85%, then 3×3 @ 60% fast', 'Feet driving, upper back tight.'],
+      ['C','Weighted pull-up', '4×6', '5×5', '4×4', 'Lats are the trail-arm engine. Add weight when 6 clean reps.'],
+      ['D1','Half-kneeling landmine press', '3×8 / side', '3×8 / side', 'Landmine rotational press 3×6 / side', 'Trail-side hip drives the bar in Block 3.'],
+      ['D2','Chest-supported row', '3×10', '4×8', '3×8', 'Squeeze at the top; no momentum.'],
+      ['E1','Cable chop and lift', '3×10 / side', '4×8 / side', '3×8 / side, fast', 'Split stance. Hips turn, arms follow.'],
+      ['E2','Face pull', '3×15', '3×15', '2×15', 'Shoulder health insurance for 150+ max swings a week.'],
+      ['E3','Wrist roller or plate pinch', '3 sets', '3 sets', '2 sets', 'To failure. Forearms drive club control at speed.'],
+    ] },
+  gym3: { id: 'gym3', kind: 'gym', name: 'Gym 3 · Lower hypertrophy + posterior chain', short: 'Lower hypertrophy + hinge', dur: '70 min',
+    desc: 'Deadlift day. Horizontal and lateral jumps up front, then the volume that builds glutes and hamstrings.',
+    warm: 'Same as Gym 1 plus 2×10 kettlebell swings and 3 progressive broad jumps.',
+    deload: 'Deload: jumps 2 sets. Trap bar 3×5 @ 65–70%. Accessories 2 sets. Skip carries.',
+    ex: [
+      ['A1','Broad jump', '4×3', '4×3', '4×3', 'Stick the landing. Reset each rep.'],
+      ['A2','Lateral bound (stick the landing)', '4×3 / side', '4×3 / side', '4×3 / side, continuous', 'Land on the lead leg and hold it — that\'s the post at impact.'],
+      ['B','Trap bar deadlift', '4×6 @ 72–77%', '5×4 @ 80–85% → trap bar jump ×3 after each set', '3×3 @ 85%, then trap bar jump 3×3', 'High handles are fine. Brace hard, push the floor away.'],
+      ['C','Front squat (or hack squat)', '3×8–10', '4×6', '3×5', 'Quads and upright trunk.'],
+      ['D1','Barbell hip thrust', '3×10', '4×8', '3×8', 'Glutes are the hip-turn motor. Pause 1 s at the top.'],
+      ['D2','Nordic curl or lying leg curl', '3×8', '3×8', '3×6', 'Hamstring insurance; go slow on the way down.'],
+      ['E1','Copenhagen plank', '3×30 s / side', '3×40 s / side', '3×30 s / side', 'Adductors + obliques. Protects the rib/oblique line.'],
+      ['E2','Standing calf raise', '3×12', '3×12', '3×10', 'Ground force starts at the foot.'],
+      ['E3','Farmer carry', '3×40 m', '3×40 m, heavier', '2×40 m', 'As heavy as you can hold with a tall posture.'],
+    ] },
+  gym4: { id: 'gym4', kind: 'gym', name: 'Gym 4 · Upper hypertrophy + arms/grip', short: 'Upper hypertrophy', dur: '55 min',
+    desc: 'After the max hit day (3+ hours later, or that evening). Pure mass work — shoulders, back, arms, forearms. Nothing here should feel heroic.',
+    warm: 'Band pull-aparts, arm circles, 2 light sets of the first movement.',
+    deload: 'Deload: 2 sets of everything, stop 3 reps short of failure.',
+    ex: [
+      ['B','Push press (or strict overhead press)', '4×8', '5×5', '4×3', 'Push press in Blocks 2–3: legs drive, arms finish.'],
+      ['C','Lat pulldown or pull-up', '4×8–10', '4×8', '3×8', 'Full stretch at the top.'],
+      ['D1','Incline dumbbell press', '3×10', '3×10', '3×8', ''],
+      ['D2','Seated cable row', '3×10–12', '3×10', '3×8', ''],
+      ['E1','Lateral raise', '3×15', '3×15', '2×15', ''],
+      ['E2','Rear delt fly', '3×15', '3×15', '2×15', ''],
+      ['F1','Hammer curl', '3×12', '3×12', '2×12', 'Brachialis + forearm — grip at speed.'],
+      ['F2','Triceps pushdown', '3×12', '3×12', '2×12', ''],
+      ['F3','Reverse curl + wrist curl', '3×12 each', '3×12 each', '2×12 each', 'Lead wrist takes the impact load; build it.'],
+    ] },
+};
+
+// Speed sessions. steps: per block (index 0,1,2); deload variant.
+const SPEED = {
+  speedA: { id: 'speedA', kind: 'speed', name: 'Speed A · Overspeed, no ball', short: 'Overspeed (no ball)', dur: '25–30 min',
+    desc: 'Do this before Gym 1, while the nervous system is fresh. Every swing is max intent.',
+    steps: [
+      ['Warm-up 8 min: 90/90s, open-books, leg swings, then 10 progressive swings from 60% to 90%.',
+       'Overspeed round = light 5/5/5, medium 5/5/5, heavy 5/5/5 (dominant side / non-dominant side / step-through). Rest 60–90 s between sets.',
+       'Block 1: <b>2 rounds</b> (90 swings). Note the peak speed at each weight.',
+       'Finisher: 10 max-effort driver swings on the radar. Record the peak club speed.',
+       'With the Stack: follow the app\'s prescribed session instead of the fixed rounds — it periodizes the weights for you.'],
+      ['Warm-up 8 min as in Block 1.',
+       'Overspeed: <b>3 rounds</b> of light/medium/heavy 5/5/5 (135 swings). Rest 60–90 s.',
+       'Add 5 "hold the finish" swings with the heavy weight to train the deceleration side.',
+       'Finisher: 10 max-effort driver swings on the radar. Record peak club speed.'],
+      ['Warm-up 8 min.',
+       'Overspeed: <b>3 rounds</b> weeks 9–11; <b>1 round</b> week 12 (taper).',
+       'Light and medium only in the third round — chase the number, not fatigue.',
+       'Finisher: 8 max-effort driver swings. Stop early if speed drops 3% below your best of the day.'],
+    ],
+    deload: 'Deload: 1 round, no step-through swings, 6 max-effort driver swings.' },
+  speedB: { id: 'speedB', kind: 'speed', name: 'Speed B · Overspeed + hitting', short: 'Overspeed + transfer', dur: '40 min',
+    desc: 'Range or net with the radar. Half technique, half intent. This is where club speed becomes ball speed.',
+    steps: [
+      ['Warm-up 10 min: mobility, 10 wedge swings, 10 7-iron swings, 6 driver at 80%.',
+       'Overspeed: <b>1 round</b>, light and medium only.',
+       '12 drivers at 85–90%: foot spray or impact tape on the face, find centre contact. Smash factor is your feedback (target 1.48–1.50).',
+       '3 × 6-ball sets at max intent, 3 min between sets. Record peak ball speed, peak club speed, and smash.'],
+      ['Warm-up 10 min as in Block 1.',
+       'Overspeed: <b>2 rounds</b>, light and medium only.',
+       '10 drivers at 85–90% on the tape. Then 3 × 6-ball sets at max intent, 3 min rest.',
+       'Tee height and ball position audit every session: you want +5° to +8° attack angle — if the radar\'s distance number lags ball speed, you\'re hitting down.'],
+      ['Warm-up 10 min.',
+       'Overspeed: <b>1 round</b>, light only.',
+       '8 drivers at 90%, then 4 × 6-ball sets on a 2:45 clock (competition rhythm).',
+       'Week 12: 2 sets only.'],
+    ],
+    deload: 'Deload: no overspeed. 20 balls at 80–85% working on centre contact. No max effort.' },
+  speedC: { id: 'speedC', kind: 'speed', name: 'Speed C · Max hit day', short: 'Max hit day', dur: '50 min',
+    desc: 'The session that produces the number. Friday is a rest day so you arrive fresh. Every ball on the radar.',
+    steps: [
+      ['Warm-up 15 min: mobility, 20 progressive swings wedge → 7-iron → driver, 6 drivers at 80–90%.',
+       '<b>4 × 6-ball sets</b> on a 2:45 clock, 5 min rest between sets. Log every ball speed; the session number is your peak, and note the top-3 average.',
+       'Stop rule: if a set\'s average drops more than 3% below your best set, the session is over. Speed under fatigue is where obliques and backs get hurt.',
+       'Cap: 30 max-effort hits. Then Gym 4 at least 3 hours later.'],
+      ['Warm-up 15 min.',
+       '<b>5 × 6-ball sets</b> on a 2:45 clock, 5 min rest. Same logging.',
+       'In-grid counts too: mark how many of 6 land in a 60-yard-wide grid. Two of six is the competition floor.',
+       'Stop rule and 30-hit cap unchanged.'],
+      ['Warm-up 15 min.',
+       '<b>5 × 6-ball sets</b> weeks 9–11. <b>2 sets</b> in week 12.',
+       'Weeks 9–11: try one set with a "swing at 110%" cue — measure whether reckless beats controlled for you. Most players find their peak at about 95% control.',
+       'Log peak, top-3 average, grid count.'],
+    ],
+    deload: 'Deload (weeks 4 and 8): retest day instead — see the Setup tab tests. 2 × 6-ball sets, then done.' },
+  speedD: { id: 'speedD', kind: 'speed', name: 'Speed D · Light technique (optional)', short: 'Optional light speed', dur: '15 min',
+    desc: 'Blocks 2–3 only, and only if you feel fresh. Skip it without guilt — Saturday matters more.',
+    steps: [
+      ['Not in Block 1 — rest.'],
+      ['1 round, light weight only, at 90% intent. Rhythm and sequence, not numbers. No radar.'],
+      ['1 round, light only, 90% intent. Week 12: skip.'],
+    ],
+    deload: 'Skip on deload weeks.' },
+};
+
+const REST = { id: 'rest', kind: 'rest', name: 'Rest', short: 'Rest', dur: '10 min', desc: 'Off. 10-minute mobility routine (Fuel tab), a walk, food, sleep.' };
+const REST_FRI = { id: 'restfri', kind: 'rest', name: 'Rest + mobility', short: 'Rest', dur: '15 min', desc: 'Off before max hit day. Mobility routine, McGill curl-up / bird dog 3 rounds, early night.' };
+
+const DAYS = ['mon','tue','wed','thu','fri','sat','sun'];
+const DAY_LABEL = { mon:'Mon', tue:'Tue', wed:'Wed', thu:'Thu', fri:'Fri', sat:'Sat', sun:'Sun' };
+function sessionsFor(week, day, block) {
+  if (week === 0) return null;                    // baseline week handled separately
+  if (week === PLAN.testWeek) return TEST_WEEK[day];
+  switch (day) {
+    case 'mon': return [SPEED.speedA, GYM.gym1];
+    case 'tue': return [GYM.gym2];
+    case 'wed': return [SPEED.speedB];
+    case 'thu': return [GYM.gym3];
+    case 'fri': return block >= 2 ? [REST_FRI, SPEED.speedD] : [REST_FRI];
+    case 'sat': return [SPEED.speedC, GYM.gym4];
+    case 'sun': return [REST];
+  }
+}
+
+const WEEK0 = [
+  { id: 'w0-gear', name: 'Order the radar and the overspeed trainer', desc: 'Stack System + Stack Radar bundle, or PRGR Black + a stick set. Setup tab has the comparison. Until it lands, run the DIY protocol.' },
+  { id: 'w0-speed', name: 'Baseline speed test', desc: 'Radar or launch monitor: 10 max-effort driver swings for peak club speed, then 4 × 6-ball sets for peak ball speed. Log it on the Log tab.' },
+  { id: 'w0-strength', name: 'Baseline strength + power tests', desc: 'Countermovement jump height (phone app), seated 10 lb med ball side throw distance both sides, trap bar deadlift 3RM. Write them in the Setup tab table.' },
+  { id: 'w0-bw', name: '7-day bodyweight average', desc: 'Weigh in every morning after the bathroom, before food. Log the average — that\'s your true 200.' },
+  { id: 'w0-food', name: 'Set up the food', desc: 'Start at 3,600 kcal / 210 g protein. Creatine 5 g every day from today. Fuel tab has the split and the meals.' },
+  { id: 'w0-mobility', name: 'Mobility screen', desc: 'Film your setup and top of backswing from face-on and down-the-line. Check lead-hip internal rotation and trail-hip external rotation (90/90 test): if either is under 35°, the daily mobility routine is not optional.' },
+];
+
+const TEST_WEEK = {
+  mon: [{ id: 'tw-mon', kind: 'speed', name: 'Speed A · 1 round + 6 swings', short: 'Light overspeed', dur: '20 min', desc: 'One overspeed round, light and medium only. 6 max-effort driver swings. Keep the engine warm, nothing more.' }],
+  tue: [{ id: 'tw-tue', kind: 'gym', name: 'Gym · Full-body power, 40 min', short: 'Power primer', dur: '40 min', desc: 'Hang power clean 4×2 @ 75%, trap bar jump 3×3, bench 3×3 @ 75% fast, pull-ups 3×5, med ball throws 3×3/side. Leave the gym feeling springy.' }],
+  wed: [{ id: 'tw-wed', kind: 'test', name: 'Test 1 · Competition format', short: 'Test day 1', dur: '50 min', desc: 'Full warm-up, then 4 × 6-ball sets on the 2:45 clock, 5 min rest. Log peak ball speed and top-3 average. This is the December number.' }],
+  thu: [{ id: 'tw-thu', kind: 'rest', name: 'Rest', short: 'Rest', dur: '10 min', desc: 'Mobility routine only.' }],
+  fri: [{ id: 'tw-fri', kind: 'speed', name: 'Light overspeed', short: 'Light overspeed', dur: '15 min', desc: 'One round, light only, 90% intent. No radar.' }],
+  sat: [{ id: 'tw-sat', kind: 'test', name: 'Test 2 · Best of', short: 'Test day 2', dur: '50 min', desc: 'Same format as Wednesday. Your Phase 1 result is the better of the two days. Then retest jump, throw, trap bar 3RM and log the 7-day bodyweight.' }],
+  sun: [{ id: 'tw-sun', kind: 'rest', name: 'Rest · Phase 2 planning', short: 'Rest', dur: '', desc: 'Off. Phase 2 (Jan–Mar) is strength-speed plus technique work with a coach; we build it from what this week says.' }],
+};
+</script>
+<script>
+/* ================= App core ================= */
+const APP_VERSION = '1.0.0';
+const LS_KEY = 'project225-app-v1';
+const DEFAULT_SETTINGS = {
+  times: { speedA: '11:30', gym1: '12:00', gym2: '11:30', speedB: '11:30', gym3: '11:30', speedD: '11:30', speedC: '11:00', gym4: '17:00', test: '11:30', weigh: '06:30', review: '18:00' },
+  rest: { main: 165, power: 120, acc: 75 },
+  clock: 165,
+  alarms: [30, 15],
+  sound: true, vibrate: true,
+};
+let state = freshState();
+function freshState() { return { v: 1, settings: JSON.parse(JSON.stringify(DEFAULT_SETTINGS)), checks: {}, sessions: {}, speed: [], weight: [], lifts: [], maxes: {}, tests: {}, activeKey: null, updatedAt: 0 }; }
+function normalize(s) {
+  const n = freshState();
+  if (!s || typeof s !== 'object') return n;
+  if (s.settings && typeof s.settings === 'object') {
+    n.settings.times = { ...n.settings.times, ...(s.settings.times || {}) };
+    n.settings.rest = { ...n.settings.rest, ...(s.settings.rest || {}) };
+    if (typeof s.settings.clock === 'number') n.settings.clock = s.settings.clock;
+    if (Array.isArray(s.settings.alarms)) n.settings.alarms = s.settings.alarms.map(Number).filter(x => x >= 0);
+    if (typeof s.settings.sound === 'boolean') n.settings.sound = s.settings.sound;
+    if (typeof s.settings.vibrate === 'boolean') n.settings.vibrate = s.settings.vibrate;
+  }
+  ['checks','sessions','maxes','tests'].forEach(k => { if (s[k] && typeof s[k] === 'object' && !Array.isArray(s[k])) n[k] = JSON.parse(JSON.stringify(s[k])); });
+  ['speed','weight','lifts'].forEach(k => { if (Array.isArray(s[k])) n[k] = s[k].map(x => ({ ...x })); });
+  n.activeKey = typeof s.activeKey === 'string' ? s.activeKey : null;
+  n.updatedAt = Number(s.updatedAt) || 0;
+  return n;
+}
+function loadLocal() { try { const raw = localStorage.getItem(LS_KEY); if (raw) state = normalize(JSON.parse(raw)); } catch (e) { console.warn('load failed', e); } }
+let saveT = null;
+function save(msg) {
+  state.updatedAt = Date.now();
+  clearTimeout(saveT);
+  saveT = setTimeout(() => { try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) { toast('Could not save — storage full?'); } }, 60);
+  if (msg) toast(msg);
+}
+
+/* ---------- Helpers ---------- */
+const DAY_MS = 864e5;
+const $ = (sel, root) => (root || document).querySelector(sel);
+const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DAYS_LONG = { mon: 'Monday', tue: 'Tuesday', wed: 'Wednesday', thu: 'Thursday', fri: 'Friday', sat: 'Saturday', sun: 'Sunday' };
+function startOfDay(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+function addDays(d, n) { const x = new Date(d); x.setDate(x.getDate() + n); return x; }
+function iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function fromIso(s) { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); }
+function fmtShort(d) { return MONTHS[d.getMonth()] + ' ' + d.getDate(); }
+function weekStart(wk) { return addDays(PLAN.start, (wk - 1) * 7); }
+function weekOf(date) {
+  const diff = Math.floor((startOfDay(date) - PLAN.start) / DAY_MS);
+  if (diff < -7) return -1;
+  if (diff < 0) return 0;
+  const wk = Math.floor(diff / 7) + 1;
+  return wk > PLAN.testWeek ? 99 : wk;
+}
+function dayKeyOf(date) { return DAYS[(date.getDay() + 6) % 7]; }
+function currentWeek() { const w = weekOf(new Date()); return w < 0 ? 0 : w > PLAN.testWeek ? PLAN.testWeek : w; }
+function blockOf(wk) { return wk <= 0 ? 0 : wk <= 4 ? 1 : wk <= 8 ? 2 : wk <= 12 ? 3 : 0; }
+function isDeload(wk) { return wk === 4 || wk === 8; }
+function isTaper(wk) { return wk === 12; }
+function round5(x) { return Math.round(x / 5) * 5; }
+function e1rm(w, r) { return r <= 1 ? w : w * (1 + r / 30); }
+function fmtTime(t) { if (!t) return ''; const [h, m] = t.split(':').map(Number); const ap = h >= 12 ? 'pm' : 'am'; return ((h + 11) % 12 + 1) + (m ? ':' + String(m).padStart(2, '0') : '') + ' ' + ap; }
+function mmss(s) { s = Math.max(0, Math.round(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('on'), 1600); }
+function vibrate(p) { try { if (state.settings.vibrate && navigator.vibrate) navigator.vibrate(p); } catch (e) {} }
+let audioCtx = null;
+function beep(n) {
+  if (!state.settings.sound) return;
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    for (let i = 0; i < (n || 1); i++) {
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = 'sine'; o.frequency.value = 880; o.connect(g); g.connect(audioCtx.destination);
+      const t0 = audioCtx.currentTime + i * 0.22;
+      g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.4, t0 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.18);
+      o.start(t0); o.stop(t0 + 0.2);
+    }
+  } catch (e) {}
+}
+function sessionTime(sess) { const t = state.settings.times; if (sess.id.startsWith('tw-')) return sess.kind === 'rest' ? '' : t.test; return t[sess.id] || ''; }
+function sessionMinutes(sess) { const m = String(sess.dur || '').match(/(\d+)(?:\D+(\d+))?\s*min/); return m ? Number(m[2] || m[1]) : 45; }
+function bestSpeed() { return state.speed.reduce((m, e) => Math.max(m, Number(e.ball) || 0), 0); }
+function bwAvg(n) { const arr = state.weight.slice().sort((a, b) => a.d < b.d ? 1 : -1).slice(0, n); if (!arr.length) return null; return arr.reduce((s, e) => s + Number(e.lbs), 0) / arr.length; }
+function latestBw() { const arr = state.weight.slice().sort((a, b) => a.d < b.d ? 1 : -1); return arr.length ? Number(arr[0].lbs) : PLAN.bwStart; }
+function checkKey(wk, day, id) { return 'w' + wk + '-' + day + '-' + id; }
+function weekLabel(wk) { if (wk === 0) return 'Week 0 · Baseline'; if (wk === PLAN.testWeek) return 'Test week'; return 'Week ' + wk + ' of 12 · Block ' + blockOf(wk); }
+function weekSub(wk) { if (wk === 0) return 'Order gear, test, eat. Week 1 starts Monday Sep 14.'; if (wk === PLAN.testWeek) return 'Two competition-format sessions. The better one is your Phase 1 number.'; return BLOCKS[blockOf(wk) - 1].name + (isDeload(wk) ? ' · deload + retest' : isTaper(wk) ? ' · taper' : ''); }
+
+/* ---------- Prescription parsing ---------- */
+function parseRx(str) {
+  const out = { groups: [], variant: null, empty: false };
+  if (!str || str.trim() === '—') { out.empty = true; return out; }
+  const parts = str.split(/,?\s*then\s+|\s*→\s*/);
+  parts.forEach((p, pi) => {
+    const m = p.match(/(\d+)\s*×\s*(\d+)(?:[–-](\d+))?/);
+    if (!m) { const m2 = p.match(/(\d+)\s*sets?\b/); if (m2) out.groups.push({ sets: +m2[1], reps: null, repsHi: null, pctLo: null, pctHi: null, unit: null, perSide: false, label: p.trim() }); return; }
+    if (pi === 0) { const pre = p.slice(0, m.index).trim().replace(/[·:]$/, ''); if (/[a-z]{3,}/i.test(pre) && !/^technique/i.test(pre)) out.variant = pre; }
+    const pct = p.match(/@\s*(\d+)(?:[–-](\d+))?\s*%\s*(BW)?/i);
+    const unit = /\d+\s*s\b/.test(p) ? 's' : /\d+\s*m\b/.test(p) ? 'm' : null;
+    out.groups.push({ sets: +m[1], reps: +m[2], repsHi: m[3] ? +m[3] : null, pctLo: pct ? +pct[1] : null, pctHi: pct && pct[2] ? +pct[2] : null, pctOf: pct && pct[3] ? 'bw' : '1rm', unit, perSide: /\/\s*(side|leg)/.test(p), label: p.trim() });
+  });
+  if (!out.groups.length) out.empty = true;
+  return out;
+}
+function exCategory(code) { return /^A/.test(code) ? 'power' : /^[BC]$/.test(code) ? 'main' : 'acc'; }
+function restFor(code) { const r = state.settings.rest; const c = exCategory(code); return c === 'main' ? r.main : c === 'power' ? r.power : r.acc; }
+
+/* ---------- History: bests, maxes, prefill ---------- */
+function exName(sess, i) { return sess.ex[i][1]; }
+function allSetsFor(name) {
+  const rows = [];
+  Object.values(state.sessions).forEach(s => {
+    if (!s.sets) return;
+    Object.keys(s.sets).forEach(k => {
+      const ex = s.exNames && s.exNames[k];
+      if (ex !== name) return;
+      s.sets[k].forEach(st => { if (st.done && st.w > 0 && st.r > 0) rows.push({ w: Number(st.w), r: Number(st.r), d: s.date, at: st.at || 0 }); });
+    });
+  });
+  state.lifts.forEach(l => { if (l.lift === name && l.w > 0 && l.r > 0) rows.push({ w: Number(l.w), r: Number(l.r), d: l.d, at: 0 }); });
+  return rows;
+}
+function bestsFor(name) {
+  const rows = allSetsFor(name);
+  let best = null;
+  rows.forEach(x => { const e = e1rm(x.w, x.r); if (!best || e > best.e) best = { ...x, e }; });
+  const manual = state.maxes[name] ? Number(state.maxes[name]) : null;
+  const e1 = best ? (manual ? Math.max(best.e, manual) : best.e) : manual;
+  return { rows, best, manual, e1 };
+}
+function bestAtReps(rows, r) { let b = null; rows.forEach(x => { if (x.r >= r && (!b || x.w > b.w)) b = x; }); return b; }
+function lastSessionSets(name, excludeKey) {
+  let latest = null;
+  Object.values(state.sessions).forEach(s => {
+    if (s.key === excludeKey || !s.sets) return;
+    Object.keys(s.sets).forEach(k => { if (s.exNames && s.exNames[k] === name) { const done = s.sets[k].filter(x => x.done); if (done.length && (!latest || s.date > latest.date)) latest = { date: s.date, sets: done }; } });
+  });
+  return latest;
+}
+function targetLb(g, e1) {
+  if (!g.pctLo) return null;
+  const base = g.pctOf === 'bw' ? latestBw() : e1;
+  if (!base) return null;
+  const lo = round5(base * g.pctLo / 100), hi = g.pctHi ? round5(base * g.pctHi / 100) : null;
+  return { lo, hi };
+}
+
+/* ---------- Rendering: top context ---------- */
+function renderCtx() {
+  const wk = currentWeek(), best = bestSpeed();
+  $('#ctx').innerHTML = '<b>' + esc(weekLabel(wk)) + '</b>' + (best ? 'best ' + best + ' mph' : 'baseline 190–195');
+}
+
+/* ---------- Today ---------- */
+function sessionsOn(wk, day) { if (wk === 0 || wk < 0 || wk > PLAN.testWeek) return []; return sessionsFor(wk, day, blockOf(wk)) || []; }
+function sessionStatus(key) { const s = state.sessions[key]; if (s && s.finishedAt) return 'done'; if (state.checks[key]) return 'done'; if (s && s.startedAt) return 'started'; return 'todo'; }
+function sessionCardHTML(sess, key, wk, block, opts) {
+  opts = opts || {};
+  const st = sessionStatus(key), done = st === 'done';
+  const kind = sess.kind;
+  const time = sessionTime(sess);
+  const tags = '<span class="pill ' + kind + '">' + (kind === 'gym' ? 'Gym' : kind === 'speed' ? 'Speed' : kind === 'test' ? 'Test' : 'Rest') + '</span>' + (sess.dur ? '<span class="pill">' + esc(sess.dur) + '</span>' : '') + (time && kind !== 'rest' ? '<span class="time">' + fmtTime(time) + '</span>' : '');
+  const startable = kind !== 'rest';
+  const rec = state.sessions[key];
+  let sub = '';
+  if (done && rec && rec.finishedAt) sub = '<div class="desc" style="color:var(--good)">Done · ' + summarizeSession(rec) + '</div>';
+  let body = '';
+  if (kind === 'gym' && sess.ex) body = rxTable(sess, block, isDeload(wk)) ;
+  else if (kind === 'speed' && sess.steps) body = '<ol class="steps">' + (sess.steps[Math.max(0, block - 1)] || []).map(s => '<li>' + s + '</li>').join('') + '</ol>' + (isDeload(wk) ? '<div class="note" style="margin-top:10px"><strong>' + esc(sess.deload) + '</strong></div>' : '');
+  return '<div class="sess' + (done ? ' done' : '') + '" data-key="' + esc(key) + '"><div class="top-r">' +
+    '<button class="chk" role="checkbox" aria-checked="' + done + '" aria-label="Mark done" data-chk="' + esc(key) + '"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button>' +
+    '<div class="t"><div class="name">' + esc(sess.name) + '</div><div class="desc">' + esc(sess.desc) + '</div>' + sub + '<div class="tags">' + tags + '</div></div></div>' +
+    (startable ? '<div class="act"><button class="btn sm' + (done ? ' ghost' : '') + '" data-start="' + esc(key) + '">' + (done ? 'Review' : st === 'started' ? 'Resume' : 'Start') + '</button>' + (opts.showDetails !== false && body ? '' : '') + '</div>' : '') +
+    (body ? '<details><summary>Session details</summary><div class="more">' + body + '</div></details>' : '') + '</div>';
+}
+function summarizeSession(rec) {
+  if (rec.speedSets && rec.speedSets.length) { const peak = Math.max(...rec.speedSets.map(s => s.peak || 0)); return rec.speedSets.length + (rec.speedSets.length === 1 ? ' set · peak ' : ' sets · peak ') + peak.toFixed(1) + ' mph'; }
+  if (rec.finisher && rec.finisher.chs) return 'peak club ' + rec.finisher.chs + ' mph';
+  if (rec.sets) { const n = Object.values(rec.sets).reduce((a, arr) => a + arr.filter(x => x.done).length, 0); return n + ' sets logged'; }
+  return 'checked off';
+}
+function rxTable(sess, block, deload) {
+  const bi = Math.max(0, block - 1);
+  let h = '<p class="eyebrow" style="margin-bottom:4px">Warm-up</p><p style="font-size:13.5px;color:var(--ink-2);margin-bottom:10px">' + esc(sess.warm) + '</p>';
+  h += '<div class="tbl-wrap"><table class="xt"><thead><tr><th></th><th>Exercise</th><th>This block</th></tr></thead><tbody>';
+  sess.ex.forEach(r => { h += '<tr><td class="code">' + r[0] + '</td><td>' + esc(r[1]) + (r[5] ? '<span class="sub">' + esc(r[5]) + '</span>' : '') + '</td><td class="rx now">' + esc(r[2 + bi]) + '</td></tr>'; });
+  h += '</tbody></table></div>';
+  if (deload) h += '<div class="note" style="margin-top:10px"><strong>' + esc(sess.deload) + '</strong></div>';
+  return h;
+}
+function weekStats(wk) {
+  const keys = [];
+  if (wk === 0) WEEK0.forEach(it => keys.push(it.id));
+  else DAYS.forEach(day => sessionsOn(wk, day).forEach(s => { if (s.kind !== 'rest') keys.push(checkKey(wk, day, s.id)); }));
+  const done = keys.filter(k => sessionStatus(k) === 'done').length;
+  return { keys, done, total: keys.length };
+}
+function renderToday() {
+  const now = new Date(), today = iso(now), wk = weekOf(now), day = dayKeyOf(now), block = blockOf(wk);
+  const root = $('#v-today');
+  const ws = weekStats(wk < 0 ? 0 : wk > PLAN.testWeek ? PLAN.testWeek : wk);
+  let h = '<div class="today-h"><div class="d"><small>' + DAYS_LONG[day] + '</small>' + fmtShort(now) + '</div><div class="wk"><b>' + esc(weekLabel(Math.max(0, Math.min(wk, PLAN.testWeek)))) + '</b>' + esc(weekSub(Math.max(0, Math.min(wk, PLAN.testWeek)))) + '</div></div>';
+  const best = bestSpeed(), avg = bwAvg(7);
+  h += '<div class="strip"><div><div class="k">Best ball</div><div class="v">' + (best ? best + '<small>mph</small>' : '—') + '</div><div class="n">' + (best ? '+' + (best - 192.5).toFixed(1) + ' vs baseline' : 'log a session') + '</div></div>' +
+    '<div><div class="k">Weight 7-day</div><div class="v">' + (avg ? avg.toFixed(1) + '<small>lb</small>' : '—') + '</div><div class="n">' + (avg ? ((avg - PLAN.bwStart >= 0 ? '+' : '') + (avg - PLAN.bwStart).toFixed(1) + ' · target 213') : 'weigh in') + '</div></div>' +
+    '<div><div class="k">This week</div><div class="v">' + ws.done + '<small>/ ' + ws.total + '</small></div><div class="n">sessions done</div></div></div>';
+  if (wk < 0) { h += '<div class="callout"><p>Program starts Monday Sep 14. Week 0 (baseline) runs Sep 7–13 — open the Week tab to see it.</p></div>'; }
+  else if (wk > PLAN.testWeek) { h += '<div class="callout good"><p><strong>Phase 1 is complete.</strong> Your logs are in the Log tab; export them from More and we build Phase 2 from the December numbers.</p></div>'; }
+  else if (wk === 0) {
+    h += '<div class="callout" style="margin-bottom:12px"><p><strong>Week 0.</strong> Baseline and setup. Everything below feeds the milestones — don\'t skip the speed test.</p></div><div class="sessions">' +
+      WEEK0.map(it => { const k = it.id, done = sessionStatus(k) === 'done'; return '<div class="sess' + (done ? ' done' : '') + '"><div class="top-r"><button class="chk" role="checkbox" aria-checked="' + done + '" aria-label="Mark done" data-chk="' + k + '"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button><div class="t"><div class="name">' + esc(it.name) + '</div><div class="desc">' + esc(it.desc) + '</div></div></div></div>'; }).join('') + '</div>';
+  } else {
+    const list = sessionsOn(wk, day);
+    if (isDeload(wk) && day === 'mon') h += '<div class="callout warn" style="margin-bottom:12px"><p><strong>Deload week.</strong> 3×5 at 65–70% on main lifts, 2 sets on accessories, 1 overspeed round. Saturday is a retest.</p></div>';
+    if (isTaper(wk) && day === 'mon') h += '<div class="callout warn" style="margin-bottom:12px"><p><strong>Taper.</strong> Same loads, ~40% fewer sets. Sleep is the training this week.</p></div>';
+    const rest = list.every(s => s.kind === 'rest');
+    h += '<div class="sessions' + (rest ? ' rest' : '') + '">' + list.map(s => sessionCardHTML(s, checkKey(wk, day, s.id), wk, block)).join('') + '</div>';
+  }
+  const hasWeighToday = state.weight.some(e => e.d === today);
+  h += '<form class="quick" id="q-weight"><label>Morning weight (lb)' + (hasWeighToday ? ' · logged' : '') + '<input type="number" step="0.1" min="150" max="300" inputmode="decimal" name="lbs" placeholder="' + (latestBw() || 200) + '"></label><button class="btn sm" type="submit">Log</button></form>';
+  // tomorrow
+  const tm = addDays(now, 1), twk = weekOf(tm), tday = dayKeyOf(tm);
+  if (twk >= 1 && twk <= PLAN.testWeek) {
+    const tl = sessionsOn(twk, tday);
+    h += '<div class="tomorrow"><div class="eyebrow">Tomorrow · ' + DAYS_LONG[tday] + ' ' + fmtShort(tm) + (twk !== wk ? ' · ' + weekLabel(twk) : '') + '</div><ul>' + tl.map(s => '<li><span class="tm">' + (s.kind === 'rest' ? '—' : fmtTime(sessionTime(s))) + '</span><span>' + esc(s.name) + '</span></li>').join('') + '</ul></div>';
+  }
+  if (day === 'sun' && wk >= 1 && wk <= PLAN.testWeek) h += reviewCard(wk);
+  root.innerHTML = h;
+  bindSessionButtons(root);
+  $('#q-weight').onsubmit = ev => { ev.preventDefault(); const v = Number(ev.target.lbs.value); if (!v) return; state.weight = state.weight.filter(e => e.d !== today); state.weight.push({ id: 'w' + Date.now(), d: today, lbs: v }); save('Weight logged'); renderAll(); };
+}
+function bindSessionButtons(root) {
+  $$('[data-chk]', root).forEach(b => b.addEventListener('click', () => {
+    const k = b.dataset.chk;
+    if (sessionStatus(k) === 'done') { delete state.checks[k]; if (state.sessions[k]) state.sessions[k].finishedAt = null; save('Unchecked'); }
+    else { state.checks[k] = true; save('Done'); }
+    renderAll();
+  }));
+  $$('[data-start]', root).forEach(b => b.addEventListener('click', () => openSession(b.dataset.start)));
+}
+function reviewCard(wk) {
+  const ws = weekStats(wk), avg = bwAvg(7);
+  const start = weekStart(wk), end = addDays(start, 6);
+  const wkSpeed = state.speed.filter(e => e.d >= iso(start) && e.d <= iso(end)).reduce((m, e) => Math.max(m, Number(e.ball) || 0), 0);
+  const prevBest = state.speed.filter(e => e.d < iso(start)).reduce((m, e) => Math.max(m, Number(e.ball) || 0), 0);
+  const wtRows = state.weight.filter(e => e.d >= iso(start) && e.d <= iso(end));
+  const wtPrev = state.weight.filter(e => e.d >= iso(addDays(start, -7)) && e.d < iso(start));
+  const wAvg = wtRows.length ? wtRows.reduce((s, e) => s + Number(e.lbs), 0) / wtRows.length : null;
+  const pAvg = wtPrev.length ? wtPrev.reduce((s, e) => s + Number(e.lbs), 0) / wtPrev.length : null;
+  const rate = wAvg && pAvg ? wAvg - pAvg : null;
+  const m = PLAN.milestones.filter(x => x.wk <= wk).pop();
+  let advice = [];
+  if (ws.total && ws.done / ws.total < 0.75) advice.push('Under 75% of sessions done — consistency beats intensity; protect the four gym days first.');
+  if (rate != null && rate > 1.5) advice.push('Gaining faster than 1.5 lb/week — pull 200 kcal at the next adjustment.');
+  if (rate != null && rate < 0.5 && rate > -5) advice.push('Under 0.5 lb/week — add 200 kcal, mostly carbs around training.');
+  if (wkSpeed && prevBest && wkSpeed <= prevBest && wk >= 3 && !isDeload(wk)) advice.push('No new peak this week — check sleep and centre contact before adding swings.');
+  if (isDeload(wk)) advice.push('Deload week: expect the peak next week, not this one.');
+  if (!advice.length) advice.push('On track. Keep the loads climbing 2.5–10 lb a week inside the block and the swing count at the ceiling, not above it.');
+  return '<div class="review"><h3>Weekly review <span>' + esc(weekLabel(wk)) + '</span></h3><div class="kv">' +
+    '<div><b>' + ws.done + ' / ' + ws.total + '</b><small>sessions done</small></div>' +
+    '<div><b>' + (wkSpeed ? wkSpeed.toFixed(1) + ' mph' : '—') + '</b><small>best ball speed this week' + (m ? ' · target ' + m.lo + '–' + m.hi : '') + '</small></div>' +
+    '<div><b>' + (wAvg ? wAvg.toFixed(1) + ' lb' : '—') + '</b><small>avg weight this week</small></div>' +
+    '<div><b>' + (rate != null ? (rate >= 0 ? '+' : '') + rate.toFixed(1) + ' lb' : '—') + '</b><small>vs last week</small></div></div>' +
+    '<p>' + esc(advice.join(' ')) + '</p></div>';
+}
+
+/* ---------- Week view ---------- */
+let viewWeek = currentWeek();
+function renderWeek() {
+  const wk = viewWeek, block = blockOf(wk), today = iso(new Date());
+  const root = $('#v-week');
+  let h = '<div class="weeknav"><button id="wk-prev" aria-label="Previous week"' + (wk === 0 ? ' disabled' : '') + '>‹</button><div class="wk"><b>' + esc(weekLabel(wk)) + '</b><span>' + (wk === 0 ? 'Sep 7 – Sep 13' : wk === PLAN.testWeek ? 'Dec 7 – Dec 13' : fmtShort(weekStart(wk)) + ' – ' + fmtShort(addDays(weekStart(wk), 6))) + ' · ' + esc(weekSub(wk)) + '</span></div>' + (wk !== currentWeek() ? '<button class="today" id="wk-today">Today</button>' : '') + '<button id="wk-next" aria-label="Next week"' + (wk === PLAN.testWeek ? ' disabled' : '') + '>›</button></div>';
+  const ws = weekStats(wk);
+  h += '<div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="' + ws.total + '" aria-valuenow="' + ws.done + '"><i style="width:' + (ws.total ? Math.round(ws.done / ws.total * 100) : 0) + '%"></i></div>';
+  if (wk === 0) {
+    h += '<div class="sessions">' + WEEK0.map(it => { const k = it.id, done = sessionStatus(k) === 'done'; return '<div class="sess' + (done ? ' done' : '') + '"><div class="top-r"><button class="chk" role="checkbox" aria-checked="' + done + '" aria-label="Mark done" data-chk="' + k + '"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button><div class="t"><div class="name">' + esc(it.name) + '</div><div class="desc">' + esc(it.desc) + '</div></div></div></div>'; }).join('') + '</div>';
+  } else {
+    if (isDeload(wk)) h += '<div class="callout warn" style="margin-bottom:12px"><p><strong>Deload week.</strong> Main lifts 3×5 at 65–70%, accessories 2 sets, overspeed 1 round. Saturday is a retest. You will feel like you\'re wasting a week; you are banking the adaptation.</p></div>';
+    if (isTaper(wk)) h += '<div class="callout warn" style="margin-bottom:12px"><p><strong>Taper.</strong> Same exercises, ~40% fewer sets, same loads. Overspeed 1 round. Saturday 2 sets only.</p></div>';
+    if (wk === PLAN.testWeek) h += '<div class="callout" style="margin-bottom:12px"><p><strong>Test week.</strong> Wednesday and Saturday are measured. Eat at maintenance-plus, nothing new, caffeine 45 min before.</p></div>';
+    const wsd = weekStart(wk);
+    DAYS.forEach((day, i) => {
+      const d = addDays(wsd, i), di = iso(d), list = sessionsOn(wk, day), rest = list.every(s => s.kind === 'rest');
+      h += '<div class="day' + (di === today ? ' today' : '') + (rest ? ' rest' : '') + '"><div class="dlabel"><b>' + DAY_LABEL[day] + '</b><span>' + fmtShort(d) + '</span></div><div class="sessions">' + list.map(s => sessionCardHTML(s, checkKey(wk, day, s.id), wk, block)).join('') + '</div></div>';
+    });
+  }
+  root.innerHTML = h;
+  $('#wk-prev').onclick = () => { viewWeek = Math.max(0, viewWeek - 1); renderWeek(); window.scrollTo({ top: 0 }); };
+  $('#wk-next').onclick = () => { viewWeek = Math.min(PLAN.testWeek, viewWeek + 1); renderWeek(); window.scrollTo({ top: 0 }); };
+  const tb = $('#wk-today'); if (tb) tb.onclick = () => { viewWeek = currentWeek(); renderWeek(); };
+  bindSessionButtons(root);
+}
+
+/* ---------- Session overlay ---------- */
+let active = null;       // { key, wk, day, sess, block, exIdx }
+let wakeLock = null;
+function findSession(key) {
+  const m = key.match(/^w(\d+)-(\w+)-(.+)$/);
+  if (!m) return null;
+  const wk = +m[1], day = m[2], id = m[3];
+  const list = sessionsOn(wk, day);
+  const sess = list.find(s => s.id === id);
+  return sess ? { wk, day, sess, block: blockOf(wk) } : null;
+}
+async function requestWake() { try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); } catch (e) {} }
+function releaseWake() { try { if (wakeLock) { wakeLock.release(); wakeLock = null; } } catch (e) {} }
+function openSession(key) {
+  const f = findSession(key);
+  if (!f) return;
+  let rec = state.sessions[key];
+  if (!rec) {
+    rec = { key, id: f.sess.id, wk: f.wk, day: f.day, date: iso(addDays(weekStart(f.wk), DAYS.indexOf(f.day))), startedAt: Date.now(), finishedAt: null, sets: {}, exNames: {}, exDone: {}, steps: {}, speedSets: [], finisher: {} };
+    if (f.sess.ex) f.sess.ex.forEach((r, i) => { rec.exNames[i] = r[1]; });
+    state.sessions[key] = rec;
+  }
+  if (!rec.startedAt) rec.startedAt = Date.now();
+  state.activeKey = key;
+  active = { key, ...f, exIdx: firstOpenExercise(f.sess, rec) };
+  save();
+  $('#ov').classList.add('on');
+  document.body.style.overflow = 'hidden';
+  requestWake();
+  renderSession();
+}
+function firstOpenExercise(sess, rec) { if (!sess.ex) return 0; for (let i = 0; i < sess.ex.length; i++) if (!rec.exDone[i]) return i; return 0; }
+function closeSession() {
+  $('#ov').classList.remove('on'); document.body.style.overflow = '';
+  active = null; state.activeKey = null; save(); releaseWake(); stopTimer(); renderAll();
+}
+$('#ov-close').addEventListener('click', closeSession);
+function finishSession() {
+  const rec = state.sessions[active.key];
+  rec.finishedAt = Date.now(); state.checks[active.key] = true;
+  if (active.sess.kind === 'speed' || active.sess.kind === 'test') {
+    const peak = rec.speedSets.length ? Math.max(...rec.speedSets.map(s => s.peak || 0)) : 0;
+    const chs = rec.finisher && rec.finisher.chs ? Number(rec.finisher.chs) : null;
+    if (peak || chs) {
+      const top3 = rec.speedSets.length ? Math.max(...rec.speedSets.map(s => s.top3 || 0)) : 0;
+      const gridIn = rec.speedSets.reduce((a, s) => a + s.balls.filter(b => b.grid).length, 0), gridN = rec.speedSets.reduce((a, s) => a + s.balls.filter(b => b.v > 0).length, 0);
+      const note = active.sess.short + (rec.speedSets.length ? ' · ' + rec.speedSets.length + (rec.speedSets.length === 1 ? ' set · top-3 ' : ' sets · top-3 ') + top3.toFixed(1) + (gridN ? ' · grid ' + gridIn + '/' + gridN : '') : '');
+      state.speed = state.speed.filter(e => e.sessionKey !== active.key);
+      state.speed.push({ id: 's' + Date.now(), d: rec.date, ball: peak || null, chs, note, sessionKey: active.key });
+    }
+  }
+  save('Session complete');
+  closeSession();
+}
+function renderSession() {
+  if (!active) return;
+  const { sess, wk, block } = active, rec = state.sessions[active.key];
+  $('#ov-title').textContent = sess.name;
+  $('#ov-sub').textContent = weekLabel(wk) + ' · ' + DAYS_LONG[active.day] + (isDeload(wk) ? ' · deload' : isTaper(wk) ? ' · taper' : '');
+  const body = $('#ov-body'), foot = $('#ov-foot');
+  if (sess.kind === 'gym' && sess.ex) renderGymSession(body, foot, sess, rec, block);
+  else renderSpeedSession(body, foot, sess, rec, block);
+}
+function renderGymSession(body, foot, sess, rec, block) {
+  const bi = Math.max(0, block - 1), i = active.exIdx, r = sess.ex[i];
+  const rx = parseRx(r[2 + bi]);
+  const name = r[1], bests = bestsFor(name);
+  let h = '<div class="exnav">' + sess.ex.map((x, j) => '<button data-ex="' + j + '" aria-selected="' + (j === i) + '"' + (rec.exDone[j] ? ' class="done"' : '') + '>' + x[0] + '</button>').join('') + '</div>';
+  if (i === 0) h += '<div class="note" style="margin-bottom:12px"><strong>Warm-up.</strong> ' + esc(sess.warm) + '</div>';
+  h += '<div class="exhead"><div class="code">' + r[0] + ' · ' + (exCategory(r[0]) === 'main' ? 'main lift' : exCategory(r[0]) === 'power' ? 'power' : 'accessory') + ' · rest ' + mmss(restFor(r[0])) + '</div><h2>' + esc(rx.variant || name) + '</h2><div class="rx">' + esc(r[2 + bi]) + '</div>' + (r[5] ? '<div class="cue">' + esc(r[5]) + '</div>' : '') + '</div>';
+  if (isDeload(active.wk)) h += '<div class="callout warn" style="margin-bottom:10px;font-size:13.5px"><p>' + esc(sess.deload) + '</p></div>';
+  if (isTaper(active.wk)) h += '<div class="callout warn" style="margin-bottom:10px;font-size:13.5px"><p>Taper: cut about 40% of the sets below. Same loads.</p></div>';
+  if (rx.empty) {
+    h += '<div class="note">Not programmed in this block. Skip ahead.</div>';
+    body.innerHTML = h;
+  } else {
+    const g0 = rx.groups[0];
+    const tgt = targetLb(g0, bests.e1);
+    const bar = bests.best ? bestAtReps(bests.rows, g0.reps || 1) : null;
+    const beatW = bar ? bar.w + 5 : (bests.e1 && g0.reps ? round5(bests.e1 / (1 + g0.reps / 30)) : null);
+    h += '<div class="beat">' +
+      '<div><div class="k">Best so far</div><div class="v">' + (bests.best ? bests.best.w + ' × ' + bests.best.r + ' <small>e1RM ' + Math.round(bests.best.e) + '</small>' : bests.manual ? '<small>max</small> ' + bests.manual : '<small>nothing logged yet</small>') + '</div></div>' +
+      '<div class="hi"><div class="k">' + (bar ? 'Beat it' : tgt ? 'Target' : 'Today') + '</div><div class="v">' + (bar ? beatW + ' × ' + (g0.reps || bar.r) : tgt ? (tgt.hi ? tgt.lo + '–' + tgt.hi : tgt.lo) + ' lb' : beatW ? beatW + ' × ' + g0.reps : '<small>log a set</small>') + '</div></div></div>';
+    if (!bests.e1 && exCategory(r[0]) === 'main') h += '<form class="maxin" data-max="' + esc(name) + '"><label>Current 1RM for ' + esc(name) + ' (lb, optional)<input type="number" step="5" min="0" inputmode="decimal" placeholder="e.g. 365"></label><button class="btn sm" type="submit">Set</button></form>';
+    const last = lastSessionSets(name, active.key);
+    // build set rows
+    if (rec.sets[i] && !rec.sets[i].some(x => x.done) && rec.sets[i].every(x => x.w === '' || x.w == null)) delete rec.sets[i];
+    if (!rec.sets[i]) {
+      const rows = [];
+      rx.groups.forEach(g => { for (let s = 0; s < g.sets; s++) { const li = rows.length; const lw = last && last.sets[li] ? last.sets[li].w : null; const t = targetLb(g, bests.e1); rows.push({ w: lw != null ? lw : (t ? t.lo : ''), r: g.reps || (last && last.sets[li] ? last.sets[li].r : ''), done: false, at: 0, lbl: (g.pctLo ? '@' + g.pctLo + (g.pctHi ? '–' + g.pctHi : '') + '%' : '') }); } });
+      rec.sets[i] = rows;
+    }
+    const rows = rec.sets[i];
+    h += '<div class="sets">' + rows.map((st, k) => '<div class="setrow' + (st.done ? ' done' : '') + '" data-set="' + k + '"><div class="i">' + (k + 1) + (st.lbl ? '<br><span style="font-size:10px">' + esc(st.lbl) + '</span>' : '') + '</div><label>' + (g0.pctOf === 'bw' ? 'Load' : 'Weight') + '<input type="number" step="2.5" min="0" inputmode="decimal" value="' + esc(st.w) + '" data-f="w"></label><label>' + (g0.unit === 's' ? 'Seconds' : g0.unit === 'm' ? 'Metres' : 'Reps') + (g0.perSide ? ' / side' : '') + '<input type="number" step="1" min="0" inputmode="numeric" value="' + esc(st.r) + '" data-f="r"></label><button class="lg" aria-label="Log set ' + (k + 1) + '" data-log="' + k + '"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button></div>').join('') + '</div>';
+    h += '<div class="exfoot"><button class="btn ghost sm" id="ex-addset">+ Add set</button>' + (last ? '<span style="font-size:12.5px;color:var(--muted);align-self:center">Last time (' + esc(last.date) + '): ' + last.sets.map(s => s.w + '×' + s.r).join(', ') + '</span>' : '') + '</div>';
+    body.innerHTML = h;
+    $$('.setrow input', body).forEach(inp => inp.addEventListener('change', () => { const row = inp.closest('.setrow'), k = +row.dataset.set; rec.sets[i][k][inp.dataset.f] = inp.value === '' ? '' : Number(inp.value); save(); }));
+    $$('[data-log]', body).forEach(b => b.addEventListener('click', () => {
+      const k = +b.dataset.log, row = b.closest('.setrow'), st = rec.sets[i][k];
+      const w = row.querySelector('[data-f="w"]').value, rr = row.querySelector('[data-f="r"]').value;
+      st.w = w === '' ? '' : Number(w); st.r = rr === '' ? '' : Number(rr);
+      if (st.done) { st.done = false; st.at = 0; save(); renderSession(); return; }
+      st.done = true; st.at = Date.now();
+      const allDone = rec.sets[i].every(x => x.done);
+      if (allDone) rec.exDone[i] = true;
+      save();
+      const nextSet = rec.sets[i].findIndex((x, idx) => !x.done && idx > k);
+      // carry weight forward to the next empty set
+      if (nextSet >= 0 && (rec.sets[i][nextSet].w === '' || rec.sets[i][nextSet].w == null)) rec.sets[i][nextSet].w = st.w;
+      startTimer(restFor(r[0]), allDone ? 'Rest, then next exercise' : 'Rest before set ' + (nextSet + 1), rx.variant || name);
+      renderSession();
+    }));
+    $('#ex-addset').onclick = () => { const l = rows[rows.length - 1]; rows.push({ w: l ? l.w : '', r: l ? l.r : '', done: false, at: 0, lbl: '' }); save(); renderSession(); };
+    const mf = $('[data-max]', body); if (mf) mf.onsubmit = ev => { ev.preventDefault(); const v = Number(mf.querySelector('input').value); if (v > 0) { state.maxes[name] = v; save('Max saved'); renderSession(); } };
+  }
+  $$('[data-ex]', body).forEach(b => b.addEventListener('click', () => { active.exIdx = +b.dataset.ex; renderSession(); $('.ovb').scrollTo({ top: 0 }); }));
+  const isLast = i === sess.ex.length - 1;
+  const doneCount = Object.keys(rec.exDone).filter(k => rec.exDone[k]).length;
+  foot.innerHTML = '<button class="btn ghost" id="ex-skip">' + (rec.exDone[i] ? 'Done ✓' : 'Mark done') + '</button>' + (isLast ? '<button class="btn good" id="ex-finish">Finish session (' + doneCount + '/' + sess.ex.length + ')</button>' : '<button class="btn" id="ex-next">Next exercise ›</button>');
+  $('#ex-skip').onclick = () => { rec.exDone[i] = !rec.exDone[i]; save(); renderSession(); };
+  const nx = $('#ex-next'); if (nx) nx.onclick = () => { active.exIdx = Math.min(sess.ex.length - 1, i + 1); renderSession(); $('.ovb').scrollTo({ top: 0 }); };
+  const fn = $('#ex-finish'); if (fn) fn.onclick = finishSession;
+}
+
+/* ---------- Rest timer ---------- */
+let timerEnd = 0, timerInt = null, timerOverAt = 0;
+function startTimer(sec, label, name) {
+  timerEnd = Date.now() + sec * 1000; timerOverAt = 0;
+  const t = $('#timer'); t.classList.add('on'); t.classList.remove('over');
+  $('#timer-l').textContent = label; $('#timer-n').textContent = name;
+  vibrate(30);
+  clearInterval(timerInt); timerInt = setInterval(tickTimer, 250); tickTimer();
+}
+function tickTimer() {
+  const left = (timerEnd - Date.now()) / 1000;
+  const t = $('#timer');
+  if (left <= 0) {
+    if (!timerOverAt) { timerOverAt = Date.now(); t.classList.add('over'); $('#timer-t').textContent = 'GO'; $('#timer-l').textContent = 'Rest over'; vibrate([200, 100, 200, 100, 400]); beep(3); }
+    if (Date.now() - timerOverAt > 8000) stopTimer();
+    return;
+  }
+  $('#timer-t').textContent = mmss(left);
+  if (left <= 10.2 && left > 9.8) { vibrate(60); beep(1); }
+}
+function stopTimer() { clearInterval(timerInt); timerInt = null; $('#timer').classList.remove('on', 'over'); }
+$('#timer-add').addEventListener('click', () => { if (timerOverAt) { timerOverAt = 0; $('#timer').classList.remove('over'); timerEnd = Date.now() + 30000; } else timerEnd += 30000; tickTimer(); });
+$('#timer-skip').addEventListener('click', stopTimer);
+
+/* ---------- Speed session ---------- */
+let clockEnd = 0, clockInt = null;
+function speedSetCount(sess, wk) {
+  const block = blockOf(wk);
+  if (sess.id.startsWith('tw-')) return (sess.id === 'tw-wed' || sess.id === 'tw-sat') ? 4 : 0;
+  if (isDeload(wk)) return sess.id === 'speedC' ? 2 : 0;
+  if (sess.id === 'speedB') return isTaper(wk) ? 2 : block === 3 ? 4 : 3;
+  if (sess.id === 'speedC') return isTaper(wk) ? 2 : block === 1 ? 4 : 5;
+  return 0;
+}
+function renderSpeedSession(body, foot, sess, rec, block) {
+  const bi = Math.max(0, block - 1);
+  const steps = sess.steps ? (sess.steps[bi] || []) : (sess.desc ? [sess.desc] : []);
+  const nSets = speedSetCount(sess, active.wk), hasClock = nSets > 0, hasFinisher = sess.id === 'speedA' || sess.id === 'tw-mon';
+  let h = '';
+  if (isDeload(active.wk) && sess.deload) h += '<div class="callout warn" style="margin-bottom:12px;font-size:13.5px"><p>' + esc(sess.deload) + '</p></div>';
+  if (steps.length) h += '<p class="eyebrow" style="margin-bottom:4px">Protocol</p><ul class="chkl">' + steps.map((s, k) => '<li' + (rec.steps[k] ? ' class="done"' : '') + '><button class="chk" role="checkbox" aria-checked="' + !!rec.steps[k] + '" data-step="' + k + '" aria-label="Step done"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button><span>' + s + '</span></li>').join('') + '</ul>';
+  if (hasFinisher) {
+    h += '<p class="eyebrow" style="margin-bottom:4px">Radar finisher</p><form class="maxin" id="fin"><label>Peak club speed today (mph)<input type="number" step="0.1" min="80" max="200" inputmode="decimal" value="' + esc(rec.finisher.chs || '') + '" placeholder="131.4"></label><button class="btn sm" type="submit">Save</button></form>';
+  }
+  if (hasClock) {
+    const cur = rec.cur || { balls: [], grid: [] };
+    h += '<p class="eyebrow" style="margin-bottom:6px">Competition sets · ' + rec.speedSets.length + ' of ' + nSets + ' logged</p>';
+    h += '<div class="clock"><div class="lbl">Set clock</div><div class="big" id="clock-t">' + mmss(state.settings.clock) + '</div><div class="row"><button class="btn sm" id="clock-start">Start ' + mmss(state.settings.clock) + '</button><button class="btn ghost sm" id="clock-reset">Reset</button></div></div>';
+    h += '<div class="balls">' + [0,1,2,3,4,5].map(k => '<div class="ball"><div class="k">Ball ' + (k + 1) + '</div><input type="number" step="0.1" min="100" max="260" inputmode="decimal" data-ball="' + k + '" value="' + esc(cur.balls[k] || '') + '" placeholder="mph"><div class="g"><button data-grid="' + k + '" aria-pressed="' + !!cur.grid[k] + '">' + (cur.grid[k] ? 'In grid' : 'Grid?') + '</button></div></div>').join('') + '</div>';
+    h += '<div class="row" style="margin-bottom:14px"><button class="btn" id="set-save">Save set ' + (rec.speedSets.length + 1) + '</button><button class="btn ghost sm" id="set-clear">Clear balls</button></div>';
+    if (rec.speedSets.length) {
+      const peak = Math.max(...rec.speedSets.map(s => s.peak)), top3 = Math.max(...rec.speedSets.map(s => s.top3));
+      h += '<div class="beat"><div class="hi"><div class="k">Session peak</div><div class="v">' + peak.toFixed(1) + ' <small>mph</small></div></div><div><div class="k">Best top-3 avg</div><div class="v">' + top3.toFixed(1) + ' <small>mph</small></div></div></div>';
+      h += '<ul class="setsum">' + rec.speedSets.map((s, k) => '<li><span class="n">Set ' + (k + 1) + '</span><span class="v"><b>' + s.peak.toFixed(1) + '</b> peak · top-3 ' + s.top3.toFixed(1) + ' · ' + s.balls.filter(b => b.grid).length + '/' + s.balls.filter(b => b.v > 0).length + ' grid</span><button class="x" data-delset="' + k + '" aria-label="Delete set" style="border:0;background:transparent;color:var(--muted);font-size:16px;cursor:pointer">×</button></li>').join('') + '</ul>';
+      if (rec.speedSets.length >= 2) { const last = rec.speedSets[rec.speedSets.length - 1], bestAvg = Math.max(...rec.speedSets.map(s => s.avg)); if (last.avg < bestAvg * 0.97) h += '<div class="callout crit" style="font-size:13.5px"><p><strong>Stop rule.</strong> Last set averaged more than 3% below your best set. Finish here — speed under fatigue is where obliques get hurt.</p></div>'; }
+    }
+  }
+  body.innerHTML = h;
+  $$('[data-step]', body).forEach(b => b.addEventListener('click', () => { const k = b.dataset.step; rec.steps[k] = !rec.steps[k]; save(); renderSession(); }));
+  const fin = $('#fin'); if (fin) fin.onsubmit = ev => { ev.preventDefault(); const v = Number(fin.querySelector('input').value); rec.finisher.chs = v > 0 ? v : null; save(v > 0 ? 'Peak saved' : ''); renderSession(); };
+  if (hasClock) {
+    rec.cur = rec.cur || { balls: [], grid: [] };
+    $$('[data-ball]', body).forEach(inp => inp.addEventListener('input', () => { rec.cur.balls[+inp.dataset.ball] = inp.value === '' ? '' : Number(inp.value); save(); }));
+    $$('[data-grid]', body).forEach(b => b.addEventListener('click', () => { const k = +b.dataset.grid; rec.cur.grid[k] = !rec.cur.grid[k]; b.setAttribute('aria-pressed', String(!!rec.cur.grid[k])); b.textContent = rec.cur.grid[k] ? 'In grid' : 'Grid?'; save(); }));
+    $('#clock-start').onclick = () => startClock();
+    $('#clock-reset').onclick = () => { stopClock(); $('#clock-t').textContent = mmss(state.settings.clock); $('#clock-t').className = 'big'; };
+    $('#set-clear').onclick = () => { rec.cur = { balls: [], grid: [] }; save(); renderSession(); };
+    $('#set-save').onclick = () => {
+      const balls = [0,1,2,3,4,5].map(k => ({ v: Number(rec.cur.balls[k]) || 0, grid: !!rec.cur.grid[k] })).filter(b => b.v > 0 || true);
+      const vals = balls.map(b => b.v).filter(v => v > 0).sort((a, b) => b - a);
+      if (!vals.length) { toast('Enter at least one ball speed'); return; }
+      const peak = vals[0], top3 = vals.slice(0, 3).reduce((a, b) => a + b, 0) / Math.min(3, vals.length), avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+      rec.speedSets.push({ balls, peak, top3, avg, at: Date.now() });
+      rec.cur = { balls: [], grid: [] }; stopClock(); save('Set ' + rec.speedSets.length + ' saved · peak ' + peak.toFixed(1)); vibrate(40); renderSession();
+    };
+    $$('[data-delset]', body).forEach(b => b.addEventListener('click', () => { rec.speedSets.splice(+b.dataset.delset, 1); save('Set deleted'); renderSession(); }));
+    if (clockInt) tickClock();
+  }
+  foot.innerHTML = '<button class="btn good" id="sp-finish">Finish session</button>';
+  $('#sp-finish').onclick = finishSession;
+}
+function startClock() { clockEnd = Date.now() + state.settings.clock * 1000; clearInterval(clockInt); clockInt = setInterval(tickClock, 200); tickClock(); vibrate(30); }
+function tickClock() {
+  const el = $('#clock-t'); if (!el) { stopClock(); return; }
+  const left = (clockEnd - Date.now()) / 1000;
+  if (left <= 0) { el.textContent = '0:00'; el.className = 'big over'; if (clockInt) { vibrate([300, 100, 300]); beep(3); } stopClock(); return; }
+  el.textContent = mmss(left); el.className = 'big' + (left <= 30 ? ' warn' : '');
+  if (left <= 30.2 && left > 29.8) { vibrate(80); beep(2); }
+}
+function stopClock() { clearInterval(clockInt); clockInt = null; }
+/* ---------- Charts ---------- */
+function lineChart(el, cfg) {
+  if (!el) return;
+  const narrow = window.innerWidth < 560;
+  const W = narrow ? Math.max(320, Math.min(520, window.innerWidth - 40)) : 700, H = narrow ? 230 : 260, L = 46, R = 18, T = 18, B = 30;
+  const x0 = cfg.xDomain[0].getTime(), x1 = cfg.xDomain[1].getTime();
+  const pts = cfg.points.slice().sort((a, b) => a.x - b.x);
+  let ylo = cfg.yDomain[0], yhi = cfg.yDomain[1];
+  pts.forEach(p => { if (p.y < ylo) ylo = Math.floor(p.y / 5) * 5; if (p.y > yhi) yhi = Math.ceil(p.y / 5) * 5; });
+  (cfg.target || []).forEach(p => { if (p.y > yhi) yhi = Math.ceil(p.y / 5) * 5; if (p.y < ylo) ylo = Math.floor(p.y / 5) * 5; });
+  const sx = t => L + (t - x0) / (x1 - x0) * (W - L - R);
+  const sy = v => T + (yhi - v) / (yhi - ylo) * (H - T - B);
+  const step = cfg.step || 10;
+  let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(cfg.aria) + '">';
+  for (let v = Math.ceil(ylo / step) * step; v <= yhi; v += step) {
+    s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + sy(v) + '" y2="' + sy(v) + '" stroke="var(--line)" stroke-width="1"/>';
+    s += '<text x="' + (L - 8) + '" y="' + (sy(v) + 4) + '" text-anchor="end" font-size="11" font-family="var(--mono)" fill="var(--muted)">' + v + '</text>';
+  }
+  const m0 = new Date(cfg.xDomain[0]); m0.setDate(1);
+  for (let d = new Date(m0.getFullYear(), m0.getMonth() + 1, 1); d.getTime() < x1; d.setMonth(d.getMonth() + 1)) {
+    s += '<text x="' + sx(d.getTime()) + '" y="' + (H - 10) + '" text-anchor="middle" font-size="11" font-family="var(--mono)" fill="var(--muted)">' + MONTHS[d.getMonth()] + ' 1</text>';
+    s += '<line x1="' + sx(d.getTime()) + '" x2="' + sx(d.getTime()) + '" y1="' + (H - B) + '" y2="' + (H - B + 4) + '" stroke="var(--line-strong)"/>';
+  }
+  s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + (H - B) + '" y2="' + (H - B) + '" stroke="var(--line-strong)" stroke-width="1"/>';
+  if (cfg.stretch != null && cfg.stretch <= yhi && cfg.stretch >= ylo) {
+    s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + sy(cfg.stretch) + '" y2="' + sy(cfg.stretch) + '" stroke="var(--line-strong)" stroke-width="1"/>';
+    s += '<text x="' + (W - R) + '" y="' + (sy(cfg.stretch) - 5) + '" text-anchor="end" font-size="11" fill="var(--muted)">' + esc(cfg.stretchLabel) + '</text>';
+  }
+  if (cfg.target && cfg.target.length) s += '<path d="' + cfg.target.map((p, i) => (i ? 'L' : 'M') + sx(p.x).toFixed(1) + ' ' + sy(p.y).toFixed(1)).join(' ') + '" fill="none" stroke="var(--target)" stroke-width="1.5" stroke-dasharray="5 4" stroke-linejoin="round"/>';
+  if (pts.length) {
+    const path = pts.map((p, i) => (i ? 'L' : 'M') + sx(p.x).toFixed(1) + ' ' + sy(p.y).toFixed(1)).join(' ');
+    if (pts.length > 1) s += '<path d="' + path + ' L' + sx(pts[pts.length - 1].x).toFixed(1) + ' ' + (H - B) + ' L' + sx(pts[0].x).toFixed(1) + ' ' + (H - B) + ' Z" fill="var(--series-wash)"/>';
+    s += '<path d="' + path + '" fill="none" stroke="var(--series)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
+    pts.forEach(p => { s += '<circle cx="' + sx(p.x).toFixed(1) + '" cy="' + sy(p.y).toFixed(1) + '" r="4" fill="var(--series)" stroke="var(--surface)" stroke-width="2"/>'; });
+    const last = pts[pts.length - 1], lx = sx(last.x), anchor = lx > W - R - 60 ? 'end' : 'start', dx = anchor === 'end' ? -8 : 8;
+    s += '<text x="' + (lx + dx) + '" y="' + (sy(last.y) - 9) + '" text-anchor="' + anchor + '" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--mono)">' + esc(cfg.fmt(last.y)) + '</text>';
+  } else {
+    s += '<text x="' + (L + (W - L - R) / 2) + '" y="' + (T + (H - T - B) * 0.28) + '" text-anchor="middle" font-size="13" fill="var(--muted)">' + esc(cfg.emptyText) + '</text>';
+  }
+  s += '<line class="xh" x1="0" x2="0" y1="' + T + '" y2="' + (H - B) + '" stroke="var(--line-strong)" stroke-width="1" style="display:none"/></svg>';
+  el.innerHTML = s + '<div class="tip"></div><div class="cl"><span><i></i>' + esc(cfg.seriesLabel) + '</span>' + (cfg.target ? '<span><i class="t"></i>' + esc(cfg.targetLabel) + '</span>' : '') + (cfg.stretch != null ? '<span><i class="s"></i>' + esc(cfg.stretchLabel) + '</span>' : '') + '</div>';
+  const svg = el.querySelector('svg'), tip = el.querySelector('.tip'), xh = el.querySelector('.xh');
+  if (!pts.length) return;
+  const move = ev => {
+    const rect = svg.getBoundingClientRect();
+    const cx = ((ev.touches ? ev.touches[0].clientX : ev.clientX) - rect.left) / rect.width * W;
+    let best = pts[0], bd = Infinity;
+    pts.forEach(p => { const d = Math.abs(sx(p.x) - cx); if (d < bd) { bd = d; best = p; } });
+    const px = sx(best.x), py = sy(best.y);
+    xh.setAttribute('x1', px); xh.setAttribute('x2', px); xh.style.display = '';
+    tip.style.display = 'block'; tip.style.left = (px / W * rect.width) + 'px'; tip.style.top = (py / H * rect.height + 12) + 'px';
+    tip.textContent = fmtShort(new Date(best.x)) + ' · ' + cfg.fmt(best.y) + (best.note ? ' · ' + best.note : '');
+  };
+  const leave = () => { tip.style.display = 'none'; xh.style.display = 'none'; };
+  svg.addEventListener('mousemove', move); svg.addEventListener('touchstart', move, { passive: true }); svg.addEventListener('touchmove', move, { passive: true });
+  svg.addEventListener('mouseleave', leave); svg.addEventListener('touchend', leave);
+}
+function drawCharts() {
+  if (!$('#c-speed')) return;
+  const xd = [new Date(2026, 8, 7), new Date(2026, 11, 13)];
+  lineChart($('#c-speed'), {
+    aria: 'Peak ball speed by session against the milestone line',
+    points: state.speed.filter(e => e.ball).map(e => ({ x: fromIso(e.d).getTime(), y: Number(e.ball), note: e.note })),
+    target: PLAN.milestones.map(m => ({ x: (m.wk === 0 ? addDays(PLAN.start, -1) : addDays(weekStart(m.wk), 6)).getTime(), y: m.mid })),
+    xDomain: xd, yDomain: [185, 230], step: 10, stretch: 225, stretchLabel: '225 stretch', seriesLabel: 'Your peak ball speed', targetLabel: 'Milestone line', fmt: v => v.toFixed(1) + ' mph', emptyText: 'Log a speed session to draw the line'
+  });
+  lineChart($('#c-weight'), {
+    aria: 'Bodyweight over the program against the target line',
+    points: state.weight.map(e => ({ x: fromIso(e.d).getTime(), y: Number(e.lbs) })),
+    target: [{ x: PLAN.start.getTime(), y: PLAN.bwStart }, { x: addDays(weekStart(12), 6).getTime(), y: PLAN.bwTarget }],
+    xDomain: xd, yDomain: [195, 220], step: 5, seriesLabel: 'Morning weight', targetLabel: 'Target (+1 lb/week)', fmt: v => v.toFixed(1) + ' lb', emptyText: 'Weigh in to draw the line'
+  });
+}
+
+/* ---------- Log view ---------- */
+function allExerciseNames() { const set = new Set(); Object.values(GYM).forEach(g => g.ex.forEach(r => set.add(r[1]))); return Array.from(set); }
+function renderLog() {
+  const today = iso(new Date()), root = $('#v-log');
+  const best = bestSpeed(), sp = state.speed.slice().sort((a, b) => a.d < b.d ? 1 : -1), lastSp = sp.find(e => e.ball);
+  const wt = state.weight.slice().sort((a, b) => a.d < b.d ? 1 : -1), avg7 = bwAvg(7);
+  const prev7 = (() => { const arr = wt.slice(7, 14); return arr.length ? arr.reduce((s, e) => s + Number(e.lbs), 0) / arr.length : null; })();
+  const cw = currentWeek();
+  let h = '';
+  if (cw >= 1 && cw <= PLAN.testWeek) h += reviewCard(cw);
+  h += '<section' + (h ? ' style="margin-top:22px"' : '') + '><div class="sec-h"><h2>Ball speed</h2><span class="meta">peak of each session</span></div>' +
+    '<form class="logform" id="f-speed"><label>Date<input type="date" name="d" value="' + today + '" required></label><label>Ball speed (mph)<input type="number" name="ball" step="0.1" min="150" max="260" inputmode="decimal" required placeholder="193.4"></label><label>Club speed (mph)<input type="number" name="chs" step="0.1" min="100" max="180" inputmode="decimal" placeholder="optional"></label><label class="full">Note<input type="text" name="note" maxlength="80" placeholder="Launch monitor at the sim · 4 sets"></label><button class="btn" type="submit">Log speed</button></form>' +
+    '<div class="stats"><div class="stat"><div class="k">Best</div><div class="v">' + (best ? best + '<small>mph</small>' : '—') + '</div></div>' +
+    '<div class="stat"><div class="k">vs baseline</div><div class="v' + (best ? (best - 192.5 >= 0 ? ' up' : ' dn') : '') + '">' + (best ? ((best - 192.5 >= 0 ? '+' : '') + (best - 192.5).toFixed(1) + '<small>mph</small>') : '—') + '</div></div>' +
+    '<div class="stat"><div class="k">Smash (last)</div><div class="v">' + (lastSp && lastSp.chs ? (Number(lastSp.ball) / Number(lastSp.chs)).toFixed(3) : '—') + '</div></div></div>' +
+    '<div class="chart" id="c-speed"></div>' +
+    '<ul class="loglist">' + (sp.length ? sp.slice(0, 40).map(e => '<li><span class="d">' + esc(e.d) + '</span><span class="val">' + (e.ball ? '<b>' + esc(e.ball) + '</b> mph' : '<b>club ' + esc(e.chs) + '</b> mph') + (e.ball && e.chs ? '<span>club ' + esc(e.chs) + ' · smash ' + (Number(e.ball) / Number(e.chs)).toFixed(3) + '</span>' : '') + (e.note ? '<span class="nt">' + esc(e.note) + '</span>' : '') + '</span><button class="x" data-del="speed" data-id="' + esc(e.id) + '" aria-label="Delete entry">×</button></li>').join('') : '<li class="empty">No sessions logged yet. Your Week 0 baseline goes first.</li>') + '</ul></section>';
+
+  h += '<section><div class="sec-h"><h2>Bodyweight</h2><span class="meta">morning, after bathroom, before food</span></div>' +
+    '<form class="logform" id="f-weight"><label>Date<input type="date" name="d" value="' + today + '" required></label><label>Weight (lb)<input type="number" name="lbs" step="0.1" min="150" max="300" inputmode="decimal" required placeholder="200.4"></label><button class="btn" type="submit">Log weight</button></form>' +
+    '<div class="stats"><div class="stat"><div class="k">7-day avg</div><div class="v">' + (avg7 ? avg7.toFixed(1) + '<small>lb</small>' : '—') + '</div></div>' +
+    '<div class="stat"><div class="k">vs prior 7</div><div class="v">' + (avg7 && prev7 ? ((avg7 - prev7 >= 0 ? '+' : '') + (avg7 - prev7).toFixed(1) + '<small>lb</small>') : '—') + '</div></div>' +
+    '<div class="stat"><div class="k">Since start</div><div class="v' + (avg7 ? (avg7 - PLAN.bwStart >= 0 ? ' up' : ' dn') : '') + '">' + (avg7 ? ((avg7 - PLAN.bwStart >= 0 ? '+' : '') + (avg7 - PLAN.bwStart).toFixed(1) + '<small>lb</small>') : '—') + '</div></div></div>' +
+    '<div class="chart" id="c-weight"></div>' +
+    '<p class="note" style="margin-top:10px">Target rate is +0.75 to +1.25 lb per week on the 7-day average. Above +1.5 for two weeks running: pull 200 kcal. Below +0.5: add 200 kcal. Adjust every second Sunday, not daily.</p>' +
+    '<ul class="loglist">' + (wt.length ? wt.slice(0, 14).map(e => '<li><span class="d">' + esc(e.d) + '</span><span class="val"><b>' + esc(e.lbs) + '</b> lb</span><button class="x" data-del="weight" data-id="' + esc(e.id) + '" aria-label="Delete entry">×</button></li>').join('') : '<li class="empty">No weigh-ins yet.</li>') + '</ul></section>';
+
+  // maxes table
+  const names = allExerciseNames();
+  const rows = names.map(n => ({ n, b: bestsFor(n) })).filter(x => x.b.best || x.b.manual);
+  h += '<section><div class="sec-h"><h2>Maxes</h2><span class="meta">best set · estimated 1RM (Epley)</span></div>';
+  if (rows.length) {
+    h += '<div class="tbl-wrap"><table class="maxes"><thead><tr><th>Exercise</th><th>Best set</th><th>e1RM</th><th>Last</th></tr></thead><tbody>' + rows.sort((a, b) => (b.b.e1 || 0) - (a.b.e1 || 0)).map(x => {
+      const last = lastSessionSets(x.n, null);
+      return '<tr><td>' + esc(x.n) + (x.b.manual ? '<span class="sub" style="display:block;font-size:12px;color:var(--muted)">entered max ' + x.b.manual + '</span>' : '') + '</td><td class="n">' + (x.b.best ? x.b.best.w + ' × ' + x.b.best.r + '<br><span style="color:var(--muted);font-size:11px">' + esc(x.b.best.d) + '</span>' : '—') + '</td><td class="n"><b>' + (x.b.e1 ? Math.round(x.b.e1) : '—') + '</b></td><td class="n">' + (last ? last.sets.map(s => s.w + '×' + s.r).join(', ') : '—') + '</td></tr>';
+    }).join('') + '</tbody></table></div>';
+  } else h += '<p class="empty" style="color:var(--muted);font-size:14px">Nothing yet. Every set you log in a session lands here, and the main lifts show a target weight from your estimated 1RM.</p>';
+  h += '<form class="logform" id="f-lift" style="margin-top:12px"><label>Date<input type="date" name="d" value="' + today + '" required></label><label>Exercise<select name="lift">' + names.map(l => '<option>' + esc(l) + '</option>').join('') + '</select></label><label>Weight (lb)<input type="number" name="w" step="2.5" min="0" max="1000" inputmode="decimal" required placeholder="315"></label><label>Reps<input type="number" name="r" step="1" min="1" max="30" inputmode="numeric" required placeholder="6"></label><button class="btn" type="submit">Log a set</button></form>' +
+    (state.lifts.length ? '<ul class="loglist">' + state.lifts.slice().sort((a, b) => a.d < b.d ? 1 : -1).slice(0, 10).map(e => '<li><span class="d">' + esc(e.d) + '</span><span class="val"><b>' + esc(e.lift) + '</b><span>' + esc(e.w) + ' × ' + esc(e.r) + ' · e1RM ' + Math.round(e1rm(Number(e.w), Number(e.r))) + '</span></span><button class="x" data-del="lifts" data-id="' + esc(e.id) + '" aria-label="Delete entry">×</button></li>').join('') + '</ul>' : '') + '</section>';
+  root.innerHTML = h;
+  drawCharts();
+  $('#f-speed').onsubmit = ev => { ev.preventDefault(); const f = new FormData(ev.target); const e = { id: 's' + Date.now(), d: f.get('d'), ball: Number(f.get('ball')), chs: f.get('chs') ? Number(f.get('chs')) : null, note: (f.get('note') || '').trim() }; if (!e.d || !e.ball) return; state.speed.push(e); save('Speed logged'); renderAll(); };
+  $('#f-weight').onsubmit = ev => { ev.preventDefault(); const f = new FormData(ev.target); const e = { id: 'w' + Date.now(), d: f.get('d'), lbs: Number(f.get('lbs')) }; if (!e.d || !e.lbs) return; state.weight = state.weight.filter(x => x.d !== e.d); state.weight.push(e); save('Weight logged'); renderAll(); };
+  $('#f-lift').onsubmit = ev => { ev.preventDefault(); const f = new FormData(ev.target); const e = { id: 'l' + Date.now(), d: f.get('d'), lift: f.get('lift'), w: Number(f.get('w')), r: Number(f.get('r')) }; if (!e.d || !e.w || !e.r) return; state.lifts.push(e); save('Set logged'); renderAll(); };
+  $$('[data-del]', root).forEach(b => b.addEventListener('click', () => { const k = b.dataset.del; state[k] = state[k].filter(x => x.id !== b.dataset.id); save('Deleted'); renderAll(); }));
+}
+
+/* ---------- Plan view (reference) ---------- */
+let planTab = 'program';
+function fullTable(sess, block) {
+  let h = '<div class="daycard"><h3>' + esc(sess.name) + ' <span class="pill">' + esc(sess.dur) + '</span></h3><p class="when" style="margin-bottom:8px">' + esc(sess.desc) + '</p>';
+  h += '<div class="tbl-wrap"><table class="xt"><thead><tr><th></th><th>Exercise</th><th>Block 1</th><th>Block 2</th><th>Block 3</th></tr></thead><tbody>';
+  sess.ex.forEach(r => { h += '<tr><td class="code">' + r[0] + '</td><td>' + esc(r[1]) + (r[5] ? '<span class="sub">' + esc(r[5]) + '</span>' : '') + '</td>'; for (let b = 1; b <= 3; b++) h += '<td class="rx' + (b === block ? ' now' : ' dim') + '">' + esc(r[1 + b]) + '</td>'; h += '</tr>'; });
+  h += '</tbody></table></div><p class="eyebrow" style="margin-top:10px">Deload</p><p style="font-size:13.5px;color:var(--ink-2)">' + esc(sess.deload) + '</p></div>';
+  return h;
+}
+function renderPlan() {
+  const wk = currentWeek(), block = blockOf(wk) || 1, best = bestSpeed();
+  const root = $('#v-plan');
+  let h = '<div class="subtabs">' + [['program','Program'],['speed','Speed'],['fuel','Fuel'],['setup','Setup']].map(t => '<button data-pt="' + t[0] + '" aria-selected="' + (planTab === t[0]) + '">' + t[1] + '</button>').join('') + '</div>';
+  if (planTab === 'program') {
+    h += '<section><div class="sec-h"><h2>The math on 225</h2></div><div class="prose">' +
+      '<p>Ball speed is club speed times smash factor. A long-drive head at 1.48–1.50 smash puts 190–195 mph at roughly <b>128–131 mph of club speed</b>. 225 mph needs about <b>151 mph</b> — a 15–16% jump in 13 weeks.</p>' +
+      '<p>For a trained lifter, a well-run overspeed block typically returns 5–8% in the first 6–8 weeks and slows after that. Strength and mass add a few points, and cleaner centre contact and attack angle add ball speed without new club speed. Stacked, 8–10% by December is a strong result: <b>208–215 mph</b>. That is the checkpoint this program is built to hit. 225 is a spring 2027 number, and Phase 2 starts from wherever December lands.</p>' +
+      '<p>The plan front-loads mass because muscle added in September is muscle you swing with in December, pairs every heavy block with speed work so the mass never turns into slowness, and deloads on schedule because the injury that costs six weeks is the only thing that can take 225 off the table.</p></div></section>';
+    h += '<section><div class="sec-h"><h2>Three blocks</h2><span class="meta">4 weeks each · deload on the 4th</span></div><div class="blocks">' + BLOCKS.map(b => '<div class="block' + (b.n === block && wk >= 1 && wk <= 12 ? ' now' : '') + '"><div class="bn">Block ' + b.n + ' · ' + esc(b.name) + '</div><div class="bw">Weeks ' + b.weeks + (b.n === block && wk >= 1 && wk <= 12 ? ' · you are here' : '') + '</div><div class="bg">' + esc(b.goal) + '</div><ul>' + b.bullets.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></div>').join('') + '</div></section>';
+    h += '<section><div class="sec-h"><h2>The week</h2><span class="meta">4 gym · 3 speed (+1 optional) · 2 rest</span></div><div class="tbl-wrap"><table class="xt"><thead><tr><th>Day</th><th>Session</th><th>Why here</th></tr></thead><tbody>' +
+      '<tr><td class="code">Mon</td><td><b>Speed A</b> then <b>Gym 1</b> lower strength + power</td><td>Fresh off Sunday. Speed first, then lift.</td></tr>' +
+      '<tr><td class="code">Tue</td><td><b>Gym 2</b> upper strength + rotation</td><td>Legs recover while you throw and press.</td></tr>' +
+      '<tr><td class="code">Wed</td><td><b>Speed B</b> overspeed + hitting</td><td>48 h after Speed A. Radar on every ball.</td></tr>' +
+      '<tr><td class="code">Thu</td><td><b>Gym 3</b> lower hypertrophy + hinge</td><td>72 h from Monday\'s squat. Deadlift day.</td></tr>' +
+      '<tr><td class="code">Fri</td><td>Rest + mobility <span style="color:var(--muted)">(optional light Speed D, Blocks 2–3)</span></td><td>Arrive at Saturday fresh.</td></tr>' +
+      '<tr><td class="code">Sat</td><td><b>Speed C</b> max hit day at the range, then <b>Gym 4</b> upper hypertrophy in the evening</td><td>The measured session. Mass work after, never before.</td></tr>' +
+      '<tr><td class="code">Sun</td><td>Rest · weekly review</td><td>Sleep, food, mobility.</td></tr></tbody></table></div></section>';
+    h += '<section><div class="sec-h"><h2>Milestones</h2><span class="meta">peak ball speed, best of session</span></div><table class="milestones"><thead><tr><th>Checkpoint</th><th>Ball speed</th><th>Status</th></tr></thead><tbody>' + PLAN.milestones.map(m => { const hit = m.wk > 0 && best >= m.lo; return '<tr' + (hit ? ' class="hit"' : '') + '><td>' + esc(m.label) + '</td><td class="num">' + m.lo + '–' + m.hi + ' mph</td><td>' + (m.wk === 0 ? 'Where you are' : hit ? '✓ Reached' : (wk >= m.wk ? 'Not yet' : 'Ahead')) + '</td></tr>'; }).join('') + '</tbody></table><p class="note" style="margin-top:10px">Above the band at week 8: push Block 3 overspeed to the high end and add the 5th Saturday set. Below it: the fix is almost never more swings — it is sleep, food, or contact. Check those first.</p></section>';
+    h += '<section><div class="sec-h"><h2>Gym sessions</h2><span class="meta">all three blocks</span></div><p class="lede" style="margin-bottom:10px">' + esc(RX_LEGEND) + '</p><div class="daycards">' + ['gym1','gym2','gym3','gym4'].map(k => fullTable(GYM[k], block)).join('') + '</div></section>';
+    h += '<section><div class="sec-h"><h2>Rules that hold it up</h2></div><div class="prose">' +
+      '<p><b>Speed before strength on double days.</b> Overspeed and max hitting go first. A tired nervous system produces slow swings, and slow swings train slow.</p>' +
+      '<p><b>Never add more than 15% driver-speed swings week to week.</b> Obliques and ribs are the long-drive injury. The counts on the Speed tab are the ceiling, not the floor.</p>' +
+      '<p><b>Deloads are not optional.</b> Weeks 4 and 8 retest; week 12 tapers. Every speed program that works has the gain show up the week after the volume drops.</p>' +
+      '<p><b>Pain over 3/10 that changes the swing ends max-effort work for the day.</b> Technique at 80% is fine. Three days of the same pain means a physio, not a rest day.</p>' +
+      '<p><b>Mass only counts if it turns.</b> Ten minutes of mobility every day, and the hip internal-rotation screen every deload week.</p></div></section>';
+  } else if (planTab === 'speed') {
+    h += '<section><div class="sec-h"><h2>Where ball speed comes from</h2></div><div class="prose"><p>Three levers, in order of how fast they pay: <b>centre contact</b> (1–3 mph ball speed with zero new club speed — foot spray on Wednesdays until it\'s boring), <b>club speed</b> (the overspeed and gym work), and <b>launch</b> (+5° to +8° attack angle with a 4–6° head so the ball flies the distance the speed earns).</p><p>Overspeed lets the nervous system feel a faster swing than it can currently produce with the normal club, then asks it to reproduce that with the real one. It needs max intent on every swing, both sides of the body, and full rest between sets. Tired overspeed is just swinging a stick.</p></div></section>';
+    h += '<section><div class="sec-h"><h2>Sessions</h2><span class="meta">showing Block ' + block + '</span></div><div class="daycards">' + ['speedA','speedB','speedC','speedD'].map(k => { const s = SPEED[k]; return '<div class="daycard"><h3>' + esc(s.name) + ' <span class="pill">' + esc(s.dur) + '</span></h3><p class="when">' + esc(s.desc) + '</p>' + [1,2,3].map(b => '<details' + (b === block ? ' open' : '') + '><summary style="cursor:pointer;font-weight:600;font-size:14px;padding:6px 0;color:' + (b === block ? 'var(--ink)' : 'var(--muted)') + '">Block ' + b + (b === block ? ' · current' : '') + '</summary><ol class="steps">' + s.steps[b - 1].map(x => '<li>' + x + '</li>').join('') + '</ol></details>').join('') + '<p class="eyebrow" style="margin-top:8px">Deload</p><p style="font-size:13.5px;color:var(--ink-2)">' + esc(s.deload) + '</p></div>'; }).join('') + '</div></section>';
+    h += '<section><div class="sec-h"><h2>Weekly swing budget</h2><span class="meta">ceilings, not targets</span></div><div class="tbl-wrap"><table class="xt"><thead><tr><th>Block</th><th>Stick swings</th><th>Driver-speed</th><th>Where from</th></tr></thead><tbody>' +
+      '<tr><td>Block 1 (wk 1–3)</td><td class="rx">≈ 120</td><td class="rx now">≈ 52</td><td>A: 2 rounds + 10 · B: 1 round + 18 balls · C: 24 balls</td></tr>' +
+      '<tr><td>Block 2 (wk 5–7)</td><td class="rx">≈ 200</td><td class="rx now">≈ 58</td><td>A: 3 rounds + 10 · B: 2 rounds + 18 · C: 30 balls</td></tr>' +
+      '<tr><td>Block 3 (wk 9–11)</td><td class="rx">≈ 150</td><td class="rx now">≈ 62</td><td>A: 3 rounds + 8 · B: 1 round + 24 · C: 30 balls</td></tr>' +
+      '<tr><td>Deload / taper</td><td class="rx">≈ 45–60</td><td class="rx now">≈ 20–30</td><td>A: 1 round + 6 · B: technique only · C: 12 balls</td></tr></tbody></table></div><p class="note" style="margin-top:10px">Driver-speed swings — the radar finishers and every ball hit at max intent — are the injury load, and they climb no more than about 12% between blocks. Light and medium stick swings are most of the volume and the lowest load; the heavy-weight and step-through reps are the first thing to cut when you feel beaten up.</p></section>';
+    h += '<section><div class="sec-h"><h2>Before the gear arrives</h2><span class="meta">DIY overspeed</span></div><div class="prose"><p>Same structure as Speed A. Light = your driver held upside-down at the hosel end. Medium = your driver. Heavy = your driver with 20–30 g of lead tape or a rubber swing-weight donut on the head. 5 dominant / 5 non-dominant / 5 step-through at each weight, 2 rounds. Cruder than the real thing, but max intent with three weights is 80% of the stimulus. Without a radar you can\'t see the number — order one this week.</p></div></section>';
+    h += '<section><div class="sec-h"><h2>Guardrails</h2></div><div class="grid2">' +
+      '<div class="callout crit"><p><strong>Obliques and ribs.</strong> The lead-side oblique takes the braking load on every max swing. Copenhagen planks, side planks and Pallof presses are in the program for this reason. Sharp pain on a twist or a deep breath = stop and get it looked at; a rib stress reaction is a 6–8 week problem.</p></div>' +
+      '<div class="callout crit"><p><strong>Low back.</strong> Brace before every max swing the way you brace for a squat. Carries and anti-rotation build the armour. McGill curl-up, side plank, bird dog on rest days.</p></div>' +
+      '<div class="callout warn"><p><strong>Lead wrist and elbow.</strong> The forearm work in Gym 2 and Gym 4 is there for the impact load. Tape the lead wrist on max hit days if it\'s sore. Do not hit max effort off mats when tired.</p></div>' +
+      '<div class="callout warn"><p><strong>Lead knee and hip.</strong> The lead leg posts and stops the whole body. Lateral lunges, skater bounds and single-leg landings are the training; a stable, painless lead knee on a stuck landing is the test.</p></div></div></section>';
+  } else if (planTab === 'fuel') {
+    h += '<section><div class="sec-h"><h2>Eating for mass</h2><span class="meta">200 → 213 lb by Dec 6</span></div><div class="prose"><p>Thirteen pounds in twelve weeks is about a pound a week — the fastest rate where most of it is muscle at your training age. Faster and you\'re buying fat you\'ll cut in Phase 2, which costs speed. Slower and you\'re leaving mass on the table in the one phase where mass is the job.</p><p>Maintenance at 6\'2", 200 lb with seven or eight sessions a week is roughly 3,100–3,300 kcal. Start at <b>3,600</b> and let the scale decide: ±200 kcal every second Sunday off the 7-day average.</p></div>' +
+      '<div class="tbl-wrap" style="margin-top:14px"><table class="xt"><thead><tr><th>Target</th><th>Daily</th><th>Why</th></tr></thead><tbody>' +
+      '<tr><td>Calories</td><td class="rx now">3,600 kcal</td><td>~400 over estimated maintenance. Adjust ±200 every two weeks.</td></tr>' +
+      '<tr><td>Protein</td><td class="rx now">210 g</td><td>About 1 g per lb, over 4–5 feedings of 40–50 g; last one before bed.</td></tr>' +
+      '<tr><td>Carbohydrate</td><td class="rx now">470–490 g</td><td>Fuel for the swings plus four lifts. Most of it around training.</td></tr>' +
+      '<tr><td>Fat</td><td class="rx now">85–95 g</td><td>Enough for hormones; the rest of the budget goes to carbs.</td></tr>' +
+      '<tr><td>Water</td><td class="rx now">4+ L</td><td>Dallas heat. Electrolytes on hit days.</td></tr></tbody></table></div></section>';
+    h += '<section><div class="sec-h"><h2>Timing</h2></div><div class="tbl-wrap"><table class="xt"><thead><tr><th>When</th><th>What</th></tr></thead><tbody>' +
+      '<tr><td>90 min before</td><td>80–100 g carbs + 30 g protein. Rice or oats and a lean protein; nothing high-fat.</td></tr>' +
+      '<tr><td>Double days (Mon, Sat)</td><td>40–60 g fast carbs between the speed session and the lift.</td></tr>' +
+      '<tr><td>Within an hour after</td><td>40 g protein + 100 g carbs. The biggest carb meal of the day.</td></tr>' +
+      '<tr><td>Before bed</td><td>40 g slow protein — cottage cheese, Greek yogurt, casein.</td></tr>' +
+      '<tr><td>Rest days</td><td>Same protein, ~100 g fewer carbs. Growth happens on these days.</td></tr></tbody></table></div></section>';
+    h += '<section><div class="sec-h"><h2>Supplements with evidence</h2></div><div class="tbl-wrap"><table class="xt"><thead><tr><th>What</th><th>Dose</th><th>Why</th></tr></thead><tbody>' +
+      '<tr><td>Creatine monohydrate</td><td class="rx now">5 g daily</td><td>The most-studied power and lean-mass supplement there is. Every day. Expect 2–3 lb of water in week 1 — that\'s not the 13.</td></tr>' +
+      '<tr><td>Caffeine</td><td class="rx now">200–300 mg</td><td>45 min before max hit days and heavy lower days. Skip it on Speed B so you can tell what\'s real.</td></tr>' +
+      '<tr><td>Whey / casein</td><td class="rx now">as needed</td><td>Only to hit 210 g. Food first.</td></tr>' +
+      '<tr><td>Vitamin D3 + omega-3</td><td class="rx now">2,000 IU · 2–3 g</td><td>Cheap insurance for joints and recovery.</td></tr>' +
+      '<tr><td>Electrolytes</td><td class="rx now">hit days</td><td>Sweat loss costs speed by set 3.</td></tr></tbody></table></div></section>';
+    h += '<section><div class="sec-h"><h2>Sleep and the daily ten minutes</h2></div><div class="grid2"><div class="callout"><p><strong>8–9 hours.</strong> Speed adaptations consolidate in sleep. A fourth speed day never beats an extra hour of sleep. Bed and wake within an hour, every day.</p></div><div class="callout"><p><strong>Mobility, every day, 10 minutes.</strong> 90/90 hip switches ×10 each way · thoracic open-books ×8 each side · deep squat hold 60 s · wall slides ×10 · half-kneeling hip flexor stretch 45 s each · ankle rocks ×10 each.</p></div></div></section>';
+  } else {
+    h += '<section><div class="sec-h"><h2>Gear</h2><span class="meta">what to buy, in order</span></div><div class="tbl-wrap"><table class="gear"><thead><tr><th>Item</th><th>Price</th><th>Why</th></tr></thead><tbody>' +
+      '<tr><td><b>Stack System + Stack Radar</b></td><td class="p">$499</td><td>Weighted trainer with 30 weight combinations plus a Bluetooth radar; the app periodizes overspeed from your own numbers. Club-only $299 if you already have a radar. App included year one, then $99–129/yr.</td></tr>' +
+      '<tr><td><b>PRGR Black pocket radar</b></td><td class="p">≈ $200</td><td>Budget route. Club speed, ball speed and smash within about 1 mph of Trackman. Pair with a SuperSpeed Long Drive set or Rypstick. 5–6 ft behind the ball on the target line; drifts below 50°F.</td></tr>' +
+      '<tr><td>Foot spray / impact tape</td><td class="p">$10</td><td>Wednesdays. Centre contact is free ball speed.</td></tr>' +
+      '<tr><td>Med balls 6 / 8 / 10 / 12 lb</td><td class="p">if needed</td><td>Wall-safe rubber. The throws are the most golf-specific thing in the gym.</td></tr>' +
+      '<tr><td>4-inch tees, lead tape</td><td class="p">$15</td><td>Tee height for +5° to +8° attack angle; lead tape for the DIY heavy club.</td></tr>' +
+      '<tr><td>Jump-measurement app</td><td class="p">free–$10</td><td>For the monthly countermovement jump test.</td></tr></tbody></table></div></section>';
+    h += '<section><div class="sec-h"><h2>Club spec check</h2></div><div class="prose"><p>Competition rules cap the shaft at 48 inches. For 130 mph and climbing, most players land on a 3–6° head, an XX-stiff or stiffer shaft in the 60–70 g range, and a total weight that stays swingable at 150 mph. If your driver was fit at 190, get loft and shaft re-checked at the week 8 retest: at 205+ the optimal loft usually drops a degree and the shaft starts to feel soft.</p></div></section>';
+    h += '<section><div class="sec-h"><h2>Tests</h2><span class="meta">week 0 · each deload · test week</span></div><p class="lede" style="margin-bottom:10px">Type the numbers in — they save with everything else. If jump and throw distance are climbing, ball speed follows within a few weeks.</p><div class="tbl-wrap"><table class="tests"><thead><tr><th>Test</th>' + TEST_COLS.map(c => '<th>' + c[1] + '</th>').join('') + '</tr></thead><tbody>' +
+      TESTS.map(t => '<tr><td>' + esc(t[1]) + ' <span style="color:var(--muted);font-size:12px">' + t[2] + '</span></td>' + TEST_COLS.map(c => { const k = t[0] + '_' + c[0]; return '<td><input class="tin" data-k="' + k + '" type="number" step="0.1" inputmode="decimal" value="' + esc(state.tests[k] == null ? '' : state.tests[k]) + '" aria-label="' + esc(t[1] + ' ' + c[1]) + '"></td>'; }).join('') + '</tr>').join('') + '</tbody></table></div></section>';
+    h += '<section><div class="sec-h"><h2>What Phase 2 looks like</h2></div><div class="prose"><p>January to March: strength-speed with the mass you built, technique work with a long-drive coach on film, and the first grid work. Phase 3 from April is competition prep. The December test decides how much of Phase 2 is more mass versus more speed: at 210+ with jump and throw numbers up, the engine is there and the work shifts to delivery.</p></div></section>';
+  }
+  root.innerHTML = h;
+  $$('[data-pt]', root).forEach(b => b.addEventListener('click', () => { planTab = b.dataset.pt; renderPlan(); window.scrollTo({ top: 0 }); }));
+  $$('.tin', root).forEach(inp => inp.addEventListener('change', () => { const v = inp.value.trim(); if (v === '') delete state.tests[inp.dataset.k]; else state.tests[inp.dataset.k] = Number(v); save('Saved'); }));
+}
+const TESTS = [['chs','Peak club speed (10 swings, no ball)','mph'],['ball','Peak ball speed (competition set)','mph'],['cmj','Countermovement jump','in'],['mbL','Seated 10 lb med ball side throw — lead side','ft'],['mbR','Seated 10 lb med ball side throw — trail side','ft'],['tbdl','Trap bar deadlift 3RM','lb'],['bw','Bodyweight, 7-day average','lb'],['hipIR','Lead-hip internal rotation (90/90)','°']];
+const TEST_COLS = [['w0','Wk 0'],['w4','Wk 4'],['w8','Wk 8'],['w12','Wk 12'],['t','Test']];
+
+/* ---------- More: settings, calendar, backup ---------- */
+const TIME_ROWS = [['speedA','Speed A · Mon overspeed'],['gym1','Gym 1 · Mon lower'],['gym2','Gym 2 · Tue upper'],['speedB','Speed B · Wed overspeed + hitting'],['gym3','Gym 3 · Thu lower'],['speedD','Speed D · Fri optional'],['speedC','Speed C · Sat max hit day'],['gym4','Gym 4 · Sat upper (evening)'],['test','Test week sessions'],['weigh','Morning weigh-in'],['review','Sunday review']];
+function renderMore() {
+  const root = $('#v-more'), s = state.settings;
+  const standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  let h = '';
+  if (!standalone) h += '<div class="callout" style="margin-bottom:16px"><p><strong>Install as an app.</strong> In Chrome, tap the ⋮ menu → <b>Add to Home screen</b> (or <b>Install app</b>). It opens full-screen and works offline.</p></div>';
+  h += '<section><div class="sec-h"><h2>Session times</h2><span class="meta">used for the calendar reminders</span></div><div class="set">' + TIME_ROWS.map(r => '<div class="item"><div class="l">' + esc(r[1]) + '</div><input type="time" data-time="' + r[0] + '" value="' + esc(s.times[r[0]]) + '"></div>').join('') + '</div></section>';
+  h += '<section><div class="sec-h"><h2>Reminders</h2><span class="meta">Google Calendar does the reminding</span></div><div class="set">' +
+    '<div class="item"><div class="l">First alarm<small>minutes before a session</small></div><input type="number" min="0" max="180" data-alarm="0" value="' + esc(s.alarms[0] != null ? s.alarms[0] : 30) + '"></div>' +
+    '<div class="item"><div class="l">Second alarm<small>minutes before</small></div><input type="number" min="0" max="180" data-alarm="1" value="' + esc(s.alarms[1] != null ? s.alarms[1] : 15) + '"></div></div>' +
+    '<p class="note" style="margin:10px 0"><strong>How it works:</strong> download the calendar file, open it with Google Calendar (or import it at calendar.google.com → Settings → Import), and every session for weeks 0–13 lands with alarms at the times above, plus a daily weigh-in and the Sunday review. Change a time here, download again, and re-import — the events update rather than duplicate.</p>' +
+    '<button class="btn wide" id="ics-btn">Download calendar (.ics)</button></section>';
+  h += '<section><div class="sec-h"><h2>In-session</h2></div><div class="set">' +
+    '<div class="item"><div class="l">Rest · main lifts<small>seconds</small></div><input type="number" min="30" max="600" step="15" data-rest="main" value="' + s.rest.main + '"></div>' +
+    '<div class="item"><div class="l">Rest · power work<small>seconds</small></div><input type="number" min="30" max="600" step="15" data-rest="power" value="' + s.rest.power + '"></div>' +
+    '<div class="item"><div class="l">Rest · accessories<small>seconds</small></div><input type="number" min="30" max="600" step="15" data-rest="acc" value="' + s.rest.acc + '"></div>' +
+    '<div class="item"><div class="l">Competition set clock<small>seconds · 2:45 is standard</small></div><input type="number" min="60" max="600" step="5" data-clock value="' + s.clock + '"></div>' +
+    '<div class="item"><div class="l">Sound</div><select data-sound><option value="1"' + (s.sound ? ' selected' : '') + '>On</option><option value="0"' + (!s.sound ? ' selected' : '') + '>Off</option></select></div>' +
+    '<div class="item"><div class="l">Vibration</div><select data-vib><option value="1"' + (s.vibrate ? ' selected' : '') + '>On</option><option value="0"' + (!s.vibrate ? ' selected' : '') + '>Off</option></select></div></div></section>';
+  h += '<section><div class="sec-h"><h2>Backup</h2><span class="meta">your logs live on this phone</span></div><p class="lede" style="margin-bottom:10px">Export before switching phones or clearing the browser, and share the file to Drive at each retest so the next block can be written from real numbers.</p><div class="row"><button class="btn" id="exp-btn">Export backup</button>' + (navigator.canShare ? '<button class="btn ghost" id="share-btn">Share…</button>' : '') + '<label class="btn ghost" style="cursor:pointer">Import<input type="file" id="imp-file" accept="application/json,.json" style="display:none"></label></div>' +
+    '<p class="note" style="margin-top:12px">Sessions logged: ' + Object.values(state.sessions).filter(x => x.finishedAt).length + ' · speed entries: ' + state.speed.length + ' · weigh-ins: ' + state.weight.length + '</p></section>';
+  h += '<section><div class="sec-h"><h2>About</h2></div><p class="lede">Project 225 v' + APP_VERSION + ' · Phase 1 · Sep 14 – Dec 13, 2026. Built for one athlete; not medical advice. If something hurts, the guardrails on the Plan → Speed tab come first.</p><div class="row" style="margin-top:12px"><button class="btn danger sm" id="reset-btn">Erase all data on this phone</button></div></section>';
+  root.innerHTML = h;
+  $$('[data-time]', root).forEach(i => i.addEventListener('change', () => { if (i.value) { state.settings.times[i.dataset.time] = i.value; save('Saved'); renderToday(); } }));
+  $$('[data-alarm]', root).forEach(i => i.addEventListener('change', () => { state.settings.alarms[+i.dataset.alarm] = Math.max(0, Number(i.value) || 0); save('Saved'); }));
+  $$('[data-rest]', root).forEach(i => i.addEventListener('change', () => { state.settings.rest[i.dataset.rest] = Math.max(15, Number(i.value) || 60); save('Saved'); }));
+  $('[data-clock]', root).addEventListener('change', ev => { state.settings.clock = Math.max(30, Number(ev.target.value) || 165); save('Saved'); });
+  $('[data-sound]', root).addEventListener('change', ev => { state.settings.sound = ev.target.value === '1'; save(); });
+  $('[data-vib]', root).addEventListener('change', ev => { state.settings.vibrate = ev.target.value === '1'; save(); });
+  $('#ics-btn').onclick = () => downloadFile('project-225.ics', buildICS(), 'text/calendar;charset=utf-8');
+  $('#exp-btn').onclick = () => downloadFile('project-225-backup-' + iso(new Date()) + '.json', JSON.stringify(state, null, 2), 'application/json');
+  const sb = $('#share-btn'); if (sb) sb.onclick = async () => { try { const f = new File([JSON.stringify(state, null, 2)], 'project-225-backup-' + iso(new Date()) + '.json', { type: 'application/json' }); if (navigator.canShare({ files: [f] })) await navigator.share({ files: [f], title: 'Project 225 backup' }); else toast('Sharing files not supported here — use Export'); } catch (e) { if (e && e.name !== 'AbortError') toast('Share failed — use Export'); } };
+  $('#imp-file').addEventListener('change', ev => { const f = ev.target.files[0]; if (!f) return; const rd = new FileReader(); rd.onload = () => { try { const obj = JSON.parse(rd.result); if (!obj || typeof obj !== 'object' || !('speed' in obj)) throw new Error('bad'); if (!confirm('Replace everything on this phone with the backup from ' + f.name + '?')) return; state = normalize(obj); save('Backup restored'); renderAll(); } catch (e) { toast('That file is not a Project 225 backup'); } }; rd.readAsText(f); });
+  $('#reset-btn').onclick = () => { if (confirm('Erase all sessions, logs and settings on this phone? Export a backup first if you want to keep them.')) { state = freshState(); save('Erased'); renderAll(); } };
+}
+function downloadFile(name, content, type) {
+  const blob = new Blob([content], { type }), url = URL.createObjectURL(blob), a = document.createElement('a');
+  a.href = url; a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1500);
+  toast('Downloading ' + name);
+}
+
+/* ---------- Calendar (.ics) ---------- */
+function icsEsc(s) { return String(s).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n'); }
+function icsFold(line) { const enc = new TextEncoder(); const out = []; let s = line; while (enc.encode(s).length > 72) { let n = 72; while (enc.encode(s.slice(0, n)).length > 72) n--; out.push(s.slice(0, n)); s = ' ' + s.slice(n); } out.push(s); return out.join('\r\n'); }
+function icsDT(d, t) { const [h, m] = t.split(':').map(Number); return iso(d).replace(/-/g, '') + 'T' + String(h).padStart(2, '0') + String(m).padStart(2, '0') + '00'; }
+function buildICS() {
+  const s = state.settings, L = [];
+  const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z');
+  L.push('BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Project 225//Training//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'X-WR-CALNAME:Project 225', 'X-WR-TIMEZONE:America/Chicago');
+  L.push('BEGIN:VTIMEZONE', 'TZID:America/Chicago', 'BEGIN:DAYLIGHT', 'TZOFFSETFROM:-0600', 'TZOFFSETTO:-0500', 'TZNAME:CDT', 'DTSTART:19700308T020000', 'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU', 'END:DAYLIGHT', 'BEGIN:STANDARD', 'TZOFFSETFROM:-0500', 'TZOFFSETTO:-0600', 'TZNAME:CST', 'DTSTART:19701101T020000', 'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU', 'END:STANDARD', 'END:VTIMEZONE');
+  const alarms = (s.alarms || [30, 15]).filter(a => a != null);
+  function ev(uid, d, t, mins, summary, desc, extra) {
+    const [h, m] = t.split(':').map(Number);
+    const end = new Date(d.getFullYear(), d.getMonth(), d.getDate(), h, m + mins);
+    L.push('BEGIN:VEVENT', 'UID:' + uid + '@project225', 'DTSTAMP:' + stamp, 'DTSTART;TZID=America/Chicago:' + icsDT(d, t), 'DTEND;TZID=America/Chicago:' + icsDT(end, String(end.getHours()).padStart(2, '0') + ':' + String(end.getMinutes()).padStart(2, '0')), icsFold('SUMMARY:' + icsEsc(summary)), icsFold('DESCRIPTION:' + icsEsc(desc)));
+    (extra || []).forEach(x => L.push(x));
+    (extra && extra.some(x => x.startsWith('RRULE')) ? [0] : alarms).forEach(a => L.push('BEGIN:VALARM', 'ACTION:DISPLAY', icsFold('DESCRIPTION:' + icsEsc(summary)), 'TRIGGER:-PT' + a + 'M', 'END:VALARM'));
+    L.push('END:VEVENT');
+  }
+  ev('w0-gear', new Date(2026, 8, 9), '09:00', 30, 'P225 · Order radar + overspeed trainer', 'Stack System + Stack Radar bundle, or PRGR Black + a stick set. Run the DIY overspeed protocol until it lands.');
+  ev('w0-speed', new Date(2026, 8, 12), s.times.speedC, 60, 'P225 · Baseline speed test', '10 max-effort driver swings for peak club speed, then 4 × 6-ball sets for peak ball speed. Log it in the app.');
+  ev('w0-strength', new Date(2026, 8, 13), '11:00', 45, 'P225 · Baseline strength tests', 'Countermovement jump, seated 10 lb med ball side throws, trap bar deadlift 3RM. Enter on Plan → Setup.');
+  for (let wk = 1; wk <= PLAN.testWeek; wk++) {
+    const block = blockOf(wk), ws = weekStart(wk);
+    DAYS.forEach((day, i) => {
+      const d = addDays(ws, i);
+      (sessionsFor(wk, day, block) || []).forEach(sess => {
+        if (sess.kind === 'rest') return;
+        const t = sessionTime(sess); if (!t) return;
+        let desc = sess.desc + (isDeload(wk) && sess.deload ? '\n\n' + sess.deload : isTaper(wk) ? '\n\nTaper week: ~40% fewer sets, same loads.' : '');
+        if (sess.ex) desc += '\n\n' + sess.ex.map(r => r[0] + ' ' + r[1] + ' — ' + r[1 + (block || 1)]).join('\n');
+        else if (sess.steps) desc += '\n\n' + (sess.steps[Math.max(0, block - 1)] || []).map(x => x.replace(/<[^>]+>/g, '')).join('\n');
+        ev('w' + wk + '-' + day + '-' + sess.id, d, t, sessionMinutes(sess), 'P225 · ' + sess.name + (isDeload(wk) ? ' (deload)' : isTaper(wk) ? ' (taper)' : ''), desc);
+      });
+    });
+  }
+  ev('weigh', new Date(2026, 8, 9), s.times.weigh, 10, 'P225 · Weigh in', 'Morning, after the bathroom, before food. Log it on Today.', ['RRULE:FREQ=DAILY;UNTIL=20261213T235959Z']);
+  ev('review', new Date(2026, 8, 13), s.times.review, 15, 'P225 · Weekly review', '7-day weight, best ball speed, sessions done. Read the review card in the app; adjust calories every second Sunday.', ['RRULE:FREQ=WEEKLY;BYDAY=SU;UNTIL=20261213T235959Z']);
+  [[new Date(2026, 9, 4), 'Week 4'], [new Date(2026, 10, 1), 'Week 8'], [new Date(2026, 10, 29), 'Week 12 (taper)']].forEach(([d, w]) => ev('deload-' + iso(d), d, addMinutes(s.times.review, 15), 10, 'P225 · ' + w + ' deload starts tomorrow', 'Main lifts 3×5 at 65–70%, accessories 2 sets, overspeed 1 round, Saturday is a retest. Do not skip it.'));
+  L.push('END:VCALENDAR');
+  return L.join('\r\n') + '\r\n';
+}
+function addMinutes(t, n) { const [h, m] = t.split(':').map(Number); const tot = h * 60 + m + n; return String(Math.floor(tot / 60) % 24).padStart(2, '0') + ':' + String(tot % 60).padStart(2, '0'); }
+
+/* ---------- Boot ---------- */
+function renderAll() { renderCtx(); renderToday(); renderWeek(); renderLog(); renderPlan(); renderMore(); }
+function showView(name) {
+  $$('.nav button').forEach(t => t.setAttribute('aria-selected', String(t.dataset.view === name)));
+  $$('.view').forEach(v => v.classList.toggle('on', v.id === 'v-' + name));
+  try { localStorage.setItem(LS_KEY + '-tab', name); } catch (e) {}
+}
+$$('.nav button').forEach(t => t.addEventListener('click', () => { showView(t.dataset.view); window.scrollTo({ top: 0 }); }));
+let rzT; window.addEventListener('resize', () => { clearTimeout(rzT); rzT = setTimeout(drawCharts, 200); });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { if (active) requestWake(); if (timerInt) tickTimer(); if (clockInt) tickClock(); renderCtx(); } });
+loadLocal();
+renderAll();
+try { const t = localStorage.getItem(LS_KEY + '-tab'); if (t && document.getElementById('v-' + t)) showView(t); } catch (e) {}
+if (state.activeKey && findSession(state.activeKey)) openSession(state.activeKey);
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      reg.addEventListener('updatefound', () => { const nw = reg.installing; if (!nw) return; nw.addEventListener('statechange', () => { if (nw.state === 'installed' && navigator.serviceWorker.controller) $('#upd').classList.add('on'); }); });
+    }).catch(e => console.warn('sw', e));
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (refreshing) return; refreshing = true; location.reload(); });
+  });
+}
+$('#upd-btn').addEventListener('click', () => { navigator.serviceWorker.getRegistration().then(r => { if (r && r.waiting) r.waiting.postMessage('skipWaiting'); else location.reload(); }); });
+</script>
+</body>
+</html>
