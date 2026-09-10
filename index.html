@@ -133,6 +133,26 @@ h3{font-size:16.5px;font-weight:700;margin-bottom:6px}
 .quick{display:grid;grid-template-columns:1fr auto;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;align-items:center;margin-top:14px}
 .quick label{font-size:12px;font-weight:700;color:var(--muted);display:flex;flex-direction:column;gap:3px}
 .quick input{font-family:var(--mono);font-size:16px;padding:8px 10px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--ink);width:100%}
+.dhead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:20px 0 8px}
+.dhead .eyebrow{margin:0}
+.dhead .cnt{font-family:var(--mono);font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.dbar{height:5px;background:var(--surface-2);border-radius:999px;overflow:hidden;margin-bottom:10px}
+.dbar i{display:block;height:100%;background:var(--good);border-radius:999px;transition:width .3s ease}
+.daily{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.drow{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-top:1px solid var(--line)}
+.drow:first-child{border-top:0}
+.drow.done .dl b{color:var(--muted);text-decoration:line-through}
+.drow .dl{min-width:0}
+.drow .dl b{font-weight:600;font-size:15px;display:block;line-height:1.25}
+.drow .dl span{font-size:12px;color:var(--muted);display:block;margin-top:1px}
+.drow .dl .strk{color:var(--good);font-weight:700}
+.drow .dr{display:flex;align-items:center;gap:6px}
+.drow .dr input{font-family:var(--mono);font-size:15px;padding:6px 7px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--ink);width:76px;text-align:right;font-variant-numeric:tabular-nums}
+.drow .dr .u{font-size:11.5px;color:var(--muted);font-weight:600;min-width:26px}
+.drow .dr .go{border:1px solid var(--line-strong);background:var(--surface);border-radius:8px;padding:6px 10px;font-size:12.5px;font-weight:600;color:var(--accent);cursor:pointer}
+.drow .mini{height:4px;background:var(--surface-2);border-radius:999px;overflow:hidden;margin-top:5px;max-width:150px}
+.drow .mini i{display:block;height:100%;background:var(--accent);border-radius:999px}
+.drow.done .mini i{background:var(--good)}
 .tomorrow{margin-top:18px}
 .tomorrow .eyebrow{margin-bottom:6px}
 .tomorrow ul{list-style:none;margin:0;padding:0;font-size:14px;color:var(--ink-2)}
@@ -630,29 +650,31 @@ function sessionById(id) { return GYM[id] || SPEED[id] || EXTRAS[id] || null; }
 </script>
 <script>
 /* ================= App core ================= */
-const APP_VERSION = '1.2.0';
+const APP_VERSION = '1.3.0';
 const LS_KEY = 'project225-app-v1';
 const DEFAULT_SETTINGS = {
   times: { speedA: '11:30', gym1: '12:00', gym2: '11:30', speedB: '11:30', gym3: '11:30', speedD: '11:30', speedC: '11:00', gym4: '17:00', test: '11:30', weigh: '06:30', review: '18:00' },
   rest: { main: 165, power: 120, acc: 75 },
+  targets: { kcal: 3600, protein: 210, water: 4, sleep: 8 },
   clock: 165,
   alarms: [30, 15],
   sound: true, vibrate: true,
 };
 let state = freshState();
-function freshState() { return { v: 1, settings: JSON.parse(JSON.stringify(DEFAULT_SETTINGS)), checks: {}, sessions: {}, speed: [], weight: [], lifts: [], maxes: {}, tests: {}, activeKey: null, updatedAt: 0 }; }
+function freshState() { return { v: 1, settings: JSON.parse(JSON.stringify(DEFAULT_SETTINGS)), checks: {}, sessions: {}, daily: {}, speed: [], weight: [], lifts: [], maxes: {}, tests: {}, activeKey: null, updatedAt: 0 }; }
 function normalize(s) {
   const n = freshState();
   if (!s || typeof s !== 'object') return n;
   if (s.settings && typeof s.settings === 'object') {
     n.settings.times = { ...n.settings.times, ...(s.settings.times || {}) };
     n.settings.rest = { ...n.settings.rest, ...(s.settings.rest || {}) };
+    n.settings.targets = { ...n.settings.targets, ...(s.settings.targets || {}) };
     if (typeof s.settings.clock === 'number') n.settings.clock = s.settings.clock;
     if (Array.isArray(s.settings.alarms)) n.settings.alarms = s.settings.alarms.map(Number).filter(x => x >= 0);
     if (typeof s.settings.sound === 'boolean') n.settings.sound = s.settings.sound;
     if (typeof s.settings.vibrate === 'boolean') n.settings.vibrate = s.settings.vibrate;
   }
-  ['checks','sessions','maxes','tests'].forEach(k => { if (s[k] && typeof s[k] === 'object' && !Array.isArray(s[k])) n[k] = JSON.parse(JSON.stringify(s[k])); });
+  ['checks','sessions','daily','maxes','tests'].forEach(k => { if (s[k] && typeof s[k] === 'object' && !Array.isArray(s[k])) n[k] = JSON.parse(JSON.stringify(s[k])); });
   ['speed','weight','lifts'].forEach(k => { if (Array.isArray(s[k])) n[k] = s[k].map(x => ({ ...x })); });
   n.activeKey = typeof s.activeKey === 'string' ? s.activeKey : null;
   n.updatedAt = Number(s.updatedAt) || 0;
@@ -787,6 +809,45 @@ function renderCtx() {
   $('#ctx').innerHTML = '<b>' + esc(weekLabel(wk)) + '</b>' + (best ? 'best ' + best + ' mph' : 'baseline 190–195');
 }
 
+/* ---------- Daily habits ---------- */
+const DAILY = [
+  { k: 'weight',   label: 'Morning weight',   sub: 'after the bathroom, before food', unit: 'lb',   num: true,  habit: false },
+  { k: 'creatine', label: 'Creatine 5 g',     sub: 'every day, training or not',      unit: '',     num: false, habit: true },
+  { k: 'kcal',     label: 'Calories',         sub: '',                                 unit: 'kcal', num: true,  habit: true, target: 'kcal' },
+  { k: 'protein',  label: 'Protein',          sub: '',                                 unit: 'g',    num: true,  habit: true, target: 'protein' },
+  { k: 'water',    label: 'Water',            sub: 'electrolytes on hit days',         unit: 'L',    num: false, habit: true, target: 'water' },
+  { k: 'mobility', label: 'Mobility 10 min',  sub: 'keeps the new mass turning',       unit: '',     num: false, habit: true, opens: 'mobility' },
+  { k: 'sleep',    label: 'Sleep last night', sub: '',                                 unit: 'h',    num: true,  habit: true, target: 'sleep' },
+];
+function dayRec(d) { if (!state.daily[d]) state.daily[d] = {}; return state.daily[d]; }
+function dailyValue(item, d) {
+  if (item.k === 'weight') { const e = state.weight.find(x => x.d === d); return e ? Number(e.lbs) : null; }
+  const v = (state.daily[d] || {})[item.k];
+  return v === true ? true : (typeof v === 'number' ? v : null);
+}
+function dailyDone(item, d) {
+  const v = dailyValue(item, d);
+  if (v === null) return false;
+  if (v === true) return true;
+  const t = item.target ? state.settings.targets[item.target] : null;
+  return t ? v >= t * 0.95 : true;
+}
+function dayScore(d) {
+  const done = DAILY.filter(i => dailyDone(i, d)).length;
+  return { done, total: DAILY.length };
+}
+function streakFor(item) {
+  let n = 0, d = new Date();
+  if (!dailyDone(item, iso(d))) d = addDays(d, -1);   // today still open doesn't break it
+  while (n < 400 && dailyDone(item, iso(d))) { n++; d = addDays(d, -1); }
+  return n;
+}
+function weekNutrition(startD, endD) {
+  const rows = Object.keys(state.daily).filter(d => d >= startD && d <= endD).map(d => state.daily[d]);
+  const avg = k => { const v = rows.map(r => r[k]).filter(x => typeof x === 'number'); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
+  return { kcal: avg('kcal'), protein: avg('protein'), sleep: avg('sleep'), days: rows.length };
+}
+
 /* ---------- Today ---------- */
 function sessionsOn(wk, day) { if (wk === 0 || wk < 0 || wk > PLAN.testWeek) return []; return sessionsFor(wk, day, blockOf(wk)) || []; }
 function sessionStatus(key) { const s = state.sessions[key]; if (s && s.finishedAt) return 'done'; if (state.checks[key]) return 'done'; if (s && s.startedAt) return 'started'; return 'todo'; }
@@ -855,8 +916,7 @@ function renderToday() {
   const extras = freeSessionsToday();
   h += '<div class="row" style="margin-top:14px"><button class="btn wide" id="pick-open">Choose a workout</button></div>';
   if (extras.length) h += '<div class="tomorrow" style="margin-top:14px"><div class="eyebrow" style="margin-bottom:8px">Extra sessions today</div><div class="sessions">' + extras.map(r => { const s = sessionById(r.id); return s ? sessionCardHTML(s, r.key, r.wk, r.block || 1) : ''; }).join('') + '</div></div>';
-  const hasWeighToday = state.weight.some(e => e.d === today);
-  h += '<form class="quick" id="q-weight"><label>Morning weight (lb)' + (hasWeighToday ? ' · logged' : '') + '<input type="number" step="0.1" min="150" max="300" inputmode="decimal" name="lbs" placeholder="' + (latestBw() || 200) + '"></label><button class="btn sm" type="submit">Log</button></form>';
+  h += dailyHTML(today);
   // tomorrow
   const tm = addDays(now, 1), twk = weekOf(tm), tday = dayKeyOf(tm);
   if (twk >= 1 && twk <= PLAN.testWeek) {
@@ -867,7 +927,57 @@ function renderToday() {
   root.innerHTML = h;
   bindSessionButtons(root);
   $('#pick-open').onclick = openPicker;
-  $('#q-weight').onsubmit = ev => { ev.preventDefault(); const v = Number(ev.target.lbs.value); if (!v) return; state.weight = state.weight.filter(e => e.d !== today); state.weight.push({ id: 'w' + Date.now(), d: today, lbs: v }); save('Weight logged'); renderAll(); };
+  bindDaily(root, today);
+}
+
+/* ---------- Daily checklist ---------- */
+function dailyHTML(d) {
+  const T = state.settings.targets, sc = dayScore(d);
+  let h = '<div class="dhead"><p class="eyebrow">Every day</p><span class="cnt">' + sc.done + ' / ' + sc.total + ' done</span></div>';
+  h += '<div class="dbar"><i style="width:' + Math.round(sc.done / sc.total * 100) + '%"></i></div>';
+  h += '<div class="daily">' + DAILY.map(it => {
+    const done = dailyDone(it, d), val = dailyValue(it, d);
+    const tgt = it.target ? T[it.target] : null;
+    const strk = it.habit ? streakFor(it) : 0;
+    let sub = it.sub;
+    if (tgt && it.num) sub = 'target ' + tgt + ' ' + it.unit + (it.sub ? ' · ' + it.sub : '');
+    else if (tgt) sub = 'target ' + tgt + ' ' + it.unit + (it.sub ? ' · ' + it.sub : '');
+    const strkHTML = strk >= 2 ? ' <span class="strk">· ' + strk + '-day streak</span>' : '';
+    let right = '';
+    if (it.num) right = '<input type="number" step="' + (it.k === 'sleep' ? '0.25' : it.k === 'weight' ? '0.1' : '10') + '" min="0" inputmode="decimal" data-dnum="' + it.k + '" value="' + (typeof val === 'number' ? val : '') + '" placeholder="' + (tgt || (it.k === 'weight' ? Math.round(latestBw()) : '')) + '"><span class="u">' + it.unit + '</span>';
+    else if (it.opens) right = '<button class="go" data-dopen="' + it.opens + '">Start</button>';
+    const bar = (it.num && tgt && typeof val === 'number') ? '<div class="mini"><i style="width:' + Math.min(100, Math.round(val / tgt * 100)) + '%"></i></div>' : '';
+    return '<div class="drow' + (done ? ' done' : '') + '">' +
+      '<button class="chk" role="checkbox" aria-checked="' + done + '" aria-label="' + esc(it.label) + '" data-dchk="' + it.k + '"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button>' +
+      '<div class="dl"><b>' + esc(it.label) + '</b><span>' + esc(sub) + strkHTML + '</span>' + bar + '</div>' +
+      '<div class="dr">' + right + '</div></div>';
+  }).join('') + '</div>';
+  return h;
+}
+function setDaily(key, val, d) {
+  if (key === 'weight') {
+    state.weight = state.weight.filter(e => e.d !== d);
+    if (val !== null && val !== '') state.weight.push({ id: 'w' + Date.now(), d, lbs: Number(val) });
+  } else {
+    const r = dayRec(d);
+    if (val === null || val === '') delete r[key]; else r[key] = val;
+    if (!Object.keys(r).length) delete state.daily[d];
+  }
+}
+function bindDaily(root, d) {
+  $$('[data-dchk]', root).forEach(b => b.addEventListener('click', () => {
+    const it = DAILY.find(x => x.k === b.dataset.dchk);
+    const done = dailyDone(it, d);
+    if (done) setDaily(it.k, null, d);
+    else if (it.num) { const t = it.target ? state.settings.targets[it.target] : null; setDaily(it.k, t || (it.k === 'weight' ? Math.round(latestBw() * 10) / 10 : 1), d); }
+    else setDaily(it.k, true, d);
+    save(done ? '' : 'Nice'); renderToday(); renderCtx();
+  }));
+  $$('[data-dnum]', root).forEach(inp => inp.addEventListener('change', () => {
+    setDaily(inp.dataset.dnum, inp.value === '' ? null : Number(inp.value), d);
+    save('Logged'); renderAll();
+  }));
+  $$('[data-dopen]', root).forEach(b => b.addEventListener('click', () => startFreeSession(b.dataset.dopen, blockOf(currentWeek()) || 1)));
 }
 function bindSessionButtons(root) {
   $$('[data-chk]', root).forEach(b => b.addEventListener('click', () => {
@@ -889,18 +999,25 @@ function reviewCard(wk) {
   const pAvg = wtPrev.length ? wtPrev.reduce((s, e) => s + Number(e.lbs), 0) / wtPrev.length : null;
   const rate = wAvg && pAvg ? wAvg - pAvg : null;
   const m = PLAN.milestones.filter(x => x.wk <= wk).pop();
+  const nut = weekNutrition(iso(start), iso(end)), T = state.settings.targets;
+  const ateShort = nut.kcal != null && nut.kcal < T.kcal * 0.95;
+  const sleptShort = nut.sleep != null && nut.sleep < T.sleep - 0.75;
   let advice = [];
   if (ws.total && ws.done / ws.total < 0.75) advice.push('Under 75% of sessions done — consistency beats intensity; protect the four gym days first.');
   if (rate != null && rate > 1.5) advice.push('Gaining faster than 1.5 lb/week — pull 200 kcal at the next adjustment.');
-  if (rate != null && rate < 0.5 && rate > -5) advice.push('Under 0.5 lb/week — add 200 kcal, mostly carbs around training.');
-  if (wkSpeed && prevBest && wkSpeed <= prevBest && wk >= 3 && !isDeload(wk)) advice.push('No new peak this week — check sleep and centre contact before adding swings.');
+  if (rate != null && rate < 0.5 && rate > -5) advice.push(ateShort ? ('Weight is flat and you averaged ' + Math.round(nut.kcal) + ' kcal against a ' + T.kcal + ' target — eat the target before you raise it.') : 'Under 0.5 lb/week and calories are on target — add 200 kcal, mostly carbs around training.');
+  if (wkSpeed && prevBest && wkSpeed <= prevBest && wk >= 3 && !isDeload(wk)) advice.push(sleptShort ? ('No new peak, and sleep averaged ' + nut.sleep.toFixed(1) + ' h — that is the first thing to fix, not the swing count.') : 'No new peak this week — check centre contact and recovery before adding swings.');
+  if (sleptShort && !(wkSpeed && prevBest && wkSpeed <= prevBest)) advice.push('Sleep averaged ' + nut.sleep.toFixed(1) + ' h against a ' + T.sleep + ' h target — speed adaptations consolidate overnight.');
+  if (nut.protein != null && nut.protein < T.protein * 0.9) advice.push('Protein averaged ' + Math.round(nut.protein) + ' g against ' + T.protein + ' g — the surplus only builds muscle if the protein is there.');
   if (isDeload(wk)) advice.push('Deload week: expect the peak next week, not this one.');
   if (!advice.length) advice.push('On track. Keep the loads climbing 2.5–10 lb a week inside the block and the swing count at the ceiling, not above it.');
   return '<div class="review"><h3>Weekly review <span>' + esc(weekLabel(wk)) + '</span></h3><div class="kv">' +
     '<div><b>' + ws.done + ' / ' + ws.total + '</b><small>sessions done</small></div>' +
     '<div><b>' + (wkSpeed ? wkSpeed.toFixed(1) + ' mph' : '—') + '</b><small>best ball speed this week' + (m ? ' · target ' + m.lo + '–' + m.hi : '') + '</small></div>' +
     '<div><b>' + (wAvg ? wAvg.toFixed(1) + ' lb' : '—') + '</b><small>avg weight this week</small></div>' +
-    '<div><b>' + (rate != null ? (rate >= 0 ? '+' : '') + rate.toFixed(1) + ' lb' : '—') + '</b><small>vs last week</small></div></div>' +
+    '<div><b>' + (rate != null ? (rate >= 0 ? '+' : '') + rate.toFixed(1) + ' lb' : '—') + '</b><small>vs last week</small></div>' +
+    '<div><b>' + (nut.kcal != null ? Math.round(nut.kcal).toLocaleString() : '—') + '</b><small>avg calories · target ' + T.kcal.toLocaleString() + '</small></div>' +
+    '<div><b>' + (nut.sleep != null ? nut.sleep.toFixed(1) + ' h' : '—') + '</b><small>avg sleep · target ' + T.sleep + ' h</small></div></div>' +
     '<p>' + esc(advice.join(' ')) + '</p></div>';
 }
 
@@ -1010,6 +1127,7 @@ $('#ov-close').addEventListener('click', closeSession);
 function finishSession() {
   const rec = state.sessions[active.key];
   rec.finishedAt = Date.now(); state.checks[active.key] = true;
+  if (rec.id === 'mobility') setDaily('mobility', true, rec.date);
   if (active.sess.kind === 'speed' || active.sess.kind === 'test') {
     const peak = rec.speedSets.length ? Math.max(...rec.speedSets.map(s => s.peak || 0)) : 0;
     const chs = rec.finisher && rec.finisher.chs ? Number(rec.finisher.chs) : null;
@@ -1448,6 +1566,11 @@ function renderMore() {
     '<div class="item"><div class="l">Second alarm<small>minutes before</small></div><input type="number" min="0" max="180" data-alarm="1" value="' + esc(s.alarms[1] != null ? s.alarms[1] : 15) + '"></div></div>' +
     '<p class="note" style="margin:10px 0"><strong>How it works:</strong> download the calendar file, open it with Google Calendar (or import it at calendar.google.com → Settings → Import), and every session for weeks 0–13 lands with alarms at the times above, plus a daily weigh-in and the Sunday review. Change a time here, download again, and re-import — the events update rather than duplicate.</p>' +
     '<button class="btn wide" id="ics-btn">Download calendar (.ics)</button></section>';
+  h += '<section><div class="sec-h"><h2>Daily targets</h2><span class="meta">shown on Today</span></div><div class="set">' +
+    '<div class="item"><div class="l">Calories<small>adjust ±200 every second Sunday</small></div><input type="number" min="1500" max="6000" step="50" data-tgt="kcal" value="' + s.targets.kcal + '"></div>' +
+    '<div class="item"><div class="l">Protein<small>grams · about 1 g per lb</small></div><input type="number" min="50" max="400" step="5" data-tgt="protein" value="' + s.targets.protein + '"></div>' +
+    '<div class="item"><div class="l">Water<small>litres</small></div><input type="number" min="1" max="10" step="0.5" data-tgt="water" value="' + s.targets.water + '"></div>' +
+    '<div class="item"><div class="l">Sleep<small>hours</small></div><input type="number" min="4" max="12" step="0.5" data-tgt="sleep" value="' + s.targets.sleep + '"></div></div></section>';
   h += '<section><div class="sec-h"><h2>In-session</h2></div><div class="set">' +
     '<div class="item"><div class="l">Rest · main lifts<small>seconds</small></div><input type="number" min="30" max="600" step="15" data-rest="main" value="' + s.rest.main + '"></div>' +
     '<div class="item"><div class="l">Rest · power work<small>seconds</small></div><input type="number" min="30" max="600" step="15" data-rest="power" value="' + s.rest.power + '"></div>' +
@@ -1461,6 +1584,7 @@ function renderMore() {
   root.innerHTML = h;
   $$('[data-time]', root).forEach(i => i.addEventListener('change', () => { if (i.value) { state.settings.times[i.dataset.time] = i.value; save('Saved'); renderToday(); } }));
   $$('[data-alarm]', root).forEach(i => i.addEventListener('change', () => { state.settings.alarms[+i.dataset.alarm] = Math.max(0, Number(i.value) || 0); save('Saved'); }));
+  $$('[data-tgt]', root).forEach(i => i.addEventListener('change', () => { const v = Number(i.value); if (v > 0) { state.settings.targets[i.dataset.tgt] = v; save('Target saved'); renderToday(); } }));
   $$('[data-rest]', root).forEach(i => i.addEventListener('change', () => { state.settings.rest[i.dataset.rest] = Math.max(15, Number(i.value) || 60); save('Saved'); }));
   $('[data-clock]', root).addEventListener('change', ev => { state.settings.clock = Math.max(30, Number(ev.target.value) || 165); save('Saved'); });
   $('[data-sound]', root).addEventListener('change', ev => { state.settings.sound = ev.target.value === '1'; save(); });
