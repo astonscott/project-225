@@ -650,10 +650,10 @@ function sessionById(id) { return GYM[id] || SPEED[id] || EXTRAS[id] || null; }
 </script>
 <script>
 /* ================= App core ================= */
-const APP_VERSION = '1.4.0';
+const APP_VERSION = '1.5.0';
 const LS_KEY = 'project225-app-v1';
 const DEFAULT_SETTINGS = {
-  times: { speedA: '11:30', gym1: '12:00', gym2: '11:30', speedB: '11:30', gym3: '11:30', speedD: '11:30', speedC: '11:00', gym4: '17:00', test: '11:30', weigh: '06:30', review: '18:00' },
+  times: { speedA: '11:30', gym1: '12:00', gym2: '11:30', speedB: '11:30', gym3: '11:30', speedD: '11:30', speedC: '11:00', gym4: '17:00', test: '11:30', weigh: '06:30', review: '18:00', brief: '08:00' },
   rest: { main: 165, power: 120, acc: 75 },
   targets: { kcal: 3600, protein: 210, water: 4, sleep: 8 },
   clock: 165,
@@ -1575,7 +1575,7 @@ const TESTS = [['chs','Peak club speed (10 swings, no ball)','mph'],['ball','Pea
 const TEST_COLS = [['w0','Wk 0'],['w4','Wk 4'],['w8','Wk 8'],['w12','Wk 12'],['t','Test']];
 
 /* ---------- More: settings, calendar, backup ---------- */
-const TIME_ROWS = [['speedA','Speed A · Mon overspeed'],['gym1','Gym 1 · Mon lower'],['gym2','Gym 2 · Tue upper'],['speedB','Speed B · Wed overspeed + hitting'],['gym3','Gym 3 · Thu lower'],['speedD','Speed D · Fri optional'],['speedC','Speed C · Sat max hit day'],['gym4','Gym 4 · Sat upper (evening)'],['test','Test week sessions'],['weigh','Morning weigh-in'],['review','Sunday review']];
+const TIME_ROWS = [['speedA','Speed A · Mon overspeed'],['gym1','Gym 1 · Mon lower'],['gym2','Gym 2 · Tue upper'],['speedB','Speed B · Wed overspeed + hitting'],['gym3','Gym 3 · Thu lower'],['speedD','Speed D · Fri optional'],['speedC','Speed C · Sat max hit day'],['gym4','Gym 4 · Sat upper (evening)'],['test','Test week sessions'],['weigh','Morning weigh-in'],['review','Sunday review'],['brief','Morning plan alert']];
 function renderMore() {
   const root = $('#v-more'), s = state.settings;
   const standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
@@ -1632,12 +1632,12 @@ function buildICS() {
   L.push('BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Project 225//Training//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'X-WR-CALNAME:Project 225', 'X-WR-TIMEZONE:America/Chicago');
   L.push('BEGIN:VTIMEZONE', 'TZID:America/Chicago', 'BEGIN:DAYLIGHT', 'TZOFFSETFROM:-0600', 'TZOFFSETTO:-0500', 'TZNAME:CDT', 'DTSTART:19700308T020000', 'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU', 'END:DAYLIGHT', 'BEGIN:STANDARD', 'TZOFFSETFROM:-0500', 'TZOFFSETTO:-0600', 'TZNAME:CST', 'DTSTART:19701101T020000', 'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU', 'END:STANDARD', 'END:VTIMEZONE');
   const alarms = (s.alarms || [30, 15]).filter(a => a != null);
-  function ev(uid, d, t, mins, summary, desc, extra) {
+  function ev(uid, d, t, mins, summary, desc, extra, alarmsOverride) {
     const [h, m] = t.split(':').map(Number);
     const end = new Date(d.getFullYear(), d.getMonth(), d.getDate(), h, m + mins);
     L.push('BEGIN:VEVENT', 'UID:' + uid + '@project225', 'DTSTAMP:' + stamp, 'DTSTART;TZID=America/Chicago:' + icsDT(d, t), 'DTEND;TZID=America/Chicago:' + icsDT(end, String(end.getHours()).padStart(2, '0') + ':' + String(end.getMinutes()).padStart(2, '0')), icsFold('SUMMARY:' + icsEsc(summary)), icsFold('DESCRIPTION:' + icsEsc(desc)));
     (extra || []).forEach(x => L.push(x));
-    (extra && extra.some(x => x.startsWith('RRULE')) ? [0] : alarms).forEach(a => L.push('BEGIN:VALARM', 'ACTION:DISPLAY', icsFold('DESCRIPTION:' + icsEsc(summary)), 'TRIGGER:-PT' + a + 'M', 'END:VALARM'));
+    (alarmsOverride || (extra && extra.some(x => x.startsWith('RRULE')) ? [0] : alarms)).forEach(a => L.push('BEGIN:VALARM', 'ACTION:DISPLAY', icsFold('DESCRIPTION:' + icsEsc(summary)), 'TRIGGER:-PT' + a + 'M', 'END:VALARM'));
     L.push('END:VEVENT');
   }
   ev('w0-gear', new Date(2026, 8, 9), '09:00', 30, 'P225 · Order radar + overspeed trainer', 'Stack System + Stack Radar bundle, or PRGR Black + a stick set. Run the DIY overspeed protocol until it lands.');
@@ -1656,6 +1656,22 @@ function buildICS() {
         ev('w' + wk + '-' + day + '-' + sess.id, d, t, sessionMinutes(sess), 'P225 · ' + sess.name + (isDeload(wk) ? ' (deload)' : isTaper(wk) ? ' (taper)' : ''), desc);
       });
     });
+  }
+  // Daily morning brief — one event per day so the title names that day's real work
+  for (let d = new Date(2026, 8, 8); d <= new Date(2026, 11, 13); d = addDays(d, 1)) {
+    const wk = weekOf(d), day = dayKeyOf(d);
+    let title, lines = [];
+    if (wk === 0) { title = 'Baseline week — setup tasks'; lines = WEEK0.map(x => '• ' + x.name); }
+    else if (wk >= 1 && wk <= PLAN.testWeek) {
+      const list = (sessionsFor(wk, day, blockOf(wk)) || []).filter(x => x.kind !== 'rest');
+      title = list.length ? list.map(x => x.short || x.name).join(' + ') : 'Rest day';
+      lines = list.map(x => '• ' + fmtTime(sessionTime(x)) + ' — ' + x.name);
+      if (!list.length) lines = ['• Rest. Mobility, food, sleep.'];
+      lines.unshift(weekLabel(wk) + (isDeload(wk) ? ' · deload' : isTaper(wk) ? ' · taper' : ''));
+    } else continue;
+    const T = s.targets;
+    lines.push('', 'Every day: weigh in · creatine 5 g · ' + T.kcal + ' kcal · ' + T.protein + ' g protein · ' + T.water + ' L water · mobility 10 min · ' + T.sleep + ' h sleep');
+    ev('brief-' + iso(d), d, s.times.brief, 15, 'P225 · ' + title, lines.join('\n'), null, [0]);
   }
   ev('weigh', new Date(2026, 8, 9), s.times.weigh, 10, 'P225 · Weigh in', 'Morning, after the bathroom, before food. Log it on Today.', ['RRULE:FREQ=DAILY;UNTIL=20261213T235959Z']);
   ev('review', new Date(2026, 8, 13), s.times.review, 15, 'P225 · Weekly review', '7-day weight, best ball speed, sessions done. Read the review card in the app; adjust calories every second Sunday.', ['RRULE:FREQ=WEEKLY;BYDAY=SU;UNTIL=20261213T235959Z']);
