@@ -650,7 +650,7 @@ function sessionById(id) { return GYM[id] || SPEED[id] || EXTRAS[id] || null; }
 </script>
 <script>
 /* ================= App core ================= */
-const APP_VERSION = '1.3.0';
+const APP_VERSION = '1.4.0';
 const LS_KEY = 'project225-app-v1';
 const DEFAULT_SETTINGS = {
   times: { speedA: '11:30', gym1: '12:00', gym2: '11:30', speedB: '11:30', gym3: '11:30', speedD: '11:30', speedC: '11:00', gym4: '17:00', test: '11:30', weigh: '06:30', review: '18:00' },
@@ -1426,7 +1426,7 @@ function renderLog() {
   const M = METRICS[speedMetric], mp = speedPoints(speedMetric), mAvg3 = lastNAvg(mp, 3), mBest = mp.length ? Math.max(...mp.map(p => p.y)) : null;
   h += '<section' + (h ? ' style="margin-top:22px"' : '') + '><div class="sec-h"><h2>Speed</h2><span class="meta">best of each session</span></div>' +
     '<div class="subtabs">' + Object.values(METRICS).map(x => '<button data-sm="' + x.key + '" aria-selected="' + (speedMetric === x.key) + '">' + x.label + '</button>').join('') + '</div>' +
-    '<form class="logform" id="f-speed"><label>Date<input type="date" name="d" value="' + today + '" required></label><label>Ball speed (mph)<input type="number" name="ball" step="0.1" min="150" max="260" inputmode="decimal" required placeholder="193.4"></label><label>Club speed (mph)<input type="number" name="chs" step="0.1" min="100" max="180" inputmode="decimal" placeholder="optional"></label><label class="full">Note<input type="text" name="note" maxlength="80" placeholder="Launch monitor at the sim · 4 sets"></label><button class="btn" type="submit">Log speed</button></form>' +
+    speedFormHTML(today) +
     '<div class="stats"><div class="stat"><div class="k">Best ' + esc(M.label.toLowerCase()) + '</div><div class="v">' + (mBest ? M.fmt(mBest).replace(' mph', '<small>mph</small>') : '—') + '</div></div>' +
     '<div class="stat"><div class="k">Last 3 avg</div><div class="v">' + (mAvg3 ? M.fmt(mAvg3).replace(' mph', '<small>mph</small>') : '—') + '</div></div>' +
     '<div class="stat"><div class="k">' + (M.base ? 'vs baseline' : 'Sessions') + '</div><div class="v' + (M.base && mBest ? (mBest - M.base >= 0 ? ' up' : ' dn') : '') + '">' + (M.base ? (mBest ? ((mBest - M.base >= 0 ? '+' : '') + (mBest - M.base).toFixed(1) + '<small>mph</small>') : '—') : mp.length) + '</div></div></div>' +
@@ -1457,10 +1457,31 @@ function renderLog() {
   root.innerHTML = h;
   drawCharts();
   $$('[data-sm]', root).forEach(b => b.addEventListener('click', () => { speedMetric = b.dataset.sm; renderLog(); }));
-  $('#f-speed').onsubmit = ev => { ev.preventDefault(); const f = new FormData(ev.target); const e = { id: 's' + Date.now(), d: f.get('d'), ball: Number(f.get('ball')), chs: f.get('chs') ? Number(f.get('chs')) : null, note: (f.get('note') || '').trim() }; if (!e.d || !e.ball) return; state.speed.push(e); save('Speed logged'); renderAll(); };
+  $('#f-speed').onsubmit = ev => {
+    ev.preventDefault();
+    const f = new FormData(ev.target);
+    const e = { id: 's' + Date.now(), d: f.get('d'), ball: f.get('ball') ? Number(f.get('ball')) : null, chs: f.get('chs') ? Number(f.get('chs')) : null, note: (f.get('note') || '').trim() };
+    if (!e.d) return;
+    if (!e.ball && !e.chs) { toast('Enter a ball or club speed'); return; }
+    if (speedMetric === 'smash' && !(e.ball && e.chs)) { toast('Smash needs both speeds'); return; }
+    state.speed.push(e); save('Logged'); renderAll();
+  };
   $('#f-weight').onsubmit = ev => { ev.preventDefault(); const f = new FormData(ev.target); const e = { id: 'w' + Date.now(), d: f.get('d'), lbs: Number(f.get('lbs')) }; if (!e.d || !e.lbs) return; state.weight = state.weight.filter(x => x.d !== e.d); state.weight.push(e); save('Weight logged'); renderAll(); };
   $('#f-lift').onsubmit = ev => { ev.preventDefault(); const f = new FormData(ev.target); const e = { id: 'l' + Date.now(), d: f.get('d'), lift: f.get('lift'), w: Number(f.get('w')), r: Number(f.get('r')) }; if (!e.d || !e.w || !e.r) return; state.lifts.push(e); save('Set logged'); renderAll(); };
   $$('[data-del]', root).forEach(b => b.addEventListener('click', () => { const k = b.dataset.del; state[k] = state[k].filter(x => x.id !== b.dataset.id); save('Deleted'); renderAll(); }));
+}
+
+function speedFormHTML(today) {
+  const ballF = '<label>Ball speed (mph)<input type="number" name="ball" step="0.1" min="150" max="260" inputmode="decimal" placeholder="' + (speedMetric === 'chs' ? 'optional' : '193.4') + '"></label>';
+  const chsF  = '<label>Club speed (mph)<input type="number" name="chs" step="0.1" min="100" max="180" inputmode="decimal" placeholder="' + (speedMetric === 'ball' ? 'optional' : '130.2') + '"></label>';
+  const hint = speedMetric === 'smash'
+    ? '<p class="note full" style="margin:0">Smash is calculated, not logged — enter <b>both</b> speeds and the app divides ball by club.</p>'
+    : (speedMetric === 'chs' ? '<p class="note full" style="margin:0">Club speed alone is fine — from a radar finisher with no ball. Add ball speed too and you get smash.</p>' : '');
+  return '<form class="logform" id="f-speed">' + hint +
+    '<label>Date<input type="date" name="d" value="' + today + '" required></label>' +
+    (speedMetric === 'chs' ? chsF + ballF : ballF + chsF) +
+    '<label class="full">Note<input type="text" name="note" maxlength="80" placeholder="Launch monitor at the sim · 4 sets"></label>' +
+    '<button class="btn" type="submit">Log ' + (speedMetric === 'smash' ? 'both speeds' : speedMetric === 'chs' ? 'club speed' : 'ball speed') + '</button></form>';
 }
 
 /* ---------- Plan view (reference) ---------- */
