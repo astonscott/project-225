@@ -48,9 +48,23 @@ Change a time later → download again → import again. Events carry stable IDs
 - Gym sessions go exercise by exercise. Each set has weight and reps pre-filled from last time (or from your estimated 1RM on the main lifts); tap the check to log it and the rest timer starts. **Best so far** and **Beat it** show what to beat.
 - Speed days have the protocol as a checklist and a **competition set clock**: start the 2:45, type each ball speed as the radar reads it, mark in-grid balls, **Save set**. Peak and top-3 are calculated and logged when you finish.
 - **Every day** on Today: a checklist for morning weight, creatine, calories, protein, water, mobility and sleep. Tap the box to tick it, or type the number — calories/protein/sleep tick themselves once you're within 5% of target, and habits build a streak.
+- **Rest timer**: −30 / +30 adjust it live; subtracting past zero just ends the rest the same way waiting it out does.
 - Targets live in **More → Daily targets** (adjust calories ±200 every second Sunday); the program's start date lives in **More → Program**.
 - The Sunday **review card** (also on the Log tab) reads your weight, speed, calories and sleep together and tells you which one to fix.
 - **Log** has the charts — toggle **Ball speed / Club speed / Smash**, each with your sessions and a 3-session rolling average — plus the maxes table and manual entry.
+
+## Changing the workouts
+
+**More → Workouts → Edit**, or **Edit exercise** from inside a session while you're standing in the gym.
+
+You can rename or swap an exercise, rewrite the prescription for any of the three blocks, change the cue, reorder, add and remove. Everything downstream follows — Today, the week view, the Plan tab and the calendar descriptions. **Reset to the programmed version** puts a workout back.
+
+Two things worth knowing:
+
+- The **slot code** sets the rest length: `A…` power, `B` or `C` main lift, anything else accessory. Lengths live in **More → In-session**.
+- Logged sets are stored against the slot, not the position, so renaming or reordering keeps your history and your bests.
+
+Typing an exercise name pulls from a list of every movement that has a how-to written for it — pick from the list and the how-to comes with it.
 
 ## Backups and sending logs
 

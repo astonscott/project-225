@@ -310,12 +310,25 @@ h3{font-size:16.5px;font-weight:700;margin-bottom:6px}
 .maxin label{flex:1;display:flex;flex-direction:column;gap:3px;font-size:12px;font-weight:700;color:var(--muted)}
 .maxin input{font-family:var(--mono);font-size:15px;padding:7px 9px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--ink);width:100%}
 /* rest timer bar */
-.timer{position:fixed;left:0;right:0;bottom:0;z-index:45;background:var(--ink);color:var(--bg);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:none;align-items:center;gap:14px;box-shadow:0 -4px 20px rgba(0,0,0,.25)}
+.timer{position:fixed;left:0;right:0;bottom:0;z-index:45;background:var(--ink);color:var(--bg);padding:12px 14px calc(12px + env(safe-area-inset-bottom));display:none;align-items:center;gap:9px;box-shadow:0 -4px 20px rgba(0,0,0,.25)}
 .timer.on{display:flex}
-.timer .tt{font-family:var(--display);font-size:40px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;min-width:96px}
-.timer .tl{flex:1;font-size:13px;opacity:.8}
-.timer .tl b{display:block;font-size:14px;opacity:1}
-.timer button{border:1px solid rgba(255,255,255,.3);background:transparent;color:inherit;border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer;font-size:13px}
+.timer .tt{font-family:var(--display);font-size:36px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;min-width:74px}
+.timer .tl{flex:1;min-width:0;font-size:12.5px;opacity:.8}
+.timer .tl b{display:block;font-size:13.5px;opacity:1}
+.timer .tl b,.timer .tl span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.timer button{border:1px solid rgba(255,255,255,.3);background:transparent;color:inherit;border-radius:8px;padding:9px 10px;font-weight:700;cursor:pointer;font-size:13px;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.timer button:active{background:rgba(255,255,255,.16)}
+#edit{z-index:44}
+.exrow{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-top:1px solid var(--line)}
+.exrow:first-child{border-top:0}
+.exrow .c{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--muted);flex:0 0 26px;padding-top:3px}
+.exrow .m{flex:1;min-width:0}
+.exrow .m b{display:block;font-size:14.5px;line-height:1.25}
+.exrow .m span{display:block;font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.exrow .a{display:flex;gap:4px;flex:0 0 auto}
+.exrow .a button{border:1px solid var(--line-strong);background:var(--surface);color:var(--ink-2);border-radius:7px;width:30px;height:30px;font-size:14px;line-height:1;cursor:pointer;display:grid;place-items:center}
+.exrow .a button:disabled{opacity:.3}
+.exrow .a button.del{border-color:var(--bad);color:var(--bad);width:auto;padding:0 9px;font-size:12px;font-weight:700}
 .timer.over{background:var(--good);color:#fff}
 /* speed session */
 .clock{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;text-align:center;margin-bottom:12px}
@@ -387,7 +400,11 @@ h3{font-size:16.5px;font-weight:700;margin-bottom:6px}
   <div class="ovh"><div class="t"><b>Choose a workout</b><span id="pick-sub">Start anything, any day</span></div><button class="ic" id="pick-close" aria-label="Close">×</button></div>
   <div class="ovb"><div class="wrap" id="pick-body"></div></div>
 </div>
-<div class="timer" id="timer"><div class="tt" id="timer-t">0:00</div><div class="tl"><b id="timer-l">Rest</b><span id="timer-n"></span></div><button id="timer-add">+30 s</button><button id="timer-skip">Skip</button></div>
+<div class="ov" id="edit" role="dialog" aria-modal="true" aria-label="Edit workout">
+  <div class="ovh"><div class="t"><b id="edit-title">Edit workout</b><span id="edit-sub"></span></div><button class="ic" id="edit-close" aria-label="Close">×</button></div>
+  <div class="ovb"><div class="wrap" id="edit-body"></div></div>
+</div>
+<div class="timer" id="timer"><div class="tt" id="timer-t">0:00</div><div class="tl"><b id="timer-l">Rest</b><span id="timer-n"></span></div><button id="timer-sub">−30</button><button id="timer-add">+30</button><button id="timer-skip">Skip</button></div>
 <div class="toast" id="toast"></div>
 <script>
 /* ---------- Program data ---------- */
@@ -648,10 +665,64 @@ const PICKABLE = [
   { group: 'Extras', items: [EXTRAS.mobility] },
 ];
 function sessionById(id) { return GYM[id] || SPEED[id] || EXTRAS[id] || null; }
+
+/* ---------- Editable workouts ---------- */
+const clone = x => JSON.parse(JSON.stringify(x));
+const DEFAULT_EX = {};
+Object.keys(GYM).forEach(id => { if (GYM[id].ex) DEFAULT_EX[id] = clone(GYM[id].ex); });
+const EX_NAMES = Array.from(new Set(Object.keys(HOWTO).concat(
+  Object.keys(DEFAULT_EX).reduce((a, id) => a.concat(DEFAULT_EX[id].map(r => r[1])), [])
+))).sort((a, b) => a.localeCompare(b));
+function customRows(id) { const c = state.custom && state.custom[id]; return (Array.isArray(c) && c.length) ? c : null; }
+function isCustom(id) { return !!customRows(id); }
+function applyCustom() { Object.keys(DEFAULT_EX).forEach(id => { GYM[id].ex = clone(customRows(id) || DEFAULT_EX[id]); }); }
+function cleanRows(rows) {
+  const seen = {};
+  return rows.map(r => {
+    const out = [];
+    for (let i = 0; i < 6; i++) out.push(String(r[i] == null ? '' : r[i]).trim());
+    let c = out[0] || 'X', k = 2, base = c;
+    while (seen[c]) c = base + (k++);
+    seen[c] = 1; out[0] = c;
+    return out;
+  }).filter(r => r[1]);
+}
+function nextCode(rows) {
+  const used = {};
+  rows.forEach(r => { used[String(r[0] || '').charAt(0).toUpperCase()] = 1; });
+  const L = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  for (let i = 0; i < L.length; i++) if (!used[L[i]]) return L[i] + '1';
+  return 'Z' + (rows.length + 1);
+}
+function saveWorkout(id, rows) {
+  const old = GYM[id].ex ? clone(GYM[id].ex) : [];
+  const next = rows ? cleanRows(rows) : null;
+  if (!state.custom) state.custom = {};
+  if (next && next.length && JSON.stringify(next) !== JSON.stringify(DEFAULT_EX[id])) state.custom[id] = next;
+  else delete state.custom[id];
+  applyCustom();
+  remapRecords(id, old, GYM[id].ex);
+  save();
+}
+// Logged sets live under the slot code, so a rename or a reorder keeps its history.
+function remapRecords(id, oldRows, newRows) {
+  Object.keys(state.sessions).forEach(k => {
+    const rec = state.sessions[k];
+    if (!rec || rec.id !== id || rec.finishedAt) return;
+    const sets = {}, exDone = {}, exNames = {};
+    newRows.forEach((r, j) => {
+      let oi = -1;
+      for (let i = 0; i < oldRows.length; i++) if (oldRows[i][0] === r[0]) { oi = i; break; }
+      if (oi >= 0) { if (rec.sets && rec.sets[oi]) sets[j] = rec.sets[oi]; if (rec.exDone && rec.exDone[oi]) exDone[j] = true; }
+      exNames[j] = r[1];
+    });
+    rec.sets = sets; rec.exDone = exDone; rec.exNames = exNames;
+  });
+}
 </script>
 <script>
 /* ================= App core ================= */
-const APP_VERSION = '1.6.0';
+const APP_VERSION = '1.7.0';
 const LS_KEY = 'project225-app-v1';
 const DEFAULT_SETTINGS = {
   startDate: '2026-09-21',            // Monday of Week 1
@@ -663,7 +734,7 @@ const DEFAULT_SETTINGS = {
   sound: true, vibrate: true,
 };
 let state = freshState();
-function freshState() { return { v: 1, settings: JSON.parse(JSON.stringify(DEFAULT_SETTINGS)), checks: {}, sessions: {}, daily: {}, speed: [], weight: [], lifts: [], maxes: {}, tests: {}, activeKey: null, updatedAt: 0 }; }
+function freshState() { return { v: 1, settings: JSON.parse(JSON.stringify(DEFAULT_SETTINGS)), checks: {}, sessions: {}, daily: {}, custom: {}, speed: [], weight: [], lifts: [], maxes: {}, tests: {}, activeKey: null, updatedAt: 0 }; }
 function normalize(s) {
   const n = freshState();
   if (!s || typeof s !== 'object') return n;
@@ -678,12 +749,19 @@ function normalize(s) {
     if (typeof s.settings.vibrate === 'boolean') n.settings.vibrate = s.settings.vibrate;
   }
   ['checks','sessions','daily','maxes','tests'].forEach(k => { if (s[k] && typeof s[k] === 'object' && !Array.isArray(s[k])) n[k] = JSON.parse(JSON.stringify(s[k])); });
+  if (s.custom && typeof s.custom === 'object' && !Array.isArray(s.custom)) {
+    Object.keys(s.custom).forEach(id => {
+      const v = s.custom[id];
+      if (Array.isArray(v) && v.length && v.every(r => Array.isArray(r) && r.length >= 2 && String(r[1] || '').trim()))
+        n.custom[id] = v.map(r => { const o = []; for (let i = 0; i < 6; i++) o.push(String(r[i] == null ? '' : r[i])); return o; });
+    });
+  }
   ['speed','weight','lifts'].forEach(k => { if (Array.isArray(s[k])) n[k] = s[k].map(x => ({ ...x })); });
   n.activeKey = typeof s.activeKey === 'string' ? s.activeKey : null;
   n.updatedAt = Number(s.updatedAt) || 0;
   return n;
 }
-function loadLocal() { try { const raw = localStorage.getItem(LS_KEY); if (raw) state = normalize(JSON.parse(raw)); } catch (e) { console.warn('load failed', e); } applyStart(); }
+function loadLocal() { try { const raw = localStorage.getItem(LS_KEY); if (raw) state = normalize(JSON.parse(raw)); } catch (e) { console.warn('load failed', e); } applyStart(); applyCustom(); }
 let saveT = null;
 function save(msg) {
   state.updatedAt = Date.now();
@@ -1180,6 +1258,7 @@ function renderGymSession(body, foot, sess, rec, block) {
   if (isTaper(active.wk)) h += '<div class="callout warn" style="margin-bottom:10px;font-size:13.5px"><p>Taper: cut about 40% of the sets below. Same loads.</p></div>';
   if (rx.empty) {
     h += '<div class="note">Not programmed in this block. Skip ahead.</div>';
+    if (DEFAULT_EX[sess.id]) h += '<div class="exfoot"><button class="btn ghost sm" id="ex-edit">Edit exercise</button></div>';
     body.innerHTML = h;
   } else {
     const g0 = rx.groups[0];
@@ -1200,7 +1279,7 @@ function renderGymSession(body, foot, sess, rec, block) {
     }
     const rows = rec.sets[i];
     h += '<div class="sets">' + rows.map((st, k) => '<div class="setrow' + (st.done ? ' done' : '') + '" data-set="' + k + '"><div class="i">' + (k + 1) + (st.lbl ? '<br><span style="font-size:10px">' + esc(st.lbl) + '</span>' : '') + '</div><label>' + (g0.pctOf === 'bw' ? 'Load' : 'Weight') + '<input type="number" step="2.5" min="0" inputmode="decimal" value="' + esc(st.w) + '" data-f="w"></label><label>' + (g0.unit === 's' ? 'Seconds' : g0.unit === 'm' ? 'Metres' : 'Reps') + (g0.perSide ? ' / side' : '') + '<input type="number" step="1" min="0" inputmode="numeric" value="' + esc(st.r) + '" data-f="r"></label><button class="lg" aria-label="Log set ' + (k + 1) + '" data-log="' + k + '"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button></div>').join('') + '</div>';
-    h += '<div class="exfoot"><button class="btn ghost sm" id="ex-addset">+ Add set</button><button class="btn ghost sm" id="ex-rest">Rest timer ' + mmss(restFor(r[0])) + '</button>' + (g0.unit === 's' && g0.reps ? '<button class="btn ghost sm" id="ex-hold">Hold timer ' + g0.reps + ' s</button>' : '') + (last ? '<span style="font-size:12.5px;color:var(--muted);align-self:center">Last time (' + esc(last.date) + '): ' + last.sets.map(s => s.w + '×' + s.r).join(', ') + '</span>' : '') + '</div>';
+    h += '<div class="exfoot"><button class="btn ghost sm" id="ex-addset">+ Add set</button><button class="btn ghost sm" id="ex-rest">Rest timer ' + mmss(restFor(r[0])) + '</button>' + (DEFAULT_EX[sess.id] ? '<button class="btn ghost sm" id="ex-edit">Edit exercise</button>' : '') + (g0.unit === 's' && g0.reps ? '<button class="btn ghost sm" id="ex-hold">Hold timer ' + g0.reps + ' s</button>' : '') + (last ? '<span style="font-size:12.5px;color:var(--muted);align-self:center">Last time (' + esc(last.date) + '): ' + last.sets.map(s => s.w + '×' + s.r).join(', ') + '</span>' : '') + '</div>';
     body.innerHTML = h;
     $$('.setrow input', body).forEach(inp => inp.addEventListener('change', () => { const row = inp.closest('.setrow'), k = +row.dataset.set; rec.sets[i][k][inp.dataset.f] = inp.value === '' ? '' : Number(inp.value); save(); }));
     $$('[data-log]', body).forEach(b => b.addEventListener('click', () => {
@@ -1223,6 +1302,7 @@ function renderGymSession(body, foot, sess, rec, block) {
     const hb = $('#ex-hold'); if (hb) hb.onclick = () => startTimer(g0.reps, 'Hold — go!', rx.variant || name);
     const mf = $('[data-max]', body); if (mf) mf.onsubmit = ev => { ev.preventDefault(); const v = Number(mf.querySelector('input').value); if (v > 0) { state.maxes[name] = v; save('Max saved'); renderSession(); } };
   }
+  const edb = $('#ex-edit', body); if (edb) edb.onclick = () => openEditor(sess.id, i, 'session');
   $$('[data-ex]', body).forEach(b => b.addEventListener('click', () => { active.exIdx = +b.dataset.ex; renderSession(); $('.ovb').scrollTo({ top: 0 }); }));
   const isLast = i === sess.ex.length - 1;
   const doneCount = Object.keys(rec.exDone).filter(k => rec.exDone[k]).length;
@@ -1231,6 +1311,107 @@ function renderGymSession(body, foot, sess, rec, block) {
   $('#ex-skip').onclick = () => { rec.exDone[i] = !rec.exDone[i]; save(); renderSession(); };
   const nx = $('#ex-next'); if (nx) nx.onclick = () => { active.exIdx = Math.min(sess.ex.length - 1, i + 1); renderSession(); $('.ovb').scrollTo({ top: 0 }); };
   const fn = $('#ex-finish'); if (fn) fn.onclick = finishSession;
+}
+
+/* ---------- Workout editor ---------- */
+let edit = null;
+function openEditor(id, row, from) {
+  if (!DEFAULT_EX[id]) return;
+  edit = { id, row: (row == null ? null : row), from: from || 'list', del: null };
+  $('#edit').classList.add('on'); document.body.style.overflow = 'hidden';
+  renderEditor(); $('#edit .ovb').scrollTo({ top: 0 });
+}
+function closeEditor() {
+  edit = null;
+  $('#edit').classList.remove('on');
+  document.body.style.overflow = active ? 'hidden' : '';
+  if (active) renderSession();
+  renderAll();
+}
+function renderEditor() {
+  if (!edit) return;
+  const s = GYM[edit.id];
+  if (!s) { closeEditor(); return; }
+  $('#edit-title').textContent = s.short || s.name;
+  $('#edit-sub').textContent = edit.row == null
+    ? s.ex.length + ' exercises' + (isCustom(edit.id) ? ' \u00b7 customised' : ' \u00b7 as programmed')
+    : (edit.row >= s.ex.length ? 'New exercise' : 'Editing ' + (s.ex[edit.row] ? s.ex[edit.row][0] : ''));
+  const b = $('#edit-body');
+  if (edit.row == null) { b.innerHTML = editorListHTML(s); bindEditorList(b, s); }
+  else { b.innerHTML = editorRowHTML(s, edit.row); bindEditorRow(b, s, edit.row); }
+}
+function editorListHTML(s) {
+  const R = state.settings.rest;
+  let h = '<p class="lede" style="margin-bottom:12px">Swap, reorder, add or remove exercises. Everything else in the app follows \u2014 Today, the week view and the calendar descriptions.</p>';
+  h += '<div class="set">' + s.ex.map((r, i) => {
+    const rx = [r[2], r[3], r[4]].map(x => x && x !== '\u2014' ? x : '\u2014').join('  \u00b7  ');
+    return '<div class="exrow"><div class="c">' + esc(r[0]) + '</div><div class="m"><b>' + esc(r[1]) + '</b><span>' + esc(rx) + '</span></div><div class="a">' +
+      (edit.del === i
+        ? '<button class="del" data-delyes="' + i + '">Remove</button><button data-delno="1" aria-label="Cancel">\u00d7</button>'
+        : '<button data-up="' + i + '" aria-label="Move up"' + (i === 0 ? ' disabled' : '') + '>\u2191</button><button data-down="' + i + '" aria-label="Move down"' + (i === s.ex.length - 1 ? ' disabled' : '') + '>\u2193</button><button data-edrow="' + i + '" aria-label="Edit">\u270e</button><button data-del="' + i + '" aria-label="Remove">\u00d7</button>') +
+      '</div></div>';
+  }).join('') + '</div>';
+  h += '<div class="row" style="margin-top:12px"><button class="btn" id="ed-add">+ Add exercise</button>' + (isCustom(edit.id) ? '<button class="btn ghost" id="ed-reset">Reset to the programmed version</button>' : '') + '</div>';
+  h += '<p class="note" style="margin-top:14px">The slot code sets the rest length: <b>A\u2026</b> power (' + mmss(R.power) + ') \u00b7 <b>B</b> or <b>C</b> main lift (' + mmss(R.main) + ') \u00b7 anything else accessory (' + mmss(R.acc) + '). Logged sets stay with the slot, so renaming or reordering keeps your history. Change the rest lengths in More \u2192 In-session.</p>';
+  return h;
+}
+function bindEditorList(b, s) {
+  const move = (i, d) => { const rows = clone(s.ex); const j = i + d; if (j < 0 || j >= rows.length) return; const t = rows[i]; rows[i] = rows[j]; rows[j] = t; saveWorkout(edit.id, rows); edit.del = null; renderEditor(); };
+  $$('[data-up]', b).forEach(x => x.onclick = () => move(+x.dataset.up, -1));
+  $$('[data-down]', b).forEach(x => x.onclick = () => move(+x.dataset.down, 1));
+  $$('[data-edrow]', b).forEach(x => x.onclick = () => { edit.row = +x.dataset.edrow; edit.del = null; renderEditor(); $('#edit .ovb').scrollTo({ top: 0 }); });
+  $$('[data-del]', b).forEach(x => x.onclick = () => { edit.del = +x.dataset.del; renderEditor(); });
+  $$('[data-delno]', b).forEach(x => x.onclick = () => { edit.del = null; renderEditor(); });
+  $$('[data-delyes]', b).forEach(x => x.onclick = () => {
+    const i = +x.dataset.delyes, rows = clone(s.ex), gone = rows[i] ? rows[i][1] : '';
+    rows.splice(i, 1);
+    if (!rows.length) { toast('A workout needs at least one exercise'); edit.del = null; renderEditor(); return; }
+    saveWorkout(edit.id, rows); edit.del = null;
+    if (active && active.sess.id === edit.id) active.exIdx = Math.min(active.exIdx, GYM[edit.id].ex.length - 1);
+    toast('Removed ' + gone); renderEditor();
+  });
+  const add = $('#ed-add', b); if (add) add.onclick = () => { edit.row = s.ex.length; edit.del = null; renderEditor(); $('#edit .ovb').scrollTo({ top: 0 }); };
+  const rst = $('#ed-reset', b); if (rst) rst.onclick = () => {
+    saveWorkout(edit.id, null); edit.del = null;
+    if (active && active.sess.id === edit.id) active.exIdx = Math.min(active.exIdx, GYM[edit.id].ex.length - 1);
+    toast('Back to the programmed version'); renderEditor();
+  };
+}
+function editorRowHTML(s, i) {
+  const isNew = i >= s.ex.length;
+  const r = isNew ? [nextCode(s.ex), '', '', '', '', ''] : s.ex[i];
+  let h = '<form class="logform" id="ed-form">';
+  h += '<label>Slot<input name="code" value="' + esc(r[0]) + '" maxlength="4" autocomplete="off" autocapitalize="characters"></label>';
+  h += '<label>Rest<input name="restpreview" value="" disabled></label>';
+  h += '<label class="full">Exercise<input name="name" list="ex-names" value="' + esc(r[1]) + '" autocomplete="off" required placeholder="start typing \u2014 the list has every exercise with a how-to"></label>';
+  h += '<datalist id="ex-names">' + EX_NAMES.map(x => '<option value="' + esc(x) + '"></option>').join('') + '</datalist>';
+  h += '<label class="full">Block 1 \u00b7 weeks 1\u20134<input name="b1" value="' + esc(r[2]) + '" autocomplete="off" placeholder="4\u00d76 @ 72\u201377%"></label>';
+  h += '<label class="full">Block 2 \u00b7 weeks 5\u20138<input name="b2" value="' + esc(r[3]) + '" autocomplete="off" placeholder="5\u00d74 @ 80\u201385%"></label>';
+  h += '<label class="full">Block 3 \u00b7 weeks 9\u201312<input name="b3" value="' + esc(r[4]) + '" autocomplete="off" placeholder="3\u00d73 @ 85%"></label>';
+  h += '<label class="full">Cue<input name="cue" value="' + esc(r[5]) + '" autocomplete="off" placeholder="the one thing to remember"></label>';
+  h += '<p class="note full" style="margin:0">Leave a block empty and the app shows \u201cnot programmed in this block\u201d on those weeks. Sets \u00d7 reps are read from the text, so keep the <b>4\u00d76</b> shape.</p>';
+  h += '<div class="row full"><button class="btn" type="submit">' + (isNew ? 'Add to the workout' : 'Save') + '</button><button class="btn ghost" type="button" id="ed-cancel">Cancel</button></div>';
+  h += '</form>';
+  return h;
+}
+function bindEditorRow(b, s, i) {
+  const f = $('#ed-form', b), R = state.settings.rest, E = f.elements;
+  const codeIn = E.code, prev = E.restpreview;
+  const paint = () => { const c = String(codeIn.value || '').trim() || 'X'; const cat = exCategory(c); prev.value = mmss(cat === 'main' ? R.main : cat === 'power' ? R.power : R.acc) + ' \u00b7 ' + (cat === 'main' ? 'main' : cat === 'power' ? 'power' : 'accessory'); };
+  codeIn.addEventListener('input', paint); paint();
+  $('#ed-cancel', b).onclick = () => { if (edit.from === 'session') closeEditor(); else { edit.row = null; renderEditor(); } };
+  f.onsubmit = ev => {
+    ev.preventDefault();
+    const name = String(E.name.value || '').trim();
+    if (!name) { toast('Give it a name'); return; }
+    const row = [String(codeIn.value || '').trim() || 'X', name, String(E.b1.value || '').trim(), String(E.b2.value || '').trim(), String(E.b3.value || '').trim(), String(E.cue.value || '').trim()];
+    const rows = clone(s.ex);
+    if (i >= rows.length) rows.push(row); else rows[i] = row;
+    saveWorkout(edit.id, rows);
+    if (active && active.sess.id === edit.id) active.exIdx = Math.min(i, GYM[edit.id].ex.length - 1);
+    toast('Saved');
+    if (edit.from === 'session') closeEditor(); else { edit.row = null; renderEditor(); }
+  };
 }
 
 /* ---------- Rest timer ---------- */
@@ -1254,7 +1435,9 @@ function tickTimer() {
   if (left <= 10.2 && left > 9.8) { vibrate(60); beep(1); }
 }
 function stopTimer() { clearInterval(timerInt); timerInt = null; $('#timer').classList.remove('on', 'over'); }
-$('#timer-add').addEventListener('click', () => { if (timerOverAt) { timerOverAt = 0; $('#timer').classList.remove('over'); timerEnd = Date.now() + 30000; } else timerEnd += 30000; tickTimer(); });
+$('#timer-add').addEventListener('click', () => { if (timerOverAt) { timerOverAt = 0; $('#timer').classList.remove('over'); timerEnd = Date.now() + 30000; } else timerEnd += 30000; vibrate(20); tickTimer(); });
+// Cut the rest short. Landing on zero fires the normal "GO" so it feels the same as waiting it out.
+$('#timer-sub').addEventListener('click', () => { if (timerOverAt) return; timerEnd = Math.max(Date.now(), timerEnd - 30000); vibrate(20); tickTimer(); });
 $('#timer-skip').addEventListener('click', stopTimer);
 
 /* ---------- Speed session ---------- */
@@ -1598,6 +1781,9 @@ function renderMore() {
   h += '<section><div class="sec-h"><h2>Program</h2><span class="meta">moves every date in the app</span></div><div class="set">' +
     '<div class="item"><div class="l">Week 1 starts<small>snaps to the Monday of that week</small></div><input type="date" data-startdate value="' + esc(iso(PLAN.start)) + '"></div></div>' +
     '<p class="note" style="margin:10px 0">Week 1 ' + esc(weekRange(1)) + ' · test week ' + esc(weekRange(PLAN.testWeek)) + '. Logged sets, speeds and weigh-ins are stored by date and stay where they are. Re-download the calendar after changing this.</p></section>';
+  h += '<section><div class="sec-h"><h2>Workouts</h2><span class="meta">swap exercises to suit you</span></div><div class="set">' +
+    Object.keys(DEFAULT_EX).map(id => '<div class="item"><div class="l">' + esc(GYM[id].short || GYM[id].name) + '<small>' + GYM[id].ex.length + ' exercises' + (isCustom(id) ? ' \u00b7 customised' : '') + '</small></div><button class="btn ghost sm" data-wkedit="' + id + '">Edit</button></div>').join('') +
+    '</div><p class="note" style="margin-top:10px">Edits apply everywhere and stay on this phone. You can also hit <b>Edit exercise</b> from inside a workout, mid-session.</p></section>';
   h += '<section><div class="sec-h"><h2>Session times</h2><span class="meta">used for the calendar reminders</span></div><div class="set">' + TIME_ROWS.map(r => '<div class="item"><div class="l">' + esc(r[1]) + '</div><input type="time" data-time="' + r[0] + '" value="' + esc(s.times[r[0]]) + '"></div>').join('') + '</div></section>';
   h += '<section><div class="sec-h"><h2>Reminders</h2><span class="meta">Google Calendar does the reminding</span></div><div class="set">' +
     '<div class="item"><div class="l">First alarm<small>minutes before a session</small></div><input type="number" min="0" max="180" data-alarm="0" value="' + esc(s.alarms[0] != null ? s.alarms[0] : 30) + '"></div>' +
@@ -1620,6 +1806,7 @@ function renderMore() {
     '<p class="note" style="margin-top:12px">Sessions logged: ' + Object.values(state.sessions).filter(x => x.finishedAt).length + ' · speed entries: ' + state.speed.length + ' · weigh-ins: ' + state.weight.length + '</p></section>';
   h += '<section><div class="sec-h"><h2>About</h2></div><p class="lede">Project 225 v' + APP_VERSION + ' · Phase 1 · ' + fmtShort(PLAN.start) + ' – ' + fmtShort(planEnd()) + ', ' + planEnd().getFullYear() + '. Built for one athlete; not medical advice. If something hurts, the guardrails on the Plan → Speed tab come first.</p><div class="row" style="margin-top:12px"><button class="btn danger sm" id="reset-btn">Erase all data on this phone</button></div></section>';
   root.innerHTML = h;
+  $$('[data-wkedit]', root).forEach(x => x.addEventListener('click', () => openEditor(x.dataset.wkedit, null, 'list')));
   const sdIn = $('[data-startdate]', root);
   if (sdIn) sdIn.addEventListener('change', () => {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(sdIn.value)) return;
@@ -1716,6 +1903,7 @@ function showView(name) {
 }
 $$('.nav button').forEach(t => t.addEventListener('click', () => { showView(t.dataset.view); window.scrollTo({ top: 0 }); }));
 $('#pick-close').addEventListener('click', closePicker);
+$('#edit-close').addEventListener('click', closeEditor);
 let rzT; window.addEventListener('resize', () => { clearTimeout(rzT); rzT = setTimeout(drawCharts, 200); });
 let shownDay = iso(new Date());
 function checkDayRollover(announce) {
