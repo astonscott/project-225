@@ -255,7 +255,8 @@ h3{font-size:16.5px;font-weight:700;margin-bottom:6px}
 .set .item:first-child{border-top:0}
 .set .item .l{font-size:14.5px}
 .set .item .l small{display:block;color:var(--muted);font-size:12px}
-.set input[type=time],.set input[type=number],.set select{font-family:var(--mono);font-size:14px;padding:7px 8px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--ink);width:112px}
+.set input[type=time],.set input[type=date],.set input[type=number],.set select{font-family:var(--mono);font-size:14px;padding:7px 8px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--ink);color-scheme:light dark;width:112px}
+.set input[type=date]{width:150px}
 .set input[type=number]{width:84px}
 .tests{width:100%;border-collapse:collapse;font-size:13.5px}
 .tests th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:6px 6px 6px 0;border-bottom:1px solid var(--line)}
@@ -391,16 +392,16 @@ h3{font-size:16.5px;font-weight:700;margin-bottom:6px}
 <script>
 /* ---------- Program data ---------- */
 const PLAN = {
-  start: new Date(2026, 8, 14),          // Monday, Week 1
+  start: new Date(2026, 8, 21),          // Monday of Week 1 — overridden by settings.startDate
   weeks: 12,
-  testWeek: 13,                          // Dec 7–13
+  testWeek: 13,                          // the measured week, 13 weeks after Week 1 starts
   bwStart: 200, bwTarget: 213,
   milestones: [                          // ball speed (mph) checkpoints
-    { wk: 0,  label: 'Baseline (Sep 8–13)', lo: 190, hi: 195, mid: 192.5 },
-    { wk: 4,  label: 'End of Block 1 (Oct 11)', lo: 197, hi: 201, mid: 199 },
-    { wk: 8,  label: 'End of Block 2 (Nov 8)',  lo: 203, hi: 208, mid: 205.5 },
-    { wk: 12, label: 'End of Block 3 (Dec 6)',  lo: 208, hi: 215, mid: 211.5 },
-    { wk: 13, label: 'Test week (Dec 7–13)',    lo: 210, hi: 225, mid: 214 },
+    { wk: 0,  name: 'Baseline',       lo: 190, hi: 195, mid: 192.5 },
+    { wk: 4,  name: 'End of Block 1', lo: 197, hi: 201, mid: 199 },
+    { wk: 8,  name: 'End of Block 2', lo: 203, hi: 208, mid: 205.5 },
+    { wk: 12, name: 'End of Block 3', lo: 208, hi: 215, mid: 211.5 },
+    { wk: 13, name: 'Test week',      lo: 210, hi: 225, mid: 214 },
   ],
 };
 
@@ -650,9 +651,10 @@ function sessionById(id) { return GYM[id] || SPEED[id] || EXTRAS[id] || null; }
 </script>
 <script>
 /* ================= App core ================= */
-const APP_VERSION = '1.5.0';
+const APP_VERSION = '1.6.0';
 const LS_KEY = 'project225-app-v1';
 const DEFAULT_SETTINGS = {
+  startDate: '2026-09-21',            // Monday of Week 1
   times: { speedA: '11:30', gym1: '12:00', gym2: '11:30', speedB: '11:30', gym3: '11:30', speedD: '11:30', speedC: '11:00', gym4: '17:00', test: '11:30', weigh: '06:30', review: '18:00', brief: '08:00' },
   rest: { main: 165, power: 120, acc: 75 },
   targets: { kcal: 3600, protein: 210, water: 4, sleep: 8 },
@@ -669,6 +671,7 @@ function normalize(s) {
     n.settings.times = { ...n.settings.times, ...(s.settings.times || {}) };
     n.settings.rest = { ...n.settings.rest, ...(s.settings.rest || {}) };
     n.settings.targets = { ...n.settings.targets, ...(s.settings.targets || {}) };
+    if (typeof s.settings.startDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s.settings.startDate)) n.settings.startDate = s.settings.startDate;
     if (typeof s.settings.clock === 'number') n.settings.clock = s.settings.clock;
     if (Array.isArray(s.settings.alarms)) n.settings.alarms = s.settings.alarms.map(Number).filter(x => x >= 0);
     if (typeof s.settings.sound === 'boolean') n.settings.sound = s.settings.sound;
@@ -680,7 +683,7 @@ function normalize(s) {
   n.updatedAt = Number(s.updatedAt) || 0;
   return n;
 }
-function loadLocal() { try { const raw = localStorage.getItem(LS_KEY); if (raw) state = normalize(JSON.parse(raw)); } catch (e) { console.warn('load failed', e); } }
+function loadLocal() { try { const raw = localStorage.getItem(LS_KEY); if (raw) state = normalize(JSON.parse(raw)); } catch (e) { console.warn('load failed', e); } applyStart(); }
 let saveT = null;
 function save(msg) {
   state.updatedAt = Date.now();
@@ -702,6 +705,17 @@ function iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padSta
 function fromIso(s) { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); }
 function fmtShort(d) { return MONTHS[d.getMonth()] + ' ' + d.getDate(); }
 function weekStart(wk) { return addDays(PLAN.start, (wk - 1) * 7); }
+function week0Start() { return addDays(PLAN.start, -7); }
+function weekEnd(wk) { return addDays(wk === 0 ? week0Start() : weekStart(wk), 6); }
+function planEnd() { return weekEnd(PLAN.testWeek); }
+function weekRange(wk) { const a = wk === 0 ? week0Start() : weekStart(wk); return fmtShort(a) + ' – ' + fmtShort(addDays(a, 6)); }
+function milestoneLabel(m) { return m.name + ' (' + (m.wk === 0 || m.wk === PLAN.testWeek ? weekRange(m.wk) : fmtShort(weekEnd(m.wk))) + ')'; }
+function mondayOf(d) { return addDays(startOfDay(d), -((d.getDay() + 6) % 7)); }
+function applyStart() {
+  const v = state.settings && state.settings.startDate;
+  const d = (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)) ? fromIso(v) : null;
+  PLAN.start = (d && !isNaN(d.getTime())) ? mondayOf(d) : new Date(2026, 8, 21);
+}
 function weekOf(date) {
   const diff = Math.floor((startOfDay(date) - PLAN.start) / DAY_MS);
   if (diff < -7) return -1;
@@ -742,7 +756,7 @@ function bwAvg(n) { const arr = state.weight.slice().sort((a, b) => a.d < b.d ? 
 function latestBw() { const arr = state.weight.slice().sort((a, b) => a.d < b.d ? 1 : -1); return arr.length ? Number(arr[0].lbs) : PLAN.bwStart; }
 function checkKey(wk, day, id) { return 'w' + wk + '-' + day + '-' + id; }
 function weekLabel(wk) { if (wk === 0) return 'Week 0 · Baseline'; if (wk === PLAN.testWeek) return 'Test week'; return 'Week ' + wk + ' of 12 · Block ' + blockOf(wk); }
-function weekSub(wk) { if (wk === 0) return 'Order gear, test, eat. Week 1 starts Monday Sep 14.'; if (wk === PLAN.testWeek) return 'Two competition-format sessions. The better one is your Phase 1 number.'; return BLOCKS[blockOf(wk) - 1].name + (isDeload(wk) ? ' · deload + retest' : isTaper(wk) ? ' · taper' : ''); }
+function weekSub(wk) { if (wk === 0) return 'Order gear, test, eat. Week 1 starts Monday ' + fmtShort(PLAN.start) + '.'; if (wk === PLAN.testWeek) return 'Two competition-format sessions. The better one is your Phase 1 number.'; return BLOCKS[blockOf(wk) - 1].name + (isDeload(wk) ? ' · deload + retest' : isTaper(wk) ? ' · taper' : ''); }
 
 /* ---------- Prescription parsing ---------- */
 function parseRx(str) {
@@ -901,7 +915,7 @@ function renderToday() {
   h += '<div class="strip"><div><div class="k">Best ball</div><div class="v">' + (best ? best + '<small>mph</small>' : '—') + '</div><div class="n">' + (best ? '+' + (best - 192.5).toFixed(1) + ' vs baseline' : 'log a session') + '</div></div>' +
     '<div><div class="k">Weight 7-day</div><div class="v">' + (avg ? avg.toFixed(1) + '<small>lb</small>' : '—') + '</div><div class="n">' + (avg ? ((avg - PLAN.bwStart >= 0 ? '+' : '') + (avg - PLAN.bwStart).toFixed(1) + ' · target 213') : 'weigh in') + '</div></div>' +
     '<div><div class="k">This week</div><div class="v">' + ws.done + '<small>/ ' + ws.total + '</small></div><div class="n">sessions done</div></div></div>';
-  if (wk < 0) { h += '<div class="callout"><p>Program starts Monday Sep 14. Week 0 (baseline) runs Sep 7–13 — open the Week tab to see it.</p></div>'; }
+  if (wk < 0) { h += '<div class="callout"><p>Program starts Monday ' + fmtShort(PLAN.start) + '. Week 0 (baseline) runs ' + weekRange(0) + ' — open the Week tab to see it.</p></div>'; }
   else if (wk > PLAN.testWeek) { h += '<div class="callout good"><p><strong>Phase 1 is complete.</strong> Your logs are in the Log tab; export them from More and we build Phase 2 from the December numbers.</p></div>'; }
   else if (wk === 0) {
     h += '<div class="callout" style="margin-bottom:12px"><p><strong>Week 0.</strong> Baseline and setup. Everything below feeds the milestones — don\'t skip the speed test.</p></div><div class="sessions">' +
@@ -1026,7 +1040,7 @@ let viewWeek = currentWeek();
 function renderWeek() {
   const wk = viewWeek, block = blockOf(wk), today = iso(new Date());
   const root = $('#v-week');
-  let h = '<div class="weeknav"><button id="wk-prev" aria-label="Previous week"' + (wk === 0 ? ' disabled' : '') + '>‹</button><div class="wk"><b>' + esc(weekLabel(wk)) + '</b><span>' + (wk === 0 ? 'Sep 7 – Sep 13' : wk === PLAN.testWeek ? 'Dec 7 – Dec 13' : fmtShort(weekStart(wk)) + ' – ' + fmtShort(addDays(weekStart(wk), 6))) + ' · ' + esc(weekSub(wk)) + '</span></div>' + (wk !== currentWeek() ? '<button class="today" id="wk-today">Today</button>' : '') + '<button id="wk-next" aria-label="Next week"' + (wk === PLAN.testWeek ? ' disabled' : '') + '>›</button></div>';
+  let h = '<div class="weeknav"><button id="wk-prev" aria-label="Previous week"' + (wk === 0 ? ' disabled' : '') + '>‹</button><div class="wk"><b>' + esc(weekLabel(wk)) + '</b><span>' + weekRange(wk) + ' · ' + esc(weekSub(wk)) + '</span></div>' + (wk !== currentWeek() ? '<button class="today" id="wk-today">Today</button>' : '') + '<button id="wk-next" aria-label="Next week"' + (wk === PLAN.testWeek ? ' disabled' : '') + '>›</button></div>';
   const ws = weekStats(wk);
   h += '<div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="' + ws.total + '" aria-valuenow="' + ws.done + '"><i style="width:' + (ws.total ? Math.round(ws.done / ws.total * 100) : 0) + '%"></i></div>';
   if (wk === 0) {
@@ -1392,7 +1406,7 @@ function lineChart(el, cfg) {
 }
 function drawCharts() {
   if (!$('#c-speed')) return;
-  const xd = [new Date(2026, 8, 7), new Date(2026, 11, 13)];
+  const xd = [week0Start(), planEnd()];
   const M = METRICS[speedMetric], pts = speedPoints(speedMetric);
   const tgt = speedMetric === 'smash' ? null : PLAN.milestones.map(m => ({ x: (m.wk === 0 ? addDays(PLAN.start, -1) : addDays(weekStart(m.wk), 6)).getTime(), y: speedMetric === 'chs' ? m.mid / SMASH : m.mid }));
   lineChart($('#c-speed'), {
@@ -1511,7 +1525,7 @@ function renderPlan() {
       '<tr><td class="code">Fri</td><td>Rest + mobility <span style="color:var(--muted)">(optional light Speed D, Blocks 2–3)</span></td><td>Arrive at Saturday fresh.</td></tr>' +
       '<tr><td class="code">Sat</td><td><b>Speed C</b> max hit day at the range, then <b>Gym 4</b> upper hypertrophy in the evening</td><td>The measured session. Mass work after, never before.</td></tr>' +
       '<tr><td class="code">Sun</td><td>Rest · weekly review</td><td>Sleep, food, mobility.</td></tr></tbody></table></div></section>';
-    h += '<section><div class="sec-h"><h2>Milestones</h2><span class="meta">peak ball speed, best of session</span></div><table class="milestones"><thead><tr><th>Checkpoint</th><th>Ball speed</th><th>Status</th></tr></thead><tbody>' + PLAN.milestones.map(m => { const hit = m.wk > 0 && best >= m.lo; return '<tr' + (hit ? ' class="hit"' : '') + '><td>' + esc(m.label) + '</td><td class="num">' + m.lo + '–' + m.hi + ' mph</td><td>' + (m.wk === 0 ? 'Where you are' : hit ? '✓ Reached' : (wk >= m.wk ? 'Not yet' : 'Ahead')) + '</td></tr>'; }).join('') + '</tbody></table><p class="note" style="margin-top:10px">Above the band at week 8: push Block 3 overspeed to the high end and add the 5th Saturday set. Below it: the fix is almost never more swings — it is sleep, food, or contact. Check those first.</p></section>';
+    h += '<section><div class="sec-h"><h2>Milestones</h2><span class="meta">peak ball speed, best of session</span></div><table class="milestones"><thead><tr><th>Checkpoint</th><th>Ball speed</th><th>Status</th></tr></thead><tbody>' + PLAN.milestones.map(m => { const hit = m.wk > 0 && best >= m.lo; return '<tr' + (hit ? ' class="hit"' : '') + '><td>' + esc(milestoneLabel(m)) + '</td><td class="num">' + m.lo + '–' + m.hi + ' mph</td><td>' + (m.wk === 0 ? 'Where you are' : hit ? '✓ Reached' : (wk >= m.wk ? 'Not yet' : 'Ahead')) + '</td></tr>'; }).join('') + '</tbody></table><p class="note" style="margin-top:10px">Above the band at week 8: push Block 3 overspeed to the high end and add the 5th Saturday set. Below it: the fix is almost never more swings — it is sleep, food, or contact. Check those first.</p></section>';
     h += '<section><div class="sec-h"><h2>Gym sessions</h2><span class="meta">all three blocks</span></div><p class="lede" style="margin-bottom:10px">' + esc(RX_LEGEND) + '</p><div class="daycards">' + ['gym1','gym2','gym3','gym4'].map(k => fullTable(GYM[k], block)).join('') + '</div></section>';
     h += '<section><div class="sec-h"><h2>Rules that hold it up</h2></div><div class="prose">' +
       '<p><b>Speed before strength on double days.</b> Overspeed and max hitting go first. A tired nervous system produces slow swings, and slow swings train slow.</p>' +
@@ -1534,7 +1548,7 @@ function renderPlan() {
       '<div class="callout warn"><p><strong>Lead wrist and elbow.</strong> The forearm work in Gym 2 and Gym 4 is there for the impact load. Tape the lead wrist on max hit days if it\'s sore. Do not hit max effort off mats when tired.</p></div>' +
       '<div class="callout warn"><p><strong>Lead knee and hip.</strong> The lead leg posts and stops the whole body. Lateral lunges, skater bounds and single-leg landings are the training; a stable, painless lead knee on a stuck landing is the test.</p></div></div></section>';
   } else if (planTab === 'fuel') {
-    h += '<section><div class="sec-h"><h2>Eating for mass</h2><span class="meta">200 → 213 lb by Dec 6</span></div><div class="prose"><p>Thirteen pounds in twelve weeks is about a pound a week — the fastest rate where most of it is muscle at your training age. Faster and you\'re buying fat you\'ll cut in Phase 2, which costs speed. Slower and you\'re leaving mass on the table in the one phase where mass is the job.</p><p>Maintenance at 6\'2", 200 lb with seven or eight sessions a week is roughly 3,100–3,300 kcal. Start at <b>3,600</b> and let the scale decide: ±200 kcal every second Sunday off the 7-day average.</p></div>' +
+    h += '<section><div class="sec-h"><h2>Eating for mass</h2><span class="meta">' + PLAN.bwStart + ' → ' + PLAN.bwTarget + ' lb by ' + fmtShort(weekEnd(12)) + '</span></div><div class="prose"><p>Thirteen pounds in twelve weeks is about a pound a week — the fastest rate where most of it is muscle at your training age. Faster and you\'re buying fat you\'ll cut in Phase 2, which costs speed. Slower and you\'re leaving mass on the table in the one phase where mass is the job.</p><p>Maintenance at 6\'2", 200 lb with seven or eight sessions a week is roughly 3,100–3,300 kcal. Start at <b>3,600</b> and let the scale decide: ±200 kcal every second Sunday off the 7-day average.</p></div>' +
       '<div class="tbl-wrap" style="margin-top:14px"><table class="xt"><thead><tr><th>Target</th><th>Daily</th><th>Why</th></tr></thead><tbody>' +
       '<tr><td>Calories</td><td class="rx now">3,600 kcal</td><td>~400 over estimated maintenance. Adjust ±200 every two weeks.</td></tr>' +
       '<tr><td>Protein</td><td class="rx now">210 g</td><td>About 1 g per lb, over 4–5 feedings of 40–50 g; last one before bed.</td></tr>' +
@@ -1581,6 +1595,9 @@ function renderMore() {
   const standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   let h = '';
   if (!standalone) h += '<div class="callout" style="margin-bottom:16px"><p><strong>Install as an app.</strong> In Chrome, tap the ⋮ menu → <b>Add to Home screen</b> (or <b>Install app</b>). It opens full-screen and works offline.</p></div>';
+  h += '<section><div class="sec-h"><h2>Program</h2><span class="meta">moves every date in the app</span></div><div class="set">' +
+    '<div class="item"><div class="l">Week 1 starts<small>snaps to the Monday of that week</small></div><input type="date" data-startdate value="' + esc(iso(PLAN.start)) + '"></div></div>' +
+    '<p class="note" style="margin:10px 0">Week 1 ' + esc(weekRange(1)) + ' · test week ' + esc(weekRange(PLAN.testWeek)) + '. Logged sets, speeds and weigh-ins are stored by date and stay where they are. Re-download the calendar after changing this.</p></section>';
   h += '<section><div class="sec-h"><h2>Session times</h2><span class="meta">used for the calendar reminders</span></div><div class="set">' + TIME_ROWS.map(r => '<div class="item"><div class="l">' + esc(r[1]) + '</div><input type="time" data-time="' + r[0] + '" value="' + esc(s.times[r[0]]) + '"></div>').join('') + '</div></section>';
   h += '<section><div class="sec-h"><h2>Reminders</h2><span class="meta">Google Calendar does the reminding</span></div><div class="set">' +
     '<div class="item"><div class="l">First alarm<small>minutes before a session</small></div><input type="number" min="0" max="180" data-alarm="0" value="' + esc(s.alarms[0] != null ? s.alarms[0] : 30) + '"></div>' +
@@ -1601,8 +1618,16 @@ function renderMore() {
     '<div class="item"><div class="l">Vibration</div><select data-vib><option value="1"' + (s.vibrate ? ' selected' : '') + '>On</option><option value="0"' + (!s.vibrate ? ' selected' : '') + '>Off</option></select></div></div></section>';
   h += '<section><div class="sec-h"><h2>Backup</h2><span class="meta">your logs live on this phone</span></div><p class="lede" style="margin-bottom:10px">Export before switching phones or clearing the browser, and share the file to Drive at each retest so the next block can be written from real numbers.</p><div class="row"><button class="btn" id="exp-btn">Export backup</button>' + (navigator.canShare ? '<button class="btn ghost" id="share-btn">Share…</button>' : '') + '<label class="btn ghost" style="cursor:pointer">Import<input type="file" id="imp-file" accept="application/json,.json" style="display:none"></label></div>' +
     '<p class="note" style="margin-top:12px">Sessions logged: ' + Object.values(state.sessions).filter(x => x.finishedAt).length + ' · speed entries: ' + state.speed.length + ' · weigh-ins: ' + state.weight.length + '</p></section>';
-  h += '<section><div class="sec-h"><h2>About</h2></div><p class="lede">Project 225 v' + APP_VERSION + ' · Phase 1 · Sep 14 – Dec 13, 2026. Built for one athlete; not medical advice. If something hurts, the guardrails on the Plan → Speed tab come first.</p><div class="row" style="margin-top:12px"><button class="btn danger sm" id="reset-btn">Erase all data on this phone</button></div></section>';
+  h += '<section><div class="sec-h"><h2>About</h2></div><p class="lede">Project 225 v' + APP_VERSION + ' · Phase 1 · ' + fmtShort(PLAN.start) + ' – ' + fmtShort(planEnd()) + ', ' + planEnd().getFullYear() + '. Built for one athlete; not medical advice. If something hurts, the guardrails on the Plan → Speed tab come first.</p><div class="row" style="margin-top:12px"><button class="btn danger sm" id="reset-btn">Erase all data on this phone</button></div></section>';
   root.innerHTML = h;
+  const sdIn = $('[data-startdate]', root);
+  if (sdIn) sdIn.addEventListener('change', () => {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(sdIn.value)) return;
+    const mon = mondayOf(fromIso(sdIn.value));
+    state.settings.startDate = iso(mon);
+    applyStart(); viewWeek = currentWeek(); shownDay = iso(new Date());
+    save('Week 1 starts ' + fmtShort(mon)); renderAll();
+  });
   $$('[data-time]', root).forEach(i => i.addEventListener('change', () => { if (i.value) { state.settings.times[i.dataset.time] = i.value; save('Saved'); renderToday(); } }));
   $$('[data-alarm]', root).forEach(i => i.addEventListener('change', () => { state.settings.alarms[+i.dataset.alarm] = Math.max(0, Number(i.value) || 0); save('Saved'); }));
   $$('[data-tgt]', root).forEach(i => i.addEventListener('change', () => { const v = Number(i.value); if (v > 0) { state.settings.targets[i.dataset.tgt] = v; save('Target saved'); renderToday(); } }));
@@ -1640,9 +1665,9 @@ function buildICS() {
     (alarmsOverride || (extra && extra.some(x => x.startsWith('RRULE')) ? [0] : alarms)).forEach(a => L.push('BEGIN:VALARM', 'ACTION:DISPLAY', icsFold('DESCRIPTION:' + icsEsc(summary)), 'TRIGGER:-PT' + a + 'M', 'END:VALARM'));
     L.push('END:VEVENT');
   }
-  ev('w0-gear', new Date(2026, 8, 9), '09:00', 30, 'P225 · Order radar + overspeed trainer', 'Stack System + Stack Radar bundle, or PRGR Black + a stick set. Run the DIY overspeed protocol until it lands.');
-  ev('w0-speed', new Date(2026, 8, 12), s.times.speedC, 60, 'P225 · Baseline speed test', '10 max-effort driver swings for peak club speed, then 4 × 6-ball sets for peak ball speed. Log it in the app.');
-  ev('w0-strength', new Date(2026, 8, 13), '11:00', 45, 'P225 · Baseline strength tests', 'Countermovement jump, seated 10 lb med ball side throws, trap bar deadlift 3RM. Enter on Plan → Setup.');
+  ev('w0-gear', addDays(PLAN.start, -5), '09:00', 30, 'P225 · Order radar + overspeed trainer', 'Stack System + Stack Radar bundle, or PRGR Black + a stick set. Run the DIY overspeed protocol until it lands.');
+  ev('w0-speed', addDays(PLAN.start, -2), s.times.speedC, 60, 'P225 · Baseline speed test', '10 max-effort driver swings for peak club speed, then 4 × 6-ball sets for peak ball speed. Log it in the app.');
+  ev('w0-strength', addDays(PLAN.start, -1), '11:00', 45, 'P225 · Baseline strength tests', 'Countermovement jump, seated 10 lb med ball side throws, trap bar deadlift 3RM. Enter on Plan → Setup.');
   for (let wk = 1; wk <= PLAN.testWeek; wk++) {
     const block = blockOf(wk), ws = weekStart(wk);
     DAYS.forEach((day, i) => {
@@ -1658,7 +1683,7 @@ function buildICS() {
     });
   }
   // Daily morning brief — one event per day so the title names that day's real work
-  for (let d = new Date(2026, 8, 8); d <= new Date(2026, 11, 13); d = addDays(d, 1)) {
+  for (let d = week0Start(), briefEnd = planEnd(); d <= briefEnd; d = addDays(d, 1)) {
     const wk = weekOf(d), day = dayKeyOf(d);
     let title, lines = [];
     if (wk === 0) { title = 'Baseline week — setup tasks'; lines = WEEK0.map(x => '• ' + x.name); }
@@ -1673,12 +1698,13 @@ function buildICS() {
     lines.push('', 'Every day: weigh in · creatine 5 g · ' + T.kcal + ' kcal · ' + T.protein + ' g protein · ' + T.water + ' L water · mobility 10 min · ' + T.sleep + ' h sleep');
     ev('brief-' + iso(d), d, s.times.brief, 15, 'P225 · ' + title, lines.join('\n'), null, [0]);
   }
-  ev('weigh', new Date(2026, 8, 9), s.times.weigh, 10, 'P225 · Weigh in', 'Morning, after the bathroom, before food. Log it on Today.', ['RRULE:FREQ=DAILY;UNTIL=20261213T235959Z']);
-  ev('review', new Date(2026, 8, 13), s.times.review, 15, 'P225 · Weekly review', '7-day weight, best ball speed, sessions done. Read the review card in the app; adjust calories every second Sunday.', ['RRULE:FREQ=WEEKLY;BYDAY=SU;UNTIL=20261213T235959Z']);
-  [[new Date(2026, 9, 4), 'Week 4'], [new Date(2026, 10, 1), 'Week 8'], [new Date(2026, 10, 29), 'Week 12 (taper)']].forEach(([d, w]) => ev('deload-' + iso(d), d, addMinutes(s.times.review, 15), 10, 'P225 · ' + w + ' deload starts tomorrow', 'Main lifts 3×5 at 65–70%, accessories 2 sets, overspeed 1 round, Saturday is a retest. Do not skip it.'));
+  ev('weigh', addDays(PLAN.start, -5), s.times.weigh, 10, 'P225 · Weigh in', 'Morning, after the bathroom, before food. Log it on Today.', ['RRULE:FREQ=DAILY;UNTIL=' + icsUntil()]);
+  ev('review', addDays(PLAN.start, -1), s.times.review, 15, 'P225 · Weekly review', '7-day weight, best ball speed, sessions done. Read the review card in the app; adjust calories every second Sunday.', ['RRULE:FREQ=WEEKLY;BYDAY=SU;UNTIL=' + icsUntil()]);
+  [[4, 'Week 4'], [8, 'Week 8'], [12, 'Week 12 (taper)']].map(([w, lbl]) => [addDays(weekStart(w), -1), lbl]).forEach(([d, w]) => ev('deload-' + iso(d), d, addMinutes(s.times.review, 15), 10, 'P225 · ' + w + ' deload starts tomorrow', 'Main lifts 3×5 at 65–70%, accessories 2 sets, overspeed 1 round, Saturday is a retest. Do not skip it.'));
   L.push('END:VCALENDAR');
   return L.join('\r\n') + '\r\n';
 }
+function icsUntil() { return iso(planEnd()).replace(/-/g, '') + 'T235959Z'; }
 function addMinutes(t, n) { const [h, m] = t.split(':').map(Number); const tot = h * 60 + m + n; return String(Math.floor(tot / 60) % 24).padStart(2, '0') + ':' + String(tot % 60).padStart(2, '0'); }
 
 /* ---------- Boot ---------- */
@@ -1704,6 +1730,7 @@ function checkDayRollover(announce) {
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { if (active) requestWake(); if (timerInt) tickTimer(); if (clockInt) tickClock(); if (!checkDayRollover(false)) renderCtx(); } });
 setInterval(() => checkDayRollover(true), 60000);
 loadLocal();
+viewWeek = currentWeek();
 renderAll();
 try { const t = localStorage.getItem(LS_KEY + '-tab'); if (t && document.getElementById('v-' + t)) showView(t); } catch (e) {}
 if (state.activeKey && findSession(state.activeKey)) openSession(state.activeKey);

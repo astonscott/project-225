@@ -27,6 +27,12 @@ Everything runs in the browser and saves on the phone. No account, no server, wo
 2. Tap **⋮ → Add to Home screen** (or **Install app** if Chrome offers it) → **Install**.
 3. Open it from the home screen. It runs full-screen and works without signal after the first load.
 
+## Moving the start date
+
+**More → Program → Week 1 starts.** Pick any date and it snaps to that week's Monday; every week label, milestone date, chart axis and calendar event moves with it. Week 0 is always the week before Week 1.
+
+Your logged sets, speeds and weigh-ins are stored by date and are never moved. Re-download the calendar after changing this so the reminders match.
+
 ## Reminders (Google Calendar)
 
 1. In the app: **More → Session times** — set the times you actually train and the **Morning plan alert** time, then **Download calendar (.ics)**. Always generate it from the app; the `project-225.ics` committed here is only an early starter file and will lag behind.
@@ -42,7 +48,7 @@ Change a time later → download again → import again. Events carry stable IDs
 - Gym sessions go exercise by exercise. Each set has weight and reps pre-filled from last time (or from your estimated 1RM on the main lifts); tap the check to log it and the rest timer starts. **Best so far** and **Beat it** show what to beat.
 - Speed days have the protocol as a checklist and a **competition set clock**: start the 2:45, type each ball speed as the radar reads it, mark in-grid balls, **Save set**. Peak and top-3 are calculated and logged when you finish.
 - **Every day** on Today: a checklist for morning weight, creatine, calories, protein, water, mobility and sleep. Tap the box to tick it, or type the number — calories/protein/sleep tick themselves once you're within 5% of target, and habits build a streak.
-- Targets live in **More → Daily targets** (adjust calories ±200 every second Sunday).
+- Targets live in **More → Daily targets** (adjust calories ±200 every second Sunday); the program's start date lives in **More → Program**.
 - The Sunday **review card** (also on the Log tab) reads your weight, speed, calories and sleep together and tells you which one to fix.
 - **Log** has the charts — toggle **Ball speed / Club speed / Smash**, each with your sessions and a 3-session rolling average — plus the maxes table and manual entry.
 
