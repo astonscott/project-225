@@ -454,8 +454,8 @@ const GYM = {
     warm: 'Band pull-aparts, thoracic open-books, wall slides, 10 light med-ball rotations each side, 5 push-ups.',
     deload: 'Deload: throws 2 sets. Bench 3×5 @ 65–70%. Pull-ups 3×5 bodyweight. Accessories 2 sets.',
     ex: [
-      ['A1','Med ball rotational scoop throw (wall)', '4×4 / side · 8–10 lb', '5×3 / side · 10–12 lb', '6×3 / side · 6–8 lb, max speed', 'Golf posture, full turn, hips lead. Both sides every set.'],
-      ['A2','Med ball chest pass / shot put', '4×4 · 8–10 lb', '5×3 · 10–12 lb', 'Plyo push-up 5×3', 'Arm speed. Explosive, not grinding.'],
+      ['A1','Med ball rotational slam (floor)', '4×4 / side · 8–10 lb', '5×3 / side · 10–12 lb', '6×3 / side · 6–8 lb, max speed', 'Golf posture, ball at the trail hip, hips lead the arms. Fire it into the floor by the lead foot. Both sides every set.'],
+      ['A2','Plyo push-up', '4×4 · hands on a bench', '5×3 · from the floor', '5×3 · clap or drop push-up', 'Drive so the hands leave the surface. Full reset every rep — speed, not conditioning.'],
       ['B','Bench press', '4×6 @ 72–77%', '5×4 @ 80–85%', '3×3 @ 85%, then 3×3 @ 60% fast', 'Feet driving, upper back tight.'],
       ['C','Weighted pull-up', '4×6', '5×5', '4×4', 'Lats are the trail-arm engine. Add weight when 6 clean reps.'],
       ['D1','Half-kneeling landmine press', '3×8 / side', '3×8 / side', 'Landmine rotational press 3×6 / side', 'Trail-side hip drives the bar in Block 3.'],
@@ -638,6 +638,9 @@ const HOWTO = {
 };
 // Variant names that appear inside a block's prescription
 Object.assign(HOWTO, {
+  'Med ball rotational slam (floor)': 'Use a dead slam ball, not a bouncy one, and keep it light — this is a speed drill, not a conditioning one. Stand side-on in your golf posture with the ball at the trail hip and the arms long. Turn hard off the trail foot and let the hips pull the arms through, then fire the ball diagonally into the floor just outside the lead foot. Pick it up, reset the stance fully, go again. Both sides every set.',
+  'Cable rotational punch': 'Cable at chest height, split stance side-on to the stack, trail hand on the handle at the trail hip. Turn off the trail foot and punch the handle across your body as fast as you can, letting the hips lead. Accelerate all the way through and let the stack float at the end rather than braking hard — it is the closest a cable gets to a throw. Control it back slowly.',
+  'Smith machine bench throw': 'Set the safety stops just above your chest. Light bar — 30 to 40 percent of your bench. Press so the bar leaves your hands, catch it with soft elbows, sink to the chest and go again. Never do this on a free barbell alone.',
   'Trap bar jump': 'Light trap bar (20–30% of bodyweight). Dip and jump as high as you can with the arms straight, land soft and quiet, reset fully before the next rep.',
   'Skater bound': 'Push off one leg sideways, fly, and land on the other leg with a stuck, quiet landing. Hold for a beat, then bound back the other way.',
   'Plyo push-up': 'Push-up position. Drop fast and explode up so the hands leave the floor, land soft with bent elbows, absorb, repeat.',
@@ -722,7 +725,7 @@ function remapRecords(id, oldRows, newRows) {
 </script>
 <script>
 /* ================= App core ================= */
-const APP_VERSION = '1.7.0';
+const APP_VERSION = '1.7.1';
 const LS_KEY = 'project225-app-v1';
 const DEFAULT_SETTINGS = {
   startDate: '2026-09-21',            // Monday of Week 1
